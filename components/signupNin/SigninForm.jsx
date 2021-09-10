@@ -48,7 +48,6 @@ const SigninForm = () => {
         console.log("GRAPHQL TYPEERROR : ", error);
         return alert("There is some server error, try again later.");
       }
-      console.log(result.data);
 
       const { message, success } = result.data.loginUser;
       if (!success) return alert(message);
