@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 
 
 const httpLink = createHttpLink({
-    uri: `${process.env.API_URI_BASE}`,
+    uri: process.env.API_URI_BASE,
     credentials: "include",
 })
 const link = from([errorLink, httpLink]);
