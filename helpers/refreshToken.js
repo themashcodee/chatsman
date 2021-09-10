@@ -1,6 +1,6 @@
 export async function refreshToken() {
     try {
-        const res = await fetch(`${process.env.API_URI}/refreshtoken`, {
+        const res = await fetch(`${process.env.API_URI}refreshtoken`, {
             credentials: 'include'
         })
         const data = await res.json()

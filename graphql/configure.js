@@ -23,7 +23,7 @@ const authLink = setContext((_, { headers }) => {
 
 
 const httpLink = createHttpLink({
-    uri: `${process.env.API_URI}/graphql`,
+    uri: `${process.env.API_URI}graphql`,
     credentials: "include",
 })
 const link = from([errorLink, httpLink]);
