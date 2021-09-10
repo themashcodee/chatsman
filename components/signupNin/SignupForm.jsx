@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import User from "../icons/User";
 import Input from "./Input";
+import { useRouter } from "next/router";
 
 import { ADD_USER } from "../../graphql/mutations/index";
 import { useMutation } from "@apollo/client";
@@ -14,55 +15,52 @@ import {
 } from "../../validations/form";
 
 const SignupForm = () => {
-  const [addUser, { data, loading, error }] = useMutation(ADD_USER);
+  const [createUser, { error }] = useMutation(ADD_USER);
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [submitState, setSubmitState] = useState("Submit");
 
   const [nameError, setNameError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  function registerUser(e) {
+  async function register(e) {
     e.preventDefault();
-    if (!nameError && !usernameError && !emailError && !passwordError) {
-      const isAlertAccepted = confirm(
-        "you have to verify your email address to confirm your account"
-      );
-      if (!isAlertAccepted) return;
+    if (nameError || usernameError || emailError || passwordError) return;
 
-      setSubmitState("Submitting...");
-      addUser({
-        variables: {
-          payload: {
-            name,
-            username,
-            email,
-            password,
-          },
-        },
+    setName("");
+    setUsername("");
+    setEmail("");
+    setPassword("");
+
+    try {
+      const result = await createUser({
+        variables: { payload: { name, username, email, password } },
       });
-      if (data) console.log(data);
 
-      setSubmitState("Submited");
-      setName("");
-      setUsername("");
-      setEmail("");
-      setPassword("");
+      if (error) {
+        console.log("GRAPHQL TYPEERROR : ", error);
+        return alert("There is some server error, try again later.");
+      }
 
-      alert(
-        "Verify your email and login (check spam folder if you are not able to find email)"
-      );
+      const { message, success } = result.data.createUser;
+      if (!success) return alert(message);
+      alert(message);
+
+      router.replace("/signin");
+    } catch (err) {
+      console.log('"SERVER ERROR :', err);
+      alert("There is some server error, try again later.");
     }
   }
 
   return (
     <form
-      onSubmit={(e) => registerUser(e)}
+      onSubmit={(e) => register(e)}
       className="w-full gap-2 max-w-sm flex flex-col items-center p-4 bg-white dark:bg-cblack-3 rounded-t-3xl"
     >
       <div className="w-20 h-20 bg-cwhite-light dark:bg-cblack-4 rounded-full text-cblack-5 dark:text-cwhite-darker cursor-pointer p-4">
@@ -111,7 +109,7 @@ const SignupForm = () => {
         className="h-10 flex-shrink-0 bg-cblue text-white w-full rounded-lg mt-3"
         type="submit"
       >
-        {submitState}
+        Submit
       </button>
     </form>
   );

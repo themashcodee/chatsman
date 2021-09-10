@@ -24,3 +24,9 @@ export function passwordValidation(value, error) {
     if (!value.match(/[1-9]/)) return error('Password should must have a number')
     error(null);
 }
+export function secretValidation(value, error) {
+    if (!value.match(/^[0-9]*$/)) return error('Code should must have only number')
+    if (value.length < 6) return error("Code can't be less than 6 characters");
+    if (value.length > 6) return error("Code can't be more than 6 characters");
+    error(null);
+}

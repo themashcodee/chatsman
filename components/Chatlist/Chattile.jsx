@@ -1,28 +1,45 @@
 import React, { useContext } from "react";
 import Image from "next/image";
+import Profile from "../icons/User";
 
 // DATABASE AND STORE
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../../graphql/queries/index";
 import { StoreContext } from "../../pages/_app";
 
-// HELPER
-import { getMutualChat } from "../../helpers/getMutualChat";
+const ChatTile = ({ conversationId, members }) => {
+  const {
+    RECEIVER: { receiver, setReceiver },
+    USER: { user },
+  } = useContext(StoreContext);
 
-const ChatTile = ({ id, name, img, lastmessage, online }) => {
-  const { IS_CHAT_OPEN, CURRENT_RECEIVER, CURRENT_USER } =
-    useContext(StoreContext);
+  const receiverId = members.find((id) => id !== user._id);
 
-  function openChat(id1, id2) {
-    if (CURRENT_RECEIVER.receiver && CURRENT_RECEIVER.receiver.name === name)
-      return;
-    if (!IS_CHAT_OPEN.isChatOpen) IS_CHAT_OPEN.setIsChatOpen(true);
-    CURRENT_RECEIVER.setReceiver({
-      id,
-      name,
-      img,
-      online,
-      chats: getMutualChat(id1, id2),
-    });
+  const { data, error, loading } = useQuery(GET_USER, {
+    variables: { id: receiverId },
+  });
+
+  if (error) {
+    console.log(error);
+    return "There is Error";
   }
+
+  // function openChat(id1, id2) {
+  //   if (RECEIVER.receiver && RECEIVER.receiver.name === name) return;
+
+  //   if (!IS_CHAT_OPEN.isChatOpen) IS_CHAT_OPEN.setIsChatOpen(true);
+  //   RECEIVER.setReceiver({
+  //     id,
+  //     name,
+  //     img,
+  //     online,
+  //     chats: getMutualChat(id1, id2),
+  //   });
+  // }
+  if (loading) return null;
+
+  const receiverObj = data.getUser.user;
+  const { image, name, id } = receiverObj;
 
   return (
     <section
@@ -30,20 +47,24 @@ const ChatTile = ({ id, name, img, lastmessage, online }) => {
       className="bg-cwhite-light dark:bg-cblack-3 hover:bg-opacity-40 select-none cursor-pointer rounded-lg flex-shrink-0 flex justify-between items-center h-16 w-full px-3"
     >
       <div className="flex items-center gap-3">
-        <div className="relative overflow-hidden h-10 w-10 rounded-full">
-          <Image
-            src={img}
-            alt="profile image"
-            layout="fill"
-            objectFit="cover"
-          ></Image>
+        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-medium dark:bg-cblack-3 text-cblack-5 dark:text-cwhite-darker">
+          {image ? (
+            <Image
+              src={image}
+              alt="profile image"
+              layout="fill"
+              objectFit="cover"
+            ></Image>
+          ) : (
+            <Profile />
+          )}
         </div>
         <div className="flex flex-col">
           <h2 className="font-medium text-lg">
             {name.length > 15 ? name.substr(0, 15) + "." : name}
           </h2>
           <p className="text-xxm text-cblack-5 dark:text-cwhite-darker">
-            {lastmessage}
+            {"this is a last message"}
           </p>
         </div>
       </div>
@@ -51,7 +72,7 @@ const ChatTile = ({ id, name, img, lastmessage, online }) => {
       <div
         className={`
         w-3 h-3 rounded-full 
-        ${online ? "bg-cgreen" : "bg-cred-medium"}
+        ${true ? "bg-cgreen" : "bg-cred-medium"}
         `}
       ></div>
     </section>

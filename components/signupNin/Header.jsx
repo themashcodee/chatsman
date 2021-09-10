@@ -1,5 +1,6 @@
 import React from "react";
 import Favicon from "../icons/Favicon";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -7,7 +8,9 @@ const Header = () => {
       <div className="h-10 w-10">
         <Favicon />
       </div>
-      <h1 className="font-medium text-2xl">Chatsman</h1>
+      <Link passHref={true} href="/home" replace={true}>
+        <h1 className="font-medium cursor-pointer text-2xl">Chatsman</h1>
+      </Link>
     </header>
   );
 };

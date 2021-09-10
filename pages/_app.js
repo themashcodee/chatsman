@@ -1,8 +1,11 @@
 import '../styles/globals.css'
 import { useEffect, createContext, useState } from 'react'
 import { initTheme } from '../helpers/theme'
-import { users } from "../DB/data";
-const currentUserId = 1;
+
+import Loading from '../components/Loading'
+
+// TOKEN RELATED
+import { refreshToken } from '../helpers/refreshToken';
 
 // APOLLO CLIENT
 import { ApolloProvider } from '@apollo/client';
@@ -16,18 +19,30 @@ function MyApp({ Component, pageProps }) {
 
   // SETTNG STATES AND STORE
   const [receiver, setReceiver] = useState(null)
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [user, setUser] = useState(null)
 
+  // SETTING TEMP ACCESS TOKEN AND USER
+  useEffect(() => {
+    async function getCurrentUser() {
+      const user = await refreshToken()
+      if (!user) return setUser(undefined)
+      setUser(user)
+    }
+    getCurrentUser()
+  }, [])
+
+  // Storing values in STORE
   const store = {
-    CURRENT_USER: users.find(user => user.id === currentUserId),
-    CURRENT_RECEIVER: { receiver, setReceiver },
-    IS_CHAT_OPEN: { isChatOpen, setIsChatOpen },
+    USER: { user, setUser },
+    RECEIVER: { receiver, setReceiver },
   }
 
   // SETTING THEME
   useEffect(() => {
     initTheme()
   }, [])
+
+  if (user === null) return <Loading />
 
   return <ApolloProvider client={client}>
     <Provider value={store}>

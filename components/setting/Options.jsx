@@ -6,7 +6,9 @@ import { getCurrenTheme, toggleTheme } from "../../helpers/theme";
 import { StoreContext } from "../../pages/_app";
 
 const Options = () => {
-  const { CURRENT_USER } = useContext(StoreContext);
+  const {
+    USER: { user },
+  } = useContext(StoreContext);
   const [isDark, setIsDark] = useState(false);
 
   useState(() => {
