@@ -36,14 +36,10 @@ const Options = () => {
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
       return alert("Wrong Secret!");
 
-    console.log(user.id);
     const result = await logoutMutation({
       variables: { id: user.id, secret: +secret },
     });
-    if (logoutError) {
-      console.log(logoutError);
-      return alert("There is some error, try again later.");
-    }
+    if (logoutError) return alert("There is some error, try again later.");
     const { message, success } = result.data.logout;
     if (!success) return alert(message);
 
