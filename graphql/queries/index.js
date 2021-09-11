@@ -7,8 +7,8 @@ export const HEALTH_CHECKUP = gql`
 `
 
 export const GET_USER = gql`
-query GetUser($id:String){
-  getUser(id:$id){
+query GetUser($id:String,$username:String){
+  getUser(id:$id,username:$username){
     success
     message
     user{

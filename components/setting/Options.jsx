@@ -3,23 +3,48 @@ import Option from "./Option";
 import ImpOption from "./ImpOption";
 import { getCurrenTheme, toggleTheme } from "../../helpers/theme";
 
+import { useMutation } from "@apollo/client";
+import { LOGOUT } from "../../graphql/mutations/index";
+
+import { useRouter } from "next/router";
+
 import { StoreContext } from "../../pages/_app";
 
 const Options = () => {
   const {
     USER: { user },
   } = useContext(StoreContext);
-  const [isDark, setIsDark] = useState(false);
+  const router = useRouter();
 
+  // THEME BUTTON SETUP
+  const [isDark, setIsDark] = useState(false);
   useState(() => {
     const currentTheme = getCurrenTheme();
     setIsDark(currentTheme === "dark" ? true : false);
   }, [setIsDark]);
 
+  // MUTATIONS
+  const [logoutMutation, { data: logoutData, error: logoutError }] =
+    useMutation(LOGOUT);
+
+  // OPTIONS FUNCTIONS
   const resetPassword = () => console.log("reset password");
   const changeUsername = () => console.log("change username");
   const changeName = () => console.log("change name");
-  const logout = () => console.log("logged out");
+  const logout = async () => {
+    const secret = prompt("Secret");
+    if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
+      return alert("Wrong Secret!");
+
+    const result = await logoutMutation({
+      variables: { id: user._id, secret: +secret },
+    });
+    const { message, success } = result.data.logout;
+    if (!success) return alert(message);
+
+    sessionStorage.clear();
+    router.reload();
+  };
   const deleteAccount = () => console.log("account deleted");
 
   return (

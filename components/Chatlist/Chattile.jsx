@@ -43,11 +43,11 @@ const ChatTile = ({ conversationId, members }) => {
 
   return (
     <section
-      onClick={() => openChat(id, CURRENT_USER.id)}
+      // onClick={() => openChat(id, CURRENT_USER.id)}
       className="bg-cwhite-light dark:bg-cblack-3 hover:bg-opacity-40 select-none cursor-pointer rounded-lg flex-shrink-0 flex justify-between items-center h-16 w-full px-3"
     >
       <div className="flex items-center gap-3">
-        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-medium dark:bg-cblack-3 text-cblack-5 dark:text-cwhite-darker">
+        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-medium dark:bg-cblack-5 text-cblack-5 dark:text-cwhite-darker">
           {image ? (
             <Image
               src={image}

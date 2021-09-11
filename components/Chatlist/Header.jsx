@@ -20,7 +20,9 @@ const Header = ({ img, name }) => {
             <Profile />
           )}
         </div>
-        <h1 className="text-2xl font-medium">{name}</h1>
+        <h1 className="text-2xl font-medium">
+          {name.length > 15 ? name.substr(0, 15) + "." : name}
+        </h1>
       </div>
       <Link href="/setting" passHref={true} replace={true}>
         <button className="h-8 w-8">

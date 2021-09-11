@@ -4,8 +4,9 @@ import ChatTile from "./Chattile";
 import Header from "./Header";
 
 // DB QUERY
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_CONVERSATIONS } from "../../graphql/queries/index";
+import { CREATE_CONVERSATION } from "../../graphql/mutations/index";
 
 // STORE
 import { StoreContext } from "../../pages/_app";
@@ -15,6 +16,29 @@ const Chatlist = () => {
     USER: { user },
     RECEIVER: { receiver },
   } = useContext(StoreContext);
+
+  // ADD CONVERSATION FUNCTIONING
+  const [create, { error: convError }] = useMutation(CREATE_CONVERSATION, {
+    refetchQueries: [{ query: GET_CONVERSATIONS }],
+  });
+
+  async function addConversation() {
+    const usrn = prompt("Username");
+    if (usrn.length < 3 || usrn.length > 10) return alert("Invalid Username");
+
+    try {
+      const result = await create({
+        variables: { isGroup: false, members: [usrn, user.username] },
+      });
+
+      if (convError) return alert("There is some server errors");
+
+      const { message, success } = result.data.createConversation;
+      if (!success) return alert(message);
+    } catch (err) {
+      return alert("There is some server error, try again later.");
+    }
+  }
 
   const { data, error } = useQuery(GET_CONVERSATIONS);
   let conversations;
@@ -51,7 +75,10 @@ const Chatlist = () => {
         })}
       </article>
 
-      <button className="absolute right-4 bottom-4 w-10 h-10 bg-cyellow text-cblack-5 rounded-full p-1">
+      <button
+        onClick={addConversation}
+        className="absolute right-4 bottom-4 w-10 h-10 bg-cyellow text-cblack-5 rounded-full p-1"
+      >
         <Add></Add>
       </button>
     </aside>
