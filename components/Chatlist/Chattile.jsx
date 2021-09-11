@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Profile from "../icons/User";
 
@@ -13,7 +13,13 @@ const ChatTile = ({ conversationId, members }) => {
     USER: { user },
   } = useContext(StoreContext);
 
-  const receiverId = members.find((id) => id !== user._id);
+  const [receiverId, setReceiverId] = useState(
+    members.find((id) => id !== user._id)
+  );
+
+  useState(() => {
+    setReceiverId(members.find((id) => id !== user._id));
+  }, [user]);
 
   const { data, error, loading } = useQuery(GET_USER, {
     variables: { id: receiverId },
