@@ -24,27 +24,33 @@ const Options = () => {
   }, [setIsDark]);
 
   // MUTATIONS
-  const [logoutMutation, { data: logoutData, error: logoutError }] =
-    useMutation(LOGOUT);
+  const [logoutMutation, { error: logoutError }] = useMutation(LOGOUT);
 
   // OPTIONS FUNCTIONS
   const resetPassword = () => console.log("reset password");
   const changeUsername = () => console.log("change username");
   const changeName = () => console.log("change name");
+
   const logout = async () => {
     const secret = prompt("Secret");
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
       return alert("Wrong Secret!");
 
+    console.log(user.id);
     const result = await logoutMutation({
       variables: { id: user.id, secret: +secret },
     });
+    if (logoutError) {
+      console.log(logoutError);
+      return alert("There is some error, try again later.");
+    }
     const { message, success } = result.data.logout;
     if (!success) return alert(message);
 
     sessionStorage.clear();
     router.reload();
   };
+
   const deleteAccount = () => console.log("account deleted");
 
   return (
