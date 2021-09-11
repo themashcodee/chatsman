@@ -13,9 +13,10 @@ export default function Signup() {
     // AUTH RELATED
     const router = useRouter()
     const { USER: { user } } = useContext(StoreContext);
-    useEffect(() => {
-        if (user) router.replace('/home')
-    }, [user, router])
+
+    if (user) {
+        if (router) return router.replace('/home')
+    }
     // AUTH RELATED END
 
     return (
