@@ -55,7 +55,7 @@ const SigninForm = () => {
       sessionStorage.setItem("token", result.data.loginUser.token);
       setUser(result.data.loginUser.user);
 
-      router.replace("/home");
+      router.push("/home");
     } catch (err) {
       console.log("SERVER ERROR", err);
       return alert("There is some server error, try again later");
