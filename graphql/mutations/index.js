@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
 export const ADD_USER = gql`
-    mutation CreateUser($payload:CreateUserInputType) {
+    mutation CreateUser($payload:CreateUserInputType!) {
         createUser(payload:$payload) {
             message
             success
