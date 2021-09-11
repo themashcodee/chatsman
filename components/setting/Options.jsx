@@ -37,7 +37,7 @@ const Options = () => {
       return alert("Wrong Secret!");
 
     const result = await logoutMutation({
-      variables: { id: user._id, secret: +secret },
+      variables: { id: user.id, secret: +secret },
     });
     const { message, success } = result.data.logout;
     if (!success) return alert(message);
