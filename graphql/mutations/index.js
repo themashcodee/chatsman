@@ -41,7 +41,7 @@ export const LOGIN_USER = gql`
       name
       username
       image
-      id
+      _id
     }
     token
   }

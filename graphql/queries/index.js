@@ -12,7 +12,7 @@ query GetUser($id:String,$username:String){
     success
     message
     user{
-      id
+      _id
       name
       image
       name

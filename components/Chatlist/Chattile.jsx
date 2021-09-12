@@ -13,7 +13,7 @@ const ChatTile = ({ conversationId, members }) => {
     USER: { user },
   } = useContext(StoreContext);
 
-  const receiverId = members.find((id) => id !== user.id);
+  const receiverId = members.find((id) => id !== user._id);
 
   const { data, error, loading } = useQuery(GET_USER, {
     variables: { id: receiverId },
