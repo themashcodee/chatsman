@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const ADD_USER = gql`
+export const CREATE_USER = gql`
     mutation CreateUser($payload:CreateUserInputType!) {
         createUser(payload:$payload) {
             message
@@ -8,6 +8,33 @@ export const ADD_USER = gql`
         }
     }
 `;
+
+export const RESET_SECRET_CODE = gql`
+    mutation ResetSecretCode($id:ID!){
+      resetSecretCode(id:$id){
+        success
+        message
+      }
+    }
+`
+
+export const CHANGE_PASSWORD = gql`
+    mutation ChangePassword($id:ID!,$newPassword:String!,$oldPassword:String!){
+      changePassword(id:$id,newPassword:$newPassword,oldPassword:$oldPassword){
+        success
+        message
+      }
+    }
+`
+
+export const CHANGE_BASIC_DETAILS = gql`
+    mutation ChangeBasicDetails($id:ID!,$username:String,$name:String){
+      changeBasicDetails(id:$id,username:$username,name:$name){
+        success
+        message
+      }
+    }
+`
 
 export const LOGOUT = gql`
     mutation Logout($id:ID!,$secret:Int!){

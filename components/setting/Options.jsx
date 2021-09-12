@@ -2,13 +2,16 @@ import React, { useState, useContext } from "react";
 import Option from "./Option";
 import ImpOption from "./ImpOption";
 import { getCurrenTheme, toggleTheme } from "../../helpers/theme";
-
-import { useMutation } from "@apollo/client";
-import { LOGOUT, DELETE_ACCOUNT } from "../../graphql/mutations/index";
-
 import { useRouter } from "next/router";
-
+import { useMutation } from "@apollo/client";
 import { StoreContext } from "../../pages/_app";
+import {
+  LOGOUT,
+  DELETE_ACCOUNT,
+  CHANGE_BASIC_DETAILS,
+  CHANGE_PASSWORD,
+  RESET_SECRET_CODE,
+} from "../../graphql/mutations/index";
 
 const Options = () => {
   const {
@@ -24,48 +27,169 @@ const Options = () => {
   }, [setIsDark]);
 
   // MUTATIONS
+  const [changeBasicDetailsMutation, { error: changeBasicDetailsError }] =
+    useMutation(CHANGE_BASIC_DETAILS);
+  const [changePasswordMutation, { error: changePasswordError }] =
+    useMutation(CHANGE_PASSWORD);
+  const [resetSecretCodeMutation, { error: resetSecretCodeError }] =
+    useMutation(RESET_SECRET_CODE);
   const [logoutMutation, { error: logoutError }] = useMutation(LOGOUT);
   const [deleteAccountMutation, { error: deleteAccountError }] =
     useMutation(DELETE_ACCOUNT);
 
   // OPTIONS FUNCTIONS
+  const changeUsername = async () => {
+    const username = prompt("New Username");
+    if (!username) return;
+    if (
+      username.length > 10 ||
+      username.length < 3 ||
+      !username.match(/^[a-zA-Z0-9]*$/)
+    )
+      return alert(
+        "Username must be 3-10 characters long and only contain alphabets and numbers!"
+      );
+
+    try {
+      const result = await changeBasicDetailsMutation({
+        variables: { id: user._id, username },
+      });
+      if (changeBasicDetailsError)
+        return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeBasicDetails;
+      if (!success) return alert(message);
+      alert(message);
+
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
+  };
+
+  const changeName = async () => {
+    const name = prompt("New Name");
+    if (!name) return;
+    if (
+      name.length > 20 ||
+      name.length < 3 ||
+      !name.match(/^[a-zA-Z][a-zA-Z\s]*$/)
+    )
+      return alert(
+        "Username must be 3-20 characters long and only contain alphabets!"
+      );
+
+    try {
+      const result = await changeBasicDetailsMutation({
+        variables: { id: user._id, name },
+      });
+      if (changeBasicDetailsError)
+        return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeBasicDetails;
+      if (!success) return alert(message);
+      alert(message);
+
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
+  };
+
+  const changePassword = async () => {
+    const oldPassword = prompt("Old Password");
+    if (!oldPassword) return;
+    if (
+      oldPassword.length < 8 ||
+      oldPassword.length > 20 ||
+      !oldPassword.match(/^.*(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "^*~`@]).*$/)
+    )
+      return alert("Wrong Password");
+
+    const newPassword = prompt("New Password");
+    if (!newPassword) return;
+    if (newPassword.length < 8 || newPassword.length > 20)
+      return alert("Password must be 8-20 characters long");
+    if (!newPassword.match(/^.*(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "^*~`@]).*$/))
+      return alert(
+        "Password must contain alphabets, numbers and special characters"
+      );
+
+    try {
+      const result = await changePasswordMutation({
+        variables: { oldPassword, newPassword, id: user._id },
+      });
+      if (changePasswordError)
+        return alert("There is some error, try again later.");
+      const { message, success } = result.data.changePassword;
+      if (!success) return alert(message);
+      alert(message);
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
+  };
+
+  const resetSecretCode = async () => {
+    try {
+      const isAgree = confirm("New Secret Code will be sent to you email.");
+      if (!isAgree) return;
+
+      const result = await resetSecretCodeMutation({
+        variables: { id: user._id },
+      });
+      if (resetSecretCodeError)
+        return alert("There is some server error, try again later");
+
+      const { message, success } = result.data.resetSecretCode;
+      if (!success) return alert(message);
+
+      alert(message);
+    } catch (err) {
+      alert("There is some server error, try again later");
+    }
+  };
+
   const resetPassword = () => console.log("reset password");
-  const changeUsername = () => console.log("change username");
-  const changeName = () => console.log("change name");
 
   const logout = async () => {
-    const secret = prompt("Secret");
-    if (!secret) return alert("Wrong Secret!");
+    const secret = prompt("Secret Code");
+    if (!secret) return;
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
-      return alert("Wrong Secret!");
+      return alert("Wrong Secret Code!");
 
-    const result = await logoutMutation({
-      variables: { id: user._id, secret: +secret },
-    });
-    if (logoutError) return alert("There is some error, try again later.");
-    const { message, success } = result.data.logout;
-    if (!success) return alert(message);
+    try {
+      const result = await logoutMutation({
+        variables: { id: user._id, secret: +secret },
+      });
+      if (logoutError) return alert("There is some error, try again later.");
+      const { message, success } = result.data.logout;
+      if (!success) return alert(message);
 
-    sessionStorage.clear();
-    router.reload();
+      sessionStorage.clear();
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
   };
 
   const deleteAccount = async () => {
-    const secret = prompt("Secret");
-    if (!secret) return alert("Wrong Secret!");
+    const secret = prompt("Secret Code");
+    if (!secret) return;
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
-      return alert("Wrong Secret!");
+      return alert("Wrong Secret Code!");
 
-    const result = await deleteAccountMutation({
-      variables: { id: user._id, secret: +secret },
-    });
-    if (deleteAccountError)
-      return alert("There is some error, try again later.");
-    const { message, success } = result.data.deleteAccount;
-    if (!success) return alert(message);
+    try {
+      const result = await deleteAccountMutation({
+        variables: { id: user._id, secret: +secret },
+      });
+      if (deleteAccountError)
+        return alert("There is some error, try again later.");
+      const { message, success } = result.data.deleteAccount;
+      if (!success) return alert(message);
 
-    sessionStorage.clear();
-    router.reload();
+      sessionStorage.clear();
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
   };
 
   return (
@@ -79,11 +203,6 @@ const Options = () => {
         stateLabel={isDark ? "Enabled" : "Disabled"}
       />
       <ImpOption
-        label="Reset Password"
-        special={false}
-        funtionOnClick={resetPassword}
-      />
-      <ImpOption
         label="Change Username"
         special={false}
         funtionOnClick={changeUsername}
@@ -92,6 +211,21 @@ const Options = () => {
         label="Change Name"
         special={false}
         funtionOnClick={changeName}
+      />
+      <ImpOption
+        label="Change Password"
+        special={false}
+        funtionOnClick={changePassword}
+      />
+      <ImpOption
+        label="Reset Secret Code"
+        special={false}
+        funtionOnClick={resetSecretCode}
+      />
+      <ImpOption
+        label="Reset Password"
+        special={false}
+        funtionOnClick={resetPassword}
       />
       <ImpOption
         label="Logout"

@@ -3,7 +3,7 @@ import User from "../icons/User";
 import Input from "./Input";
 import { useRouter } from "next/router";
 
-import { ADD_USER } from "../../graphql/mutations/index";
+import { CREATE_USER } from "../../graphql/mutations/index";
 import { useMutation } from "@apollo/client";
 
 // VALIDATIONS
@@ -15,7 +15,7 @@ import {
 } from "../../validations/form";
 
 const SignupForm = () => {
-  const [createUser, { error }] = useMutation(ADD_USER);
+  const [createUser, { error }] = useMutation(CREATE_USER);
   const router = useRouter();
 
   const [name, setName] = useState("");

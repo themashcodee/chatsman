@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Add from "../icons/Add";
+import ChatIcon from "../icons/Chat";
 import ChatTile from "./Chattile";
 import Header from "./Header";
 
@@ -77,9 +77,9 @@ const Chatlist = () => {
 
       <button
         onClick={addConversation}
-        className="absolute right-4 bottom-4 w-10 h-10 bg-cyellow text-cblack-5 rounded-full p-1"
+        className="fixed sm:absolute right-4 bottom-4 w-12 h-12 bg-cblue text-white rounded-full p-2"
       >
-        <Add></Add>
+        <ChatIcon></ChatIcon>
       </button>
     </aside>
   );
