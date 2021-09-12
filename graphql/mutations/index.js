@@ -37,8 +37,8 @@ export const CHANGE_BASIC_DETAILS = gql`
 `
 
 export const LOGOUT = gql`
-    mutation Logout($id:ID!,$secret:Int!){
-      logout(id:$id,secret:$secret){
+    mutation Logout($id:ID!){
+      logout(id:$id){
         message
         success
       }

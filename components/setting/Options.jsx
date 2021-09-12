@@ -150,14 +150,9 @@ const Options = () => {
   const resetPassword = () => console.log("reset password");
 
   const logout = async () => {
-    const secret = prompt("Secret Code");
-    if (!secret) return;
-    if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
-      return alert("Wrong Secret Code!");
-
     try {
       const result = await logoutMutation({
-        variables: { id: user._id, secret: +secret },
+        variables: { id: user._id },
       });
       if (logoutError) return alert("There is some error, try again later.");
       const { message, success } = result.data.logout;
