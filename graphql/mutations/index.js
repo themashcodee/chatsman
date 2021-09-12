@@ -18,6 +18,15 @@ export const LOGOUT = gql`
     }
 `
 
+export const DELETE_ACCOUNT = gql`
+    mutation DeleteAccount($id:ID!,$secret:Int!){
+      deleteAccount(id:$id,secret:$secret){
+        message
+        success
+      }
+    }
+`
+
 export const CREATE_CONVERSATION = gql`
 mutation CreateConversation($name:String,$members:[String!]!,$isGroup:Boolean!,$image:String){
   createConversation(name:$name,members:$members,isGroup:$isGroup,image:$image){

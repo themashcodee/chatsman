@@ -4,7 +4,7 @@ import ImpOption from "./ImpOption";
 import { getCurrenTheme, toggleTheme } from "../../helpers/theme";
 
 import { useMutation } from "@apollo/client";
-import { LOGOUT } from "../../graphql/mutations/index";
+import { LOGOUT, DELETE_ACCOUNT } from "../../graphql/mutations/index";
 
 import { useRouter } from "next/router";
 
@@ -25,6 +25,8 @@ const Options = () => {
 
   // MUTATIONS
   const [logoutMutation, { error: logoutError }] = useMutation(LOGOUT);
+  const [deleteAccountMutation, { error: deleteAccountError }] =
+    useMutation(DELETE_ACCOUNT);
 
   // OPTIONS FUNCTIONS
   const resetPassword = () => console.log("reset password");
@@ -33,10 +35,10 @@ const Options = () => {
 
   const logout = async () => {
     const secret = prompt("Secret");
+    if (!secret) return alert("Wrong Secret!");
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
       return alert("Wrong Secret!");
 
-    console.log(user._id);
     const result = await logoutMutation({
       variables: { id: user._id, secret: +secret },
     });
@@ -48,7 +50,23 @@ const Options = () => {
     router.reload();
   };
 
-  const deleteAccount = () => console.log("account deleted");
+  const deleteAccount = async () => {
+    const secret = prompt("Secret");
+    if (!secret) return alert("Wrong Secret!");
+    if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
+      return alert("Wrong Secret!");
+
+    const result = await deleteAccountMutation({
+      variables: { id: user._id, secret: +secret },
+    });
+    if (deleteAccountError)
+      return alert("There is some error, try again later.");
+    const { message, success } = result.data.deleteAccount;
+    if (!success) return alert(message);
+
+    sessionStorage.clear();
+    router.reload();
+  };
 
   return (
     <section className="max-w-lg flex-grow w-full pb-8 flex flex-col gap-2 p-2">

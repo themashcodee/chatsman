@@ -35,7 +35,7 @@ const Profile = () => {
           <Edit />
         </button>
       </div>
-      <h1 className="font-medium text-4xl pt-3">{user.name}</h1>
+      <h1 className="font-medium text-4xl pt-3 text-center">{user.name}</h1>
       <p className="text-cblack-5 italic dark:text-cwhite-darker">
         {user.username}
       </p>
