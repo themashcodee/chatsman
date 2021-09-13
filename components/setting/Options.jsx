@@ -11,6 +11,7 @@ import {
   CHANGE_BASIC_DETAILS,
   CHANGE_PASSWORD,
   RESET_SECRET_CODE,
+  RESET_PASSWORD,
 } from "../../graphql/mutations/index";
 
 const Options = () => {
@@ -36,6 +37,8 @@ const Options = () => {
   const [logoutMutation, { error: logoutError }] = useMutation(LOGOUT);
   const [deleteAccountMutation, { error: deleteAccountError }] =
     useMutation(DELETE_ACCOUNT);
+  const [resetPasswordMutation, { error: resetPasswordError }] =
+    useMutation(RESET_PASSWORD);
 
   // OPTIONS FUNCTIONS
   const changeUsername = async () => {
@@ -133,7 +136,7 @@ const Options = () => {
       if (!isAgree) return;
 
       const result = await resetSecretCodeMutation({
-        variables: { id: user._id },
+        variables: { email: user.email },
       });
       if (resetSecretCodeError)
         return alert("There is some server error, try again later");
@@ -147,7 +150,29 @@ const Options = () => {
     }
   };
 
-  const resetPassword = () => console.log("reset password");
+  const resetPassword = async () => {
+    try {
+      const secret = prompt("Secret Code");
+      if (!secret) return;
+      if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
+        return alert("Wrong Secret Code");
+
+      const result = await resetPasswordMutation({
+        variables: { email: user.email, secret: +secret },
+      });
+
+      if (resetPasswordError) {
+        return alert("There is some server error, try again later.");
+      }
+      const { message, success } = result.data.resetPassword;
+
+      if (!success) return alert(message);
+
+      alert(message);
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
+  };
 
   const logout = async () => {
     try {

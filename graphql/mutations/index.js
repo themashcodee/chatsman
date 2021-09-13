@@ -9,9 +9,18 @@ export const CREATE_USER = gql`
     }
 `;
 
+export const RESET_PASSWORD = gql`
+    mutation ResetPassword($email:String!,$secret:Int!){
+      resetPassword(email:$email,secret:$secret){
+        success
+        message
+      }
+    }
+`
+
 export const RESET_SECRET_CODE = gql`
-    mutation ResetSecretCode($id:ID!){
-      resetSecretCode(id:$id){
+    mutation ResetSecretCode($email:String!){
+      resetSecretCode(email:$email){
         success
         message
       }

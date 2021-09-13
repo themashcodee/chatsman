@@ -1,12 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Header from '../components/signupNin/Header'
 import RedirectSection from '../components/signupNin/RedirectSection'
 import SigninForm from '../components/signupNin/SigninForm'
-
-// AUTH RELATED
-import { useRouter } from 'next/router'
-import { StoreContext } from './_app'
 
 export default function Signup() {
     return (
