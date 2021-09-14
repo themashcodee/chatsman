@@ -58,7 +58,7 @@ const Chatlist = () => {
       sm:flex flex-col flex-grow relative flex-shrink-0 w-80 xl:w-96 sm:border-r border-cwhite-light dark:border-cblack-3
       `}
     >
-      <Header name={user.name} img={user.img} id={user.id} />
+      <Header name={user.name} image={user.image} id={user.id} />
 
       <article className="scrollable flex flex-col gap-2 p-2 overflow-auto">
         {conversations.map((conversation) => {

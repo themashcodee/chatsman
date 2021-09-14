@@ -4,14 +4,14 @@ import Image from "next/image";
 import Link from "next/link";
 import Profile from "../icons/User";
 
-const Header = ({ img, name }) => {
+const Header = ({ image, name }) => {
   return (
     <header className="flex flex-shrink-0 justify-between items-center h-14 px-3 border-b border-cwhite-light dark:border-cblack-3 select-none">
       <div className="flex gap-2 items-center">
         <div className="h-10 overflow-hidden w-10 rounded-full relative p-2 bg-cwhite-light dark:bg-cblack-3 text-cblack-5 dark:text-cwhite-darker">
-          {img ? (
+          {image ? (
             <Image
-              src={img}
+              src={image}
               alt="profile image"
               layout="fill"
               objectFit="cover"
