@@ -20,7 +20,6 @@ query GetUser($id:String,$username:String){
   }
 }
 `
-
 export const GET_CONVERSATIONS = gql`
     query GetConversation{
   getConversations {
@@ -34,5 +33,21 @@ export const GET_CONVERSATIONS = gql`
       image
     }
   }
+}
+`
+
+export const GET_MESSAGES = gql`
+    query($conversationId:ID!,$senderId:ID!) {
+        getMessages(conversationId:$conversationId,senderId:$senderId) {
+            message
+            success
+            messages {
+                    senderId
+                    id
+                    type
+                    content
+                    createdAt
+        }
+    }
 }
 `

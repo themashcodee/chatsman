@@ -16,6 +16,7 @@ module.exports = {
         },
         cwhite: {
           "light": "#eee",
+          "d": "#e5e5e5",
           "medium": "#cccccc",
           'darker': "#aaaaaa"
         },

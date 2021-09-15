@@ -9,8 +9,17 @@ export const CREATE_USER = gql`
     }
 `;
 
+export const CREATE_MESSAGE = gql`
+    mutation ($senderId:ID!,$type:MessageType!,$content:String!,$conversationId:ID!){
+      createMessage(senderId:$senderId,content:$content,type:$type,conversationId:$conversationId){
+        success
+        message
+      }
+    }
+`
+
 export const RESET_PASSWORD = gql`
-    mutation ResetPassword($email:String!,$secret:Int!){
+    mutation ($email:String!,$secret:Int!){
       resetPassword(email:$email,secret:$secret){
         success
         message
@@ -19,7 +28,7 @@ export const RESET_PASSWORD = gql`
 `
 
 export const RESET_SECRET_CODE = gql`
-    mutation ResetSecretCode($email:String!){
+    mutation ($email:String!){
       resetSecretCode(email:$email){
         success
         message
@@ -28,7 +37,7 @@ export const RESET_SECRET_CODE = gql`
 `
 
 export const CHANGE_PASSWORD = gql`
-    mutation ChangePassword($id:ID!,$newPassword:String!,$oldPassword:String!){
+    mutation ($id:ID!,$newPassword:String!,$oldPassword:String!){
       changePassword(id:$id,newPassword:$newPassword,oldPassword:$oldPassword){
         success
         message
@@ -37,7 +46,7 @@ export const CHANGE_PASSWORD = gql`
 `
 
 export const CHANGE_BASIC_DETAILS = gql`
-    mutation ChangeBasicDetails($id:ID!,$username:String,$name:String){
+    mutation ($id:ID!,$username:String,$name:String){
       changeBasicDetails(id:$id,username:$username,name:$name){
         success
         message
@@ -46,7 +55,7 @@ export const CHANGE_BASIC_DETAILS = gql`
 `
 
 export const LOGOUT = gql`
-    mutation Logout($id:ID!){
+    mutation ($id:ID!){
       logout(id:$id){
         message
         success
@@ -55,7 +64,7 @@ export const LOGOUT = gql`
 `
 
 export const DELETE_ACCOUNT = gql`
-    mutation DeleteAccount($id:ID!,$secret:Int!){
+    mutation ($id:ID!,$secret:Int!){
       deleteAccount(id:$id,secret:$secret){
         message
         success

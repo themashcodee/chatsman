@@ -31,9 +31,8 @@ const Profile = () => {
       if (!response.success) return alert(response.message);
 
       alert(response.message);
-      router.reload();
+      // router.reload();
     } catch (err) {
-      console.log(err);
       alert("There is some server error, try again later.");
     }
   }

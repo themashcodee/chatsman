@@ -2,28 +2,35 @@ import React, { useState } from "react";
 import ImageIcon from "../icons/Image";
 import Send from "../icons/Send";
 
-import { chats } from "../../DB/data";
+import { CREATE_MESSAGE } from "../../graphql/mutations/index";
+import { useMutation } from "@apollo/client";
 
-const Footer = ({ senderId, receiverId }) => {
+const Footer = ({ senderId, conversationId }) => {
   const [message, setMessage] = useState("");
+  const [createMessage, { createMessageError }] = useMutation(CREATE_MESSAGE);
 
-  function sendMessage(e) {
+  async function sendMessage(e) {
     e.preventDefault();
+    if (!message.length) return;
 
-    let chatIndex;
-    chats.forEach((chat, i) => {
-      if (chat.users.includes(receiverId) && chat.users.includes(senderId)) {
-        chatIndex = i;
-      }
-    });
-    chats[chatIndex].chats.push({
-      id: Math.random(),
-      message,
-      senderId,
-      time: Date.now(),
-    });
+    try {
+      const result = await createMessage({
+        variables: {
+          conversationId,
+          senderId,
+          type: "TEXT",
+          content: message,
+        },
+      });
+      if (createMessageError)
+        return alert("There is some server error, try again later.");
 
-    setMessage("");
+      const { message: resultMessage, success } = result.data.createMessage;
+      if (!success) return alert(resultMessage);
+      setMessage("");
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
   }
 
   return (

@@ -9,21 +9,27 @@ import { StoreContext } from "../../pages/_app";
 const Chatsection = () => {
   const {
     USER: { user },
-    RECEIVER: { receiver },
+    RECEIVER: { receiver, setReceiver },
   } = useContext(StoreContext);
 
   if (!receiver)
     return (
-      <section className="w-full h-full hidden sm:flex flex-grow justify-center items-center font-medium text-4xl text-cwhite-darker dark:text-cblack-3 select-none">
+      <section className="w-full h-full hidden sm:flex flex-grow justify-center items-center font-medium text-4xl text-cwhite-medium dark:text-cblack-3 select-none">
         Empty
       </section>
     );
 
   return (
     <section className="flex-grow flex flex-col h-full w-full">
-      <Header />
-      <Chats chats={receiver.chats} senderId={user.id} />
-      <Footer senderId={user.id} receiverId={receiver.id} />
+      <Header
+        name={receiver.name}
+        image={receiver.image}
+        receiverId={receiver._id}
+        senderId={user._id}
+        setReceiver={setReceiver}
+      />
+      <Chats conversationId={receiver.conversationId} senderId={user._id} />
+      <Footer conversationId={receiver.conversationId} senderId={user._id} />
     </section>
   );
 };

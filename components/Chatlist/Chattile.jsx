@@ -23,31 +23,23 @@ const ChatTile = ({ conversationId, members }) => {
     console.log(error);
     return "There is Error";
   }
-
-  // function openChat(id1, id2) {
-  //   if (RECEIVER.receiver && RECEIVER.receiver.name === name) return;
-
-  //   if (!IS_CHAT_OPEN.isChatOpen) IS_CHAT_OPEN.setIsChatOpen(true);
-  //   RECEIVER.setReceiver({
-  //     id,
-  //     name,
-  //     img,
-  //     online,
-  //     chats: getMutualChat(id1, id2),
-  //   });
-  // }
   if (loading) return null;
 
   const receiverObj = data.getUser.user;
-  const { image, name, id } = receiverObj;
+  const { image, name, _id } = receiverObj;
+
+  function openChat() {
+    if (receiver && receiver.name === name) return;
+    setReceiver({ image, name, _id, conversationId });
+  }
 
   return (
     <section
-      // onClick={() => openChat(id, CURRENT_USER.id)}
-      className="bg-cwhite-light dark:bg-cblack-3 hover:bg-opacity-40 select-none cursor-pointer rounded-lg flex-shrink-0 flex justify-between items-center h-16 w-full px-3"
+      onClick={openChat}
+      className="bg-cwhite-d dark:bg-cblack-3 hover:bg-opacity-40 select-none cursor-pointer rounded-lg flex-shrink-0 flex justify-between items-center h-16 w-full px-3"
     >
       <div className="flex items-center gap-3">
-        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-medium dark:bg-cblack-5 text-cblack-5 dark:text-cwhite-darker">
+        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-light dark:bg-cblack-5 text-cblack-5 dark:text-cwhite-darker">
           {image ? (
             <Image
               src={image}
