@@ -8,7 +8,7 @@ import { getMessageTime } from "../../helpers/getMessageTime";
 
 const Chats = ({ senderId, conversationId }) => {
   const { data, error, loading } = useQuery(GET_MESSAGES, {
-    variables: { conversationId, senderId },
+    variables: { conversationId },
   });
 
   const [chats, setChats] = useState([]);
