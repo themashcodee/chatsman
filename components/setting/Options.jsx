@@ -97,6 +97,28 @@ const Options = () => {
     }
   };
 
+  const changeDescription = async () => {
+    const description = prompt("New Description");
+    if (!description) return;
+    if (description.length > 100 || description.length < 10)
+      return alert("Description must be 10-100 characters long");
+
+    try {
+      const result = await changeBasicDetailsMutation({
+        variables: { id: user._id, description },
+      });
+      if (changeBasicDetailsError)
+        return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeBasicDetails;
+      if (!success) return alert(message);
+      alert(message);
+
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
+  };
+
   const changePassword = async () => {
     const oldPassword = prompt("Old Password");
     if (!oldPassword) return;
@@ -231,6 +253,11 @@ const Options = () => {
         label="Change Name"
         special={false}
         funtionOnClick={changeName}
+      />
+      <ImpOption
+        label="Change Bio"
+        special={false}
+        funtionOnClick={changeDescription}
       />
       <ImpOption
         label="Change Password"

@@ -26,11 +26,11 @@ const ChatTile = ({ conversationId, members }) => {
   if (loading) return null;
 
   const receiverObj = data.getUser.user;
-  const { image, name, _id } = receiverObj;
+  const { image, name, _id, username } = receiverObj;
 
   function openChat() {
     if (receiver && receiver.name === name) return;
-    setReceiver({ image, name, _id, conversationId });
+    setReceiver({ image, name, _id, conversationId, username });
   }
 
   return (

@@ -46,8 +46,8 @@ export const CHANGE_PASSWORD = gql`
 `
 
 export const CHANGE_BASIC_DETAILS = gql`
-    mutation ($id:ID!,$username:String,$name:String){
-      changeBasicDetails(id:$id,username:$username,name:$name){
+    mutation ($id:ID!,$username:String,$name:String,$description:String){
+      changeBasicDetails(id:$id,username:$username,name:$name,description:$description){
         success
         message
       }

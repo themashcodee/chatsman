@@ -3,8 +3,16 @@ import Back from "../icons/Back";
 import Image from "next/image";
 import Profile from "../icons/User";
 import Menu from "../icons/Menu";
+import Link from "next/link";
 
-const Header = ({ name, image, receiverId, senderId, setReceiver }) => {
+const Header = ({
+  name,
+  image,
+  receiverId,
+  username,
+  senderId,
+  setReceiver,
+}) => {
   const [modelVisible, setModelVisible] = useState(false);
 
   return (
@@ -49,9 +57,11 @@ const Header = ({ name, image, receiverId, senderId, setReceiver }) => {
       >
         {modelVisible && (
           <div className="absolute w-36 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
-            <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
-              Profile
-            </div>
+            <Link href={`/user/${username}`} passHref={true} replace={true}>
+              <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
+                Profile
+              </div>
+            </Link>
             <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center">
               Delete Chat
             </div>

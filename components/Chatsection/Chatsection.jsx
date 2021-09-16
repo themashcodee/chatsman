@@ -24,6 +24,7 @@ const Chatsection = () => {
       <Header
         name={receiver.name}
         image={receiver.image}
+        username={receiver.username}
         receiverId={receiver._id}
         senderId={user._id}
         setReceiver={setReceiver}

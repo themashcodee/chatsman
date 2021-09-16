@@ -24,6 +24,7 @@ const Chatlist = () => {
 
   async function addConversation() {
     const usrn = prompt("Username");
+    if (!usrn) return;
     if (usrn.length < 3 || usrn.length > 10) return alert("Invalid Username");
 
     try {
