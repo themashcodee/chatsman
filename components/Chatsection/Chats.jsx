@@ -20,9 +20,8 @@ const Chats = ({ senderId, conversationId }) => {
   const [note, setNote] = useState("");
 
   const scrollCont = useRef(null);
-  const scrollToBottom = () => {
-    scrollCont.current.scrollTop = scrollCont.current.scrollHeight;
-  };
+  const scrollToBottom = () =>
+    (scrollCont.current.scrollTop = scrollCont.current.scrollHeight);
 
   if (subscribedError) setNote("There is some server error, try again later.");
   if (error) setNote("There is some server error, try again later.");
