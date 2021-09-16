@@ -9,6 +9,7 @@ const Profile = () => {
   const {
     USER: { user },
   } = useContext(StoreContext);
+  console.log("from setting", user);
 
   async function updateProfileImage(e) {
     try {
@@ -74,7 +75,7 @@ const Profile = () => {
         {user.username}
       </p>
       <p className="text-cblack-3 pt-3 dark:text-cwhite-medium">
-        {user.description ? user.description : "You dont have any bio"}
+        {user.description.length ? user.description : "You dont have any bio"}
       </p>
     </article>
   );

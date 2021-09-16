@@ -53,6 +53,7 @@ const SigninForm = () => {
       if (!success) return alert(message);
 
       sessionStorage.setItem("token", result.data.loginUser.token);
+      console.log("from login", result.data.loginUser.user);
       setUser(result.data.loginUser.user);
 
       router.replace("/home");
