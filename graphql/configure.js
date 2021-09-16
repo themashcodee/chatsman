@@ -1,6 +1,9 @@
-import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client'
+import { split, ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client'
 import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
+
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
@@ -22,11 +25,32 @@ const authLink = setContext((_, { headers }) => {
 });
 
 
+const wsLink = process.browser && new WebSocketLink({
+    uri: process.env.API_URI_SUBSCRIPTION,
+    options: {
+        reconnect: true
+    },
+    timeout: 30000,
+    credentials: "include",
+});
 const httpLink = createHttpLink({
     uri: process.env.API_URI_BASE,
     credentials: "include",
 })
-const link = from([errorLink, httpLink]);
+
+const splitLink = process.browser ? split(
+    ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+            definition.kind === 'OperationDefinition' &&
+            definition.operation === 'subscription'
+        );
+    },
+    wsLink,
+    httpLink,
+) : httpLink;
+
+const link = from([errorLink, splitLink]);
 
 export const client = new ApolloClient({
     cache: new InMemoryCache(),

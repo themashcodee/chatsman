@@ -16,7 +16,7 @@ const Header = ({ name, image, receiverId, senderId, setReceiver }) => {
         >
           <Back />
         </button>
-        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-light dark:bg-cblack-5 text-cblack-5 dark:text-cwhite-darker">
+        <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-light dark:bg-cblack-3 text-cblack-5 dark:text-cwhite-darker">
           {image ? (
             <Image
               src={image}

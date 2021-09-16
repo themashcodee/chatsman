@@ -23,6 +23,7 @@
 html,
 body {
   @apply font-custom m-0 p-0 dark:bg-cblack-2 h-screen text-cblack-3 dark:text-white;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -43,6 +44,7 @@ a {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* for Firefox */
   overflow-y: scroll;
+  scroll-behavior: smooth;
 }
 .scrollable::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
