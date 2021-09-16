@@ -9,7 +9,6 @@ const Profile = () => {
   const {
     USER: { user },
   } = useContext(StoreContext);
-  console.log("from setting", user);
 
   async function updateProfileImage(e) {
     try {

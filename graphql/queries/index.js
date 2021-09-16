@@ -15,7 +15,6 @@ query GetUser($id:String,$username:String){
       _id
       name
       image
-      name
       username
       description
     }
