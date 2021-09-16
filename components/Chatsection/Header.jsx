@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import Back from "../icons/Back";
 import Image from "next/image";
 import Profile from "../icons/User";
 import Menu from "../icons/Menu";
 
 const Header = ({ name, image, receiverId, senderId, setReceiver }) => {
+  const [modelVisible, setModelVisible] = useState(false);
+
   return (
     <header className="select-none px-4 flex flex-shrink-0 gap-3 justify-between items-center w-full h-14 border-b border-cwhite-light dark:border-cblack-3">
       <div className="flex items-center gap-3">
@@ -38,7 +40,23 @@ const Header = ({ name, image, receiverId, senderId, setReceiver }) => {
           }`}
         ></div>
       </div>
-      <div className="h-6 w-8 cursor-pointer">
+
+      <div
+        className="h-6 w-8 cursor-pointer relative"
+        onClick={() => {
+          setModelVisible(!modelVisible);
+        }}
+      >
+        {modelVisible && (
+          <div className="absolute w-36 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
+            <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
+              Profile
+            </div>
+            <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center">
+              Delete Chat
+            </div>
+          </div>
+        )}
         <Menu />
       </div>
     </header>

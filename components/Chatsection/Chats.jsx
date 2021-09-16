@@ -56,7 +56,7 @@ const Chats = ({ senderId, conversationId }) => {
       {chats.length === 50 && (
         <div
           onClick={fetchAllMessages}
-          className="text-center text-cwhite-darkder dark:text-cblack-5 cursor-pointer select-none"
+          className="text-center text-cwhite-darker pb-2 dark:text-cblack-5 cursor-pointer select-none"
         >
           Load older messages
         </div>

@@ -1,13 +1,11 @@
 export function initTheme() {
     if (typeof window !== 'undefined') {
         if (localStorage.theme) {
-            if (localStorage.theme === 'dark') return document.documentElement.classList.add('dark')
+            if (localStorage.theme === 'dark') document.documentElement.classList.add('dark')
+            else document.documentElement.classList.remove('dark')
         } else {
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                localStorage.setItem('theme', 'dark')
-                return document.documentElement.classList.add('dark')
-            }
-            localStorage.setItem('theme', 'light')
+            document.documentElement.classList.add('dark')
+            localStorage.setItem('theme', 'dark')
         }
     }
 }

@@ -36,9 +36,9 @@ const Footer = ({ senderId, conversationId }) => {
   return (
     <form
       onSubmit={(e) => sendMessage(e)}
-      className="h-14 p-2 w-full flex gap-2 flex-shrink-0 items-center border-t border-cwhite-light dark:border-cblack-3"
+      className="h-16 p-2 w-full flex gap-2 flex-shrink-0 items-center border-t border-cwhite-light dark:border-cblack-3"
     >
-      <div className="flex items-center bg-cwhite-light dark:bg-cblack-3 h-full w-full px-2 rounded-lg">
+      <div className="flex items-center bg-cwhite-light dark:bg-cblack-3 h-full w-full px-2 rounded-lg cursor-pointer">
         <div className="w-7 h-7 p-1 bg-cwhite-medium dark:bg-cblack-4 rounded">
           <ImageIcon />
         </div>
@@ -52,7 +52,7 @@ const Footer = ({ senderId, conversationId }) => {
       </div>
       <button
         type="submit"
-        className="h-9 w-9 p-2 bg-cblue text-white rounded-full"
+        className="h-9 w-9 p-2 bg-cblue flex-shrink-0 text-white rounded"
       >
         <Send />
       </button>
