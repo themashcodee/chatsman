@@ -12,6 +12,7 @@ const Footer = ({ senderId, conversationId }) => {
   async function sendMessage(e) {
     e.preventDefault();
     if (!message.length) return;
+    setMessage("");
 
     try {
       const result = await createMessage({
@@ -27,7 +28,6 @@ const Footer = ({ senderId, conversationId }) => {
 
       const { message: resultMessage, success } = result.data.createMessage;
       if (!success) return alert(resultMessage);
-      setMessage("");
     } catch (err) {
       alert("There is some server error, try again later.");
     }

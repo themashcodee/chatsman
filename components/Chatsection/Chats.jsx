@@ -8,7 +8,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 import { getMessageTime } from "../../helpers/getMessageTime";
 
 const Chats = ({ senderId, conversationId }) => {
-  const { data, error } = useQuery(GET_MESSAGES, {
+  const { data, error, refetch } = useQuery(GET_MESSAGES, {
     variables: { conversationId },
   });
   const { data: subscribedData, error: subscribedError } = useSubscription(
@@ -26,6 +26,13 @@ const Chats = ({ senderId, conversationId }) => {
   if (subscribedError) setNote("There is some server error, try again later.");
   if (error) setNote("There is some server error, try again later.");
 
+  function fetchAllMessages() {
+    refetch({ conversationId, isFull: true });
+    if (data) {
+      return setChats(data.getMessages.messages);
+    }
+  }
+
   useEffect(scrollToBottom);
   useEffect(() => {
     if (subscribedData) {
@@ -34,17 +41,26 @@ const Chats = ({ senderId, conversationId }) => {
     setNote("There is no Messages.");
   }, [subscribedData]);
   useEffect(() => {
+    refetch();
     if (data) {
       return setChats(data.getMessages.messages);
     }
     setNote("There is no Messages.");
-  }, [data]);
+  }, [data, refetch, conversationId]);
 
   return (
     <section
       ref={scrollCont}
       className="scrollable flex flex-grow flex-col gap-2 p-3 w-full"
     >
+      {chats.length === 50 && (
+        <div
+          onClick={fetchAllMessages}
+          className="text-center text-cwhite-darkder dark:text-cblack-5 cursor-pointer select-none"
+        >
+          Load older messages
+        </div>
+      )}
       {chats.length ? (
         chats.map((message) => {
           return (

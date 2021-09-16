@@ -37,8 +37,8 @@ export const GET_CONVERSATIONS = gql`
 `
 
 export const GET_MESSAGES = gql`
-    query($conversationId:ID!) {
-        getMessages(conversationId:$conversationId) {
+    query($conversationId:ID!,$isFull:Boolean) {
+        getMessages(conversationId:$conversationId,isFull:$isFull) {
             message
             success
             messages {
