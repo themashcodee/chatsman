@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import { useEffect, createContext, useState } from 'react'
 import { initTheme } from '../helpers/theme'
+import Head from 'next/head'
 
 import Loading from '../components/Loading'
 
@@ -46,7 +47,13 @@ function MyApp({ Component, pageProps }) {
 
   return <ApolloProvider client={client}>
     <Provider value={store}>
-      <Component {...pageProps} />
+      <>
+        <Head>
+          <meta name="robots" content="index, follow" />
+          <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
+        </Head>
+        <Component {...pageProps} />
+      </>
     </Provider>
   </ApolloProvider>
 }
