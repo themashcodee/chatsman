@@ -278,6 +278,7 @@ const Options = () => {
         label="Logout"
         special={true}
         bg={"bg-cyellow"}
+        color={"text-[#333333]"}
         funtionOnClick={logout}
       />
       <ImpOption

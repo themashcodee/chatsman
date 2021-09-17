@@ -9,6 +9,24 @@ export const CREATE_USER = gql`
     }
 `;
 
+export const DELETE_MESSAGE = gql`
+    mutation ($conversationId:ID!,$id:ID!,$senderId:ID!){
+      deleteMessage(conversationId:$conversationId,senderId:$senderId,id:$id){
+        success
+        message
+      }
+    }
+`
+
+export const DELETE_CONVERSATION = gql`
+    mutation ($conversationId:ID!){
+      deleteConversation(conversationId:$conversationId){
+        success
+        message
+      }
+    }
+`
+
 export const CREATE_MESSAGE = gql`
     mutation ($senderId:ID!,$type:MessageType!,$content:String!,$conversationId:ID!){
       createMessage(senderId:$senderId,content:$content,type:$type,conversationId:$conversationId){

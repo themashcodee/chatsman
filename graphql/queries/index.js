@@ -17,13 +17,14 @@ query GetUser($id:String,$username:String){
       image
       username
       description
+      createdAt
     }
   }
 }
 `
 export const GET_CONVERSATIONS = gql`
-    query GetConversation{
-  getConversations {
+    query GetConversation($id:ID!){
+  getConversations (id:$id){
     message
     success
     conversations {

@@ -51,7 +51,7 @@ const Chats = ({ senderId, conversationId }) => {
   return (
     <section
       ref={scrollCont}
-      className="scrollable max-h-[calc(100vh-120px)] flex flex-grow flex-col gap-2 p-3 w-full"
+      className="scrollable flex flex-grow flex-col gap-2 p-3 w-full"
     >
       {chats.length === 50 && (
         <div
@@ -66,7 +66,10 @@ const Chats = ({ senderId, conversationId }) => {
           return (
             <Message
               key={message.id}
-              owner={`${senderId === message.senderId ? "sender" : "receiver"}`}
+              id={message.id}
+              senderId={message.senderId}
+              conversationId={conversationId}
+              isSender={senderId === message.senderId}
               message={message.content}
               time={getMessageTime(+message.createdAt)}
             />

@@ -13,3 +13,17 @@ export const MESSAGE_ADDED = gql`
     }
   }
 `;
+
+export const CONVERSATION_ADDED = gql`
+  subscription ($id:ID!) {
+    conversationAdded(id: $id) {
+      conversations{
+          id
+      members
+      name
+      isGroup
+      image
+      }
+    }
+  }
+`;

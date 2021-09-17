@@ -5,15 +5,29 @@ import Profile from "../icons/User";
 import Menu from "../icons/Menu";
 import Link from "next/link";
 
-const Header = ({
-  name,
-  image,
-  receiverId,
-  username,
-  senderId,
-  setReceiver,
-}) => {
+import { useMutation } from "@apollo/client";
+import { DELETE_CONVERSATION } from "../../graphql/mutations/index";
+
+const Header = ({ name, image, username, conversationId, setReceiver }) => {
   const [modelVisible, setModelVisible] = useState(false);
+  const [deleteConversation, { data, error }] =
+    useMutation(DELETE_CONVERSATION);
+
+  async function deleteChat() {
+    const isAgree = confirm(
+      "This will delete conversation from both side permanently!"
+    );
+    if (!isAgree) return;
+
+    const result = await deleteConversation({ variables: { conversationId } });
+
+    if (error) return alert("There is some server error, try again later.");
+
+    const { success, message } = result.data.deleteConversation;
+    if (!success) return alert(message);
+
+    setReceiver(null);
+  }
 
   return (
     <header className="select-none px-4 flex flex-shrink-0 gap-3 justify-between items-center w-full h-14 border-b border-cwhite-light dark:border-cblack-3">
@@ -58,11 +72,14 @@ const Header = ({
         {modelVisible && (
           <div className="absolute w-36 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
             <Link href={`/user/${username}`} passHref={true} replace={true}>
-              <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
+              <div className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
                 Profile
               </div>
             </Link>
-            <div className="dark:text-white text-cblack-3 w-full h-10 font-medium flex justify-center items-center">
+            <div
+              onClick={deleteChat}
+              className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"
+            >
               Delete Chat
             </div>
           </div>

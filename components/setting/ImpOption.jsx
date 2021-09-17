@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImpOption = ({ funtionOnClick, label, bg, special }) => {
+const ImpOption = ({ funtionOnClick, label, bg, special, color }) => {
   return (
     <div
       onClick={funtionOnClick}
@@ -8,7 +8,11 @@ const ImpOption = ({ funtionOnClick, label, bg, special }) => {
       ${special ? bg : "bg-cwhite-light dark:bg-cblack-3"} 
         w-full h-12 items-center flex select-none rounded-lg cursor-pointer px-3 flex-shrink-0`}
     >
-      <h2 className={`${special ? "text-white" : null} font-medium`}>
+      <h2
+        className={`${
+          special ? (color ? color : "text-white") : null
+        } font-medium`}
+      >
         {label}
       </h2>
     </div>

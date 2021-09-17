@@ -20,13 +20,12 @@ const Chatsection = () => {
     );
 
   return (
-    <section className="relative flex-grow flex flex-col h-full w-full">
+    <section className="flex-grow flex flex-col h-full w-full">
       <Header
         name={receiver.name}
         image={receiver.image}
         username={receiver.username}
-        receiverId={receiver._id}
-        senderId={user._id}
+        conversationId={receiver.conversationId}
         setReceiver={setReceiver}
       />
       <Chats conversationId={receiver.conversationId} senderId={user._id} />

@@ -96,7 +96,7 @@ const SigninForm = () => {
         error={secretError}
       />
       <button
-        className="h-10 flex-shrink-0 bg-cblue text-white w-full rounded-lg mt-3"
+        className="h-10 select-none flex-shrink-0 bg-cblue text-white w-full rounded-lg mt-3"
         type="submit"
       >
         Submit

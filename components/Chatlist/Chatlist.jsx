@@ -1,12 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ChatIcon from "../icons/Chat";
 import ChatTile from "./Chattile";
 import Header from "./Header";
 
 // DB QUERY
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, useSubscription } from "@apollo/client";
 import { GET_CONVERSATIONS } from "../../graphql/queries/index";
 import { CREATE_CONVERSATION } from "../../graphql/mutations/index";
+import { CONVERSATION_ADDED } from "../../graphql/subscription";
 
 // STORE
 import { StoreContext } from "../../pages/_app";
@@ -18,10 +19,7 @@ const Chatlist = () => {
   } = useContext(StoreContext);
 
   // ADD CONVERSATION FUNCTIONING
-  const [create, { error: convError }] = useMutation(CREATE_CONVERSATION, {
-    refetchQueries: [{ query: GET_CONVERSATIONS }],
-  });
-
+  const [create, { error: convError }] = useMutation(CREATE_CONVERSATION);
   async function addConversation() {
     const usrn = prompt("Username");
     if (!usrn) return;
@@ -41,14 +39,34 @@ const Chatlist = () => {
     }
   }
 
-  const { data, error } = useQuery(GET_CONVERSATIONS);
-  let conversations;
-  if (data && data.getConversations.success) {
-    conversations = data.getConversations.conversations;
-  }
+  // SUBSCRIPTION
+  const { data: subscribedData, error: subscribedError } = useSubscription(
+    CONVERSATION_ADDED,
+    { variables: { id: user._id } }
+  );
+  useEffect(() => {
+    if (subscribedData)
+      setConversations(subscribedData.conversationAdded.conversations);
+  }, [subscribedData]);
+
+  // GET CONVERSATION
+  const { data, error, refetch } = useQuery(GET_CONVERSATIONS, {
+    variables: { id: user._id },
+  });
+  const [conversations, setConversations] = useState([]);
+  useEffect(() => {
+    refetch();
+    if (data && data.getConversations.success) {
+      setConversations(data.getConversations.conversations);
+    }
+  }, [data, refetch]);
 
   // ERROR STATE
-  if (error) return "There is Error";
+  if (subscribedError) return "There is some server error, try again later.";
+  if (error) {
+    console.log(error);
+    return "There is Error";
+  }
   // LOADING STATE
   if (!conversations) return null;
 

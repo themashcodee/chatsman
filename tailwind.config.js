@@ -18,7 +18,6 @@ module.exports = {
         cwhite: {
           "lightest": "#f5f5f5",
           "light": "#eee",
-          "d": "#e5e5e5",
           "medium": "#cccccc",
           'darker': "#aaaaaa"
         },
@@ -29,7 +28,7 @@ module.exports = {
         },
         cyellow: "#FFDB5B",
         cblue: "#967CFF",
-        cgreen: "#A6FFB4"
+        cgreen: "#67FF9A"
       },
       zIndex: {
         "minus": "-1",

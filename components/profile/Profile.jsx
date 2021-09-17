@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import ProfileIcon from "../icons/User";
+import moment from "moment";
 
 const Profile = ({ user }) => {
   return (
@@ -25,6 +26,9 @@ const Profile = ({ user }) => {
       </p>
       <p className="text-cblack-3 pt-3 dark:text-cwhite-medium">
         {user.description ? user.description : null}
+      </p>
+      <p className="pt-3 italic text-[#aaaaaa] dark:text-[#555555]">
+        {"Joined " + moment(+user.createdAt).fromNow()}
       </p>
     </article>
   );
