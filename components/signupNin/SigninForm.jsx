@@ -35,10 +35,6 @@ const SigninForm = () => {
     e.preventDefault();
     if (emailError || passwordError || secretError) return;
 
-    setEmail("");
-    setPassword("");
-    setSecret("");
-
     try {
       const result = await loginUser({
         variables: { email, password, secret: +secret },

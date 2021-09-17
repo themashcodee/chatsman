@@ -29,6 +29,10 @@ const Header = ({ name, image, username, conversationId, setReceiver }) => {
     setReceiver(null);
   }
 
+  async function changeBackground() {
+    alert("Feature comming soon!");
+  }
+
   return (
     <header className="select-none px-4 flex flex-shrink-0 gap-3 justify-between items-center w-full h-14 border-b border-cwhite-light dark:border-cblack-3">
       <div className="flex items-center gap-3">
@@ -70,12 +74,18 @@ const Header = ({ name, image, username, conversationId, setReceiver }) => {
         }}
       >
         {modelVisible && (
-          <div className="absolute w-36 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
+          <div className="absolute w-40 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
             <Link href={`/user/${username}`} passHref={true} replace={true}>
               <div className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
                 Profile
               </div>
             </Link>
+            <div
+              onClick={changeBackground}
+              className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5"
+            >
+              Background
+            </div>
             <div
               onClick={deleteChat}
               className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"

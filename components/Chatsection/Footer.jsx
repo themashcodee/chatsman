@@ -33,13 +33,20 @@ const Footer = ({ senderId, conversationId }) => {
     }
   }
 
+  async function addImage() {
+    alert("Feature coming soon!");
+  }
+
   return (
     <form
       onSubmit={(e) => sendMessage(e)}
       className="h-16 p-2 w-full flex gap-2 flex-shrink-0 items-center border-t border-cwhite-light dark:border-cblack-3"
     >
       <div className="flex items-center bg-cwhite-light dark:bg-cblack-3 h-full w-full px-2 rounded-lg cursor-pointer">
-        <div className="w-7 h-7 p-1 bg-cwhite-medium dark:bg-cblack-4 rounded">
+        <div
+          onClick={addImage}
+          className="w-7 h-7 p-1 bg-cwhite-medium dark:bg-cblack-4 rounded"
+        >
           <ImageIcon />
         </div>
         <input

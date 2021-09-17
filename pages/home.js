@@ -32,7 +32,7 @@ export default function Home() {
         <>
             <Head>
                 <title>Chatsman | Home</title>
-                <meta name="description" content="A simple chatting web application" />
+                <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="shortcut icon" href="/favicon.png" />
             </Head>
             <section className="flex h-screen w-full max-w-screen-2xl mx-auto">

@@ -13,21 +13,22 @@ const Profile = () => {
   async function updateProfileImage(e) {
     try {
       if (!e.target.files[0]) return alert("No Image selected");
+      alert("Feature coming soon!");
 
-      const data = new FormData();
-      data.append("image", e.target.files[0]);
-      data.append("id", user._id);
+      // const data = new FormData();
+      // data.append("image", e.target.files[0]);
+      // data.append("id", user._id);
 
-      const response = await (
-        await fetch(process.env.API_URI_IMAGE_UPLOAD, {
-          method: "POST",
-          body: data,
-        })
-      ).json();
+      // const response = await (
+      //   await fetch(process.env.API_URI_IMAGE_UPLOAD, {
+      //     method: "POST",
+      //     body: data,
+      //   })
+      // ).json();
 
-      if (!response.success) return alert(response.message);
+      // if (!response.success) return alert(response.message);
 
-      alert(response.message);
+      // alert(response.message);
       // router.reload();
     } catch (err) {
       alert("There is some server error, try again later.");

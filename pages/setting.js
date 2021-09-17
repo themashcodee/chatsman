@@ -20,8 +20,8 @@ export default function Setting() {
     if (!user) {
         return <>
             <Head>
-                <title>Chatsman | Home</title>
-                <meta name="description" content="A simple chatting web application" />
+                <title>Chatsman | Setting</title>
+                <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="icon" href="/favicon.png" />
             </Head>
             <Loading />
@@ -34,7 +34,7 @@ export default function Setting() {
         <>
             <Head>
                 <title>Chatsman | Setting</title>
-                <meta name="description" content="A simple chatting web application" />
+                <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="shortcut icon" href="/favicon.png" />
             </Head>
             <section className="flex h-screen flex-col w-full">

@@ -50,12 +50,13 @@ const Input = ({
             required
             maxLength={maxLength || 35}
           />
-          <div
+          <label
+            htmlFor={label}
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-2 top-9 h-6 w-6 z-10 flex justify-center items-center cursor-pointer bg-cwhite-light dark:bg-cblack-4"
           >
             {showPassword ? <Eyeopen /> : <Eyeclose />}
-          </div>
+          </label>
         </>
       )}
 

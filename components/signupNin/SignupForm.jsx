@@ -32,11 +32,6 @@ const SignupForm = () => {
     e.preventDefault();
     if (nameError || usernameError || emailError || passwordError) return;
 
-    setName("");
-    setUsername("");
-    setEmail("");
-    setPassword("");
-
     try {
       const result = await createUser({
         variables: { payload: { name, username, email, password } },

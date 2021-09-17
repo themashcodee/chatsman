@@ -15,13 +15,20 @@ export default function Index() {
     if (user) router.replace('/home')
   }, [user, router])
 
-  if (user) return <Loading />
+  if (user) return <>
+    <Head>
+      <title>Chatsman</title>
+      <meta name="description" content="Talk your friend and family with ease" />
+      <link rel="icon" href="/favicon.png" />
+    </Head>
+    <Loading />
+  </>
 
   return (
     <div className="">
       <Head>
         <title>Chatsman</title>
-        <meta name="description" content="A simple chatting web application" />
+        <meta name="description" content="Talk your friend and family with ease" />
         <link rel="shortcut icon" href="/favicon.png" />
       </Head>
       <h1 className="text-4xl text-red-300">Chatsman</h1>
