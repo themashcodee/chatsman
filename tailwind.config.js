@@ -1,4 +1,5 @@
 module.exports = {
+  mode: "jit",
   purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
@@ -32,11 +33,7 @@ module.exports = {
       },
       zIndex: {
         "minus": "-1",
-        "1": "1"
       },
-      maxWidth: {
-        "75p": "75%"
-      }
     },
   },
   variants: {

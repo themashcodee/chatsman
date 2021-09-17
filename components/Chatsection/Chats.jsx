@@ -51,7 +51,7 @@ const Chats = ({ senderId, conversationId }) => {
   return (
     <section
       ref={scrollCont}
-      className="scrollable flex flex-grow flex-col gap-2 p-3 w-full"
+      className="scrollable max-h-[calc(100vh-120px)] flex flex-grow flex-col gap-2 p-3 w-full"
     >
       {chats.length === 50 && (
         <div

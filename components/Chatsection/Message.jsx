@@ -22,7 +22,7 @@ const Message = ({ owner, message, time }) => {
                   : "bg-cwhite-light dark:bg-cblack-3"
               }
                  ${showTime ? "mb-4" : "mb-0"} 
-                 p-2 rounded-lg cursor-pointer z-1 duration-200 transition-all max-w-75p
+                 p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-75p
         `}
       >
         {message}

@@ -20,7 +20,7 @@ const Chatsection = () => {
     );
 
   return (
-    <section className="flex-grow flex flex-col h-full w-full">
+    <section className="relative flex-grow flex flex-col h-full w-full">
       <Header
         name={receiver.name}
         image={receiver.image}
