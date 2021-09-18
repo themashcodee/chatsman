@@ -28,9 +28,12 @@ const SignupForm = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function register(e) {
     e.preventDefault();
     if (nameError || usernameError || emailError || passwordError) return;
+    setIsSubmitting(true);
 
     try {
       const result = await createUser({
@@ -39,16 +42,22 @@ const SignupForm = () => {
 
       if (error) {
         console.log("GRAPHQL TYPEERROR : ", error);
+        setIsSubmitting(false);
         return alert("There is some server error, try again later.");
       }
 
       const { message, success } = result.data.createUser;
-      if (!success) return alert(message);
+      if (!success) {
+        setIsSubmitting(false);
+        return alert(message);
+      }
+
       alert(message);
+      setIsSubmitting(false);
 
       router.replace("/signin");
     } catch (err) {
-      console.log('"SERVER ERROR :', err);
+      setIsSubmitting(false);
       alert("There is some server error, try again later.");
     }
   }
@@ -100,8 +109,9 @@ const SignupForm = () => {
       <button
         className="h-10 select-none flex-shrink-0 bg-cblue text-white w-full rounded-lg mt-3"
         type="submit"
+        disabled={isSubmitting ? true : false}
       >
-        Submit
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
     </form>
   );

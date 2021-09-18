@@ -53,3 +53,17 @@ export const GET_MESSAGES = gql`
     }
 }
 `
+
+export const GET_LAST_MESSAGE = gql`
+    query($conversationId:ID!) {
+        getLastMessage(conversationId:$conversationId) {
+            message
+            success
+            messages {
+                    type
+                    content
+                    createdAt
+        }
+    }
+}
+`

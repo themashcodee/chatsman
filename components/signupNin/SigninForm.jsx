@@ -31,9 +31,12 @@ const SigninForm = () => {
   const [passwordError, setPasswordError] = useState("");
   const [secretError, setSecretError] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   async function login(e) {
     e.preventDefault();
     if (emailError || passwordError || secretError) return;
+    setIsSubmitting(true);
 
     try {
       const result = await loginUser({
@@ -41,18 +44,23 @@ const SigninForm = () => {
       });
 
       if (error) {
-        console.log("GRAPHQL TYPEERROR : ", error);
+        setIsSubmitting(false);
         return alert("There is some server error, try again later.");
       }
 
       const { message, success } = result.data.loginUser;
-      if (!success) return alert(message);
+      if (!success) {
+        setIsSubmitting(false);
+        return alert(message);
+      }
 
       sessionStorage.setItem("token", result.data.loginUser.token);
       setUser(result.data.loginUser.user);
+      setIsSubmitting(false);
 
       router.replace("/home");
     } catch (err) {
+      setIsSubmitting(false);
       return alert("There is some server error, try again later");
     }
   }
@@ -94,8 +102,9 @@ const SigninForm = () => {
       <button
         className="h-10 select-none flex-shrink-0 bg-cblue text-white w-full rounded-lg mt-3"
         type="submit"
+        disabled={isSubmitting ? true : false}
       >
-        Submit
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
     </form>
   );

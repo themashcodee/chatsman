@@ -52,7 +52,23 @@ const Message = ({ isSender, message, time, senderId, id, conversationId }) => {
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
         `}
       >
-        {message}
+        {message.split(" ").some((word) => word.length > 20)
+          ? message
+              .split(" ")
+              .map((word) => {
+                return word.length > 20
+                  ? word
+                      .split("")
+                      .map((newword, i) =>
+                        i !== 0 && i !== newword.length - 1 && i % 19 === 0
+                          ? newword + "-"
+                          : newword
+                      )
+                      .join("")
+                  : word;
+              })
+              .join(" ")
+          : message}
       </div>
 
       {isSender && (
@@ -74,7 +90,7 @@ const Message = ({ isSender, message, time, senderId, id, conversationId }) => {
 
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
-        ${isSender ? "right-11" : "left-2"} 
+        ${isSender ? "right-10" : "left-1"} 
         ${showTime ? "bottom-0" : "bottom-4 scale-0 transform"}`}
       >
         {time}

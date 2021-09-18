@@ -6,6 +6,7 @@ html,
 body {
   @apply font-custom m-0 p-0 dark:bg-cblack-2 h-screen text-cblack-3 dark:text-white;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 a {
@@ -26,6 +27,7 @@ a {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* for Firefox */
   overflow-y: scroll;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 .scrollable::-webkit-scrollbar {

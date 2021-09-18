@@ -1,10 +1,12 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Image from "next/image";
 import Profile from "../icons/User";
+import moment from "moment";
 
 // DATABASE AND STORE
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "../../graphql/queries/index";
+import { useQuery, useSubscription } from "@apollo/client";
+import { GET_USER, GET_LAST_MESSAGE } from "../../graphql/queries/index";
+import { LAST_MESSAGE_ADDED } from "../../graphql/subscription";
 import { StoreContext } from "../../pages/_app";
 
 const ChatTile = ({ conversationId, members }) => {
@@ -13,16 +15,46 @@ const ChatTile = ({ conversationId, members }) => {
     USER: { user },
   } = useContext(StoreContext);
 
-  const receiverId = members.find((id) => id !== user._id);
+  const [lastMessage, setLastMessage] = useState("");
+  const [lastMessageTime, setLastMessageTime] = useState("");
 
+  const receiverId = members.find((id) => id !== user._id);
   const { data, error, loading } = useQuery(GET_USER, {
     variables: { id: receiverId },
   });
 
-  if (error) {
-    console.log(error);
-    return "There is Error";
-  }
+  const { data: LastMessageData, error: LastMessageError } = useQuery(
+    GET_LAST_MESSAGE,
+    { variables: { conversationId } }
+  );
+  const {
+    data: SubscriptionLastMessageData,
+    error: SubscriptionLastMessageError,
+  } = useSubscription(LAST_MESSAGE_ADDED, { variables: { conversationId } });
+  useEffect(() => {
+    if (LastMessageData && LastMessageData.getLastMessage.messages) {
+      const { content, type, createdAt } =
+        LastMessageData.getLastMessage.messages;
+      setLastMessage(type === "TEXT" ? content : "an image");
+      setLastMessageTime(moment(+createdAt).fromNow());
+    }
+  }, [LastMessageData]);
+  useEffect(() => {
+    if (
+      SubscriptionLastMessageData &&
+      SubscriptionLastMessageData.lastMessageAdded.messages
+    ) {
+      const { content, type, createdAt } =
+        SubscriptionLastMessageData.lastMessageAdded.messages;
+      setLastMessage(type === "TEXT" ? content : "an image");
+      setLastMessageTime(moment(+createdAt).fromNow());
+    }
+  }, [SubscriptionLastMessageData]);
+
+  // ERROR HANDLING
+  if (LastMessageError) return "There is Error";
+  if (SubscriptionLastMessageError) return "There is an Error";
+  if (error) return "There is Error";
   if (loading) return null;
 
   const receiverObj = data.getUser.user;
@@ -56,7 +88,10 @@ const ChatTile = ({ conversationId, members }) => {
             {name.length > 15 ? name.substr(0, 15) + "." : name}
           </h2>
           <p className="text-xxm text-cblack-5 dark:text-cwhite-darker">
-            {"this is a last message"}
+            {lastMessage.length < 15
+              ? lastMessage
+              : lastMessage.substr(0, 15) + "..."}
+            {lastMessageTime && " · " + lastMessageTime}
           </p>
         </div>
       </div>

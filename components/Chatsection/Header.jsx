@@ -57,7 +57,7 @@ const Header = ({ name, image, username, conversationId, setReceiver }) => {
           )}
         </div>
         <div className="text-xl font-medium">
-          {name.length > 15 ? name.substr(0, 15) + "." : name}
+          {name.length > 11 ? name.substr(0, 11) + "." : name}
         </div>
 
         <div

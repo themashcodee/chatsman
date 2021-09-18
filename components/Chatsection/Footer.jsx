@@ -12,6 +12,8 @@ const Footer = ({ senderId, conversationId }) => {
   async function sendMessage(e) {
     e.preventDefault();
     if (!message.length) return;
+    // if (message.split(" ").some((word) => word.length > 40))
+    // return alert("A word can't be longer than 40 characters");
     setMessage("");
 
     try {
