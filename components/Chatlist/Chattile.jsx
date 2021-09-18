@@ -5,59 +5,65 @@ import moment from "moment";
 
 // DATABASE AND STORE
 import { useQuery, useSubscription } from "@apollo/client";
-import { GET_USER, GET_LAST_MESSAGE } from "../../graphql/queries/index";
+import { GET_USER, LAST_MESSAGE } from "../../graphql/queries/index";
 import { LAST_MESSAGE_ADDED } from "../../graphql/subscription";
 import { StoreContext } from "../../pages/_app";
 
 const ChatTile = ({ conversationId, members }) => {
+  // Fetching data from store
   const {
     RECEIVER: { receiver, setReceiver },
     USER: { user },
   } = useContext(StoreContext);
 
+  // States
   const [lastMessage, setLastMessage] = useState("");
   const [lastMessageTime, setLastMessageTime] = useState("");
+  const [receiverObj, setReceiverObj] = useState(null);
 
+  // QUERIES AND SUBSCRIPTION
   const receiverId = members.find((id) => id !== user._id);
-  const { data, error, loading } = useQuery(GET_USER, {
+  const { data, error } = useQuery(GET_USER, {
     variables: { id: receiverId },
   });
-
-  const { data: LastMessageData, error: LastMessageError } = useQuery(
-    GET_LAST_MESSAGE,
+  const {
+    data: LMData,
+    error: LMError,
+    refetch,
+  } = useQuery(LAST_MESSAGE, {
+    variables: { conversationId },
+  });
+  const { data: SubsData, error: SubsError } = useSubscription(
+    LAST_MESSAGE_ADDED,
     { variables: { conversationId } }
   );
-  const {
-    data: SubscriptionLastMessageData,
-    error: SubscriptionLastMessageError,
-  } = useSubscription(LAST_MESSAGE_ADDED, { variables: { conversationId } });
+
+  // USE EFFECTS
   useEffect(() => {
-    if (LastMessageData && LastMessageData.getLastMessage.messages) {
-      const { content, type, createdAt } =
-        LastMessageData.getLastMessage.messages;
-      setLastMessage(type === "TEXT" ? content : "an image");
+    refetch();
+    data && data.getUser.success && setReceiverObj(data.getUser.user);
+  }, [data, refetch, members]);
+  useEffect(() => {
+    if (LMData && LMData.getLastMessage.messages) {
+      const { content, type, createdAt } = LMData.getLastMessage.messages;
+      setLastMessage(type === "TEXT" ? content : "Image");
       setLastMessageTime(moment(+createdAt).fromNow());
     }
-  }, [LastMessageData]);
+  }, [LMData]);
   useEffect(() => {
-    if (
-      SubscriptionLastMessageData &&
-      SubscriptionLastMessageData.lastMessageAdded.messages
-    ) {
-      const { content, type, createdAt } =
-        SubscriptionLastMessageData.lastMessageAdded.messages;
-      setLastMessage(type === "TEXT" ? content : "an image");
+    if (SubsData && SubsData.lastMessageAdded.messages) {
+      const { content, type, createdAt } = SubsData.lastMessageAdded.messages;
+      setLastMessage(type === "TEXT" ? content : "Image");
       setLastMessageTime(moment(+createdAt).fromNow());
     }
-  }, [SubscriptionLastMessageData]);
+  }, [SubsData]);
 
   // ERROR HANDLING
-  if (LastMessageError) return "There is Error";
-  if (SubscriptionLastMessageError) return "There is an Error";
+  if (LMError) return "There is Error";
+  if (SubsError) return "There is an Error";
   if (error) return "There is Error";
-  if (loading) return null;
+  if (!receiverObj) return null;
 
-  const receiverObj = data.getUser.user;
   const { image, name, _id, username } = receiverObj;
 
   function openChat() {
