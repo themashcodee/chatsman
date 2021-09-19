@@ -44,9 +44,11 @@ const ChatTile = ({ conversationId, members }) => {
   useEffect(() => {
     if (LMData && LMData.getLastMessage.messages) {
       const { content, type, createdAt } = LMData.getLastMessage.messages;
-      setLastMessage(type === "TEXT" ? content || "" : "Image");
-      setLastMessageTime(moment(+createdAt).fromNow() || "");
+      setLastMessage(type === "TEXT" ? content : "Image");
+      setLastMessageTime(moment(+createdAt).fromNow());
     }
+    setLastMessage("");
+    setLastMessageTime("");
   }, [LMData]);
   useEffect(() => {
     if (SubsData && SubsData.lastMessageAdded.messages) {
