@@ -42,10 +42,14 @@ const ChatTile = ({ conversationId, members }) => {
     data && setReceiverObj(data.getUser.user);
   }, [data, refetch, members]);
   useEffect(() => {
-    if (LMData && LMData.getLastMessage.messages) {
-      const { content, type, createdAt } = LMData.getLastMessage.messages;
-      setLastMessage(type === "TEXT" ? content : "Image");
-      setLastMessageTime(moment(+createdAt).fromNow());
+    if (LMData && LMData.getLastMessage.success) {
+      if (LMData.lastMessageAdded.messages) {
+        const { content, type, createdAt } = LMData.getLastMessage.messages;
+        setLastMessage(type === "TEXT" ? content : "Image");
+        setLastMessageTime(moment(+createdAt).fromNow());
+      }
+      setLastMessage("");
+      setLastMessageTime("");
     }
   }, [LMData]);
   useEffect(() => {
