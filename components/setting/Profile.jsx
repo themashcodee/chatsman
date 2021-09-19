@@ -11,10 +11,12 @@ const Profile = () => {
     USER: { user },
   } = useContext(StoreContext);
   const router = useRouter();
+  const [uploading, setUploading] = useState(false);
 
   async function updateProfileImage(e) {
     try {
       if (!e.target.files[0]) return alert("No Image selected");
+      setUploading(true);
       alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
@@ -28,10 +30,14 @@ const Profile = () => {
         })
       ).json();
 
-      if (!response.success) return alert(response.message);
+      if (!response.success) {
+        setUploading(false);
+        return alert(response.message);
+      }
       alert(response.message);
       router.reload();
     } catch (err) {
+      setUploading(false);
       alert("There is some server error, try again later.");
     }
   }
@@ -69,6 +75,7 @@ const Profile = () => {
           className="w-0 h-0"
           required
           onChange={updateProfileImage}
+          disabled={uploading ? true : false}
         />
       </div>
       <h1 className="font-medium text-4xl pt-3 text-center">{user.name}</h1>
