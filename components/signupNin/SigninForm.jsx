@@ -61,7 +61,7 @@ const SigninForm = () => {
       router.replace("/home");
     } catch (err) {
       setIsSubmitting(false);
-      return alert("There is some server error, try again later");
+      alert("There is some server error, try again later");
     }
   }
 

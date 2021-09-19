@@ -31,7 +31,8 @@ export default function Index() {
         <meta name="description" content="Talk your friend and family with ease" />
         <link rel="shortcut icon" href="/favicon.png" />
       </Head>
-      <h1 className="text-4xl text-red-300">Chatsman</h1>
+      <h1 className="text-4xl text-red-300">Chatsman Beta</h1>
+      <h1 className="text-4xl text-red-300">Site is being under construction</h1>
     </div>
   )
 }

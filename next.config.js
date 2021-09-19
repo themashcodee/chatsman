@@ -5,7 +5,7 @@ const runtimeCaching = require('next-pwa/cache');
 module.exports = withPWA({
   reactStrictMode: true,
   images: {
-    domains: ['chatsmanapi.herokuapp.com'],
+    domains: ['chatsmanapi.herokuapp.com', 'storage.googleapis.com'],
   },
   pwa: {
     dest: 'public',
