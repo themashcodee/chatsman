@@ -49,13 +49,15 @@ const ChatTile = ({ conversationId, members }) => {
     }
   }, [LMData]);
   useEffect(() => {
-    if (SubsData && SubsData.lastMessageAdded.messages) {
-      const { content, type, createdAt } = SubsData.lastMessageAdded.messages;
-      setLastMessage(type === "TEXT" ? content : "Image");
-      return setLastMessageTime(moment(+createdAt).fromNow());
+    if (SubsData && SubsData.lastMessageAdded.success) {
+      if (SubsData.lastMessageAdded.messages) {
+        const { content, type, createdAt } = SubsData.lastMessageAdded.messages;
+        setLastMessage(type === "TEXT" ? content : "Image");
+        return setLastMessageTime(moment(+createdAt).fromNow());
+      }
+      setLastMessage("");
+      setLastMessageTime("");
     }
-    setLastMessage("");
-    setLastMessageTime("");
   }, [SubsData]);
 
   // ERROR HANDLING
