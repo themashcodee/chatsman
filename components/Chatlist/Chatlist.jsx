@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import ChatIcon from "../icons/Chat";
-import ChatTile from "./Chattile";
 import Header from "./Header";
+import ChatTile from "./Chattile";
 
 // DB QUERY
 import { useQuery, useMutation, useSubscription } from "@apollo/client";
@@ -18,6 +18,8 @@ const Chatlist = () => {
     RECEIVER: { receiver },
   } = useContext(StoreContext);
 
+  const [conversations, setConversations] = useState([]);
+
   // ADD CONVERSATION FUNCTIONING
   const [create, { error: convError }] = useMutation(CREATE_CONVERSATION);
   async function addConversation() {
@@ -27,46 +29,40 @@ const Chatlist = () => {
 
     try {
       const result = await create({
-        variables: { isGroup: false, members: [usrn, user.username] },
+        variables: { members: [usrn, user.username] },
       });
 
-      if (convError) return alert("There is some server errors");
+      if (convError)
+        return alert("There is some server error, try again later.");
 
       const { message, success } = result.data.createConversation;
       if (!success) return alert(message);
     } catch (err) {
-      return alert("There is some server error, try again later.");
+      alert("There is some server error, try again later.");
     }
   }
 
   // SUBSCRIPTION
-  const { data: subscribedData, error: subscribedError } = useSubscription(
+  const { data: subsData, error: subsError } = useSubscription(
     CONVERSATION_ADDED,
-    { variables: { id: user._id } }
+    { variables: { id: user.id } }
   );
   useEffect(() => {
-    if (subscribedData)
-      setConversations(subscribedData.conversationAdded.conversations);
-  }, [subscribedData]);
+    if (subsData) setConversations(subsData.conversationAdded.conversations);
+  }, [subsData]);
 
   // GET CONVERSATION
   const { data, error, refetch } = useQuery(GET_CONVERSATIONS, {
-    variables: { id: user._id },
+    variables: { id: user.id },
   });
-  const [conversations, setConversations] = useState([]);
   useEffect(() => {
     refetch();
-    if (data && data.getConversations.success) {
-      setConversations(data.getConversations.conversations);
-    }
+    if (data) setConversations(data.getConversations.conversations);
   }, [data, refetch]);
 
   // ERROR STATE
-  if (subscribedError) return "There is some server error, try again later.";
-  if (error) {
-    console.log(error);
-    return "There is Error";
-  }
+  if (subsError) return "There is some server error";
+  if (error) return "There is errors";
   // LOADING STATE
   if (!conversations) return null;
 
@@ -77,7 +73,7 @@ const Chatlist = () => {
       sm:flex flex-col flex-grow relative flex-shrink-0 w-80 xl:w-96 sm:border-r border-cwhite-light dark:border-cblack-3
       `}
     >
-      <Header name={user.name} image={user.image} id={user.id} />
+      <Header name={user.name} username={user.username} image={user.image} />
 
       <article className="scrollable flex flex-col gap-2 p-2 overflow-auto">
         {conversations.map((conversation) => {
@@ -85,10 +81,7 @@ const Chatlist = () => {
             <ChatTile
               key={conversation.id}
               conversationId={conversation.id}
-              name={conversation.name}
-              image={conversation.image}
               members={conversation.members}
-              isGroup={conversation.isGroup}
             />
           );
         })}

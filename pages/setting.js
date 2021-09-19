@@ -11,7 +11,6 @@ import { StoreContext } from './_app'
 
 export default function Setting() {
 
-    // AUTH RELATED
     const router = useRouter()
     const { USER: { user } } = useContext(StoreContext);
     useEffect(() => {
@@ -22,20 +21,18 @@ export default function Setting() {
             <Head>
                 <title>Chatsman | Setting</title>
                 <meta name="description" content="Talk your friend and family with ease" />
-                <link rel="icon" href="/favicon.png" />
+                <link rel="icon" href="/icons/favicon.png" />
             </Head>
             <Loading />
         </>
     }
-    // AUTH RELATED END
-
 
     return (
         <>
             <Head>
                 <title>Chatsman | Setting</title>
                 <meta name="description" content="Talk your friend and family with ease" />
-                <link rel="shortcut icon" href="/favicon.png" />
+                <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
             <section className="flex h-screen flex-col w-full">
                 <Header />

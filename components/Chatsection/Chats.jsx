@@ -11,10 +11,9 @@ const Chats = ({ senderId, conversationId }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
     variables: { conversationId },
   });
-  const { data: subscribedData, error: subscribedError } = useSubscription(
-    MESSAGE_ADDED,
-    { variables: { conversationId } }
-  );
+  const { data: subsData, error: subsError } = useSubscription(MESSAGE_ADDED, {
+    variables: { conversationId },
+  });
 
   const [chats, setChats] = useState([]);
   const [note, setNote] = useState("");
@@ -23,28 +22,22 @@ const Chats = ({ senderId, conversationId }) => {
   const scrollToBottom = () =>
     (scrollCont.current.scrollTop = scrollCont.current.scrollHeight);
 
-  if (subscribedError) setNote("There is some server error, try again later.");
+  if (subsError) setNote("There is some server error, try again later.");
   if (error) setNote("There is some server error, try again later.");
 
   function fetchAllMessages() {
     refetch({ conversationId, isFull: true });
-    if (data) {
-      return setChats(data.getMessages.messages);
-    }
+    if (data) return setChats(data.getMessages.messages);
   }
 
   useEffect(scrollToBottom);
   useEffect(() => {
-    if (subscribedData) {
-      return setChats(subscribedData.messageAdded.messages);
-    }
+    if (subsData) return setChats(subsData.messageAdded.messages);
     setNote("There is no Messages.");
-  }, [subscribedData]);
+  }, [subsData]);
   useEffect(() => {
     refetch();
-    if (data) {
-      return setChats(data.getMessages.messages);
-    }
+    if (data) return setChats(data.getMessages.messages);
     setNote("There is no Messages.");
   }, [data, refetch, conversationId]);
 

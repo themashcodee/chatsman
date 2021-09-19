@@ -4,44 +4,33 @@ import { initTheme } from '../helpers/theme'
 import Head from 'next/head'
 
 import Loading from '../components/Loading'
-
-// TOKEN RELATED
 import { refreshToken } from '../helpers/refreshToken';
 
-// APOLLO CLIENT
 import { ApolloProvider } from '@apollo/client';
 import { client } from '../graphql/configure'
 
-// CONFIURING USECONTEXT
 export const StoreContext = createContext(null);
 const { Provider } = StoreContext
 
 function MyApp({ Component, pageProps }) {
 
-  // SETTNG STATES AND STORE
+  useEffect(initTheme, [])
+
   const [receiver, setReceiver] = useState(null)
   const [user, setUser] = useState(null)
 
-  // SETTING TEMP ACCESS TOKEN AND USER
   useEffect(() => {
-    async function getCurrentUser() {
+    (async function () {
       const user = await refreshToken()
       if (!user) return setUser(undefined)
-      setUser(user)
-    }
-    getCurrentUser()
+      setUser({ ...user, id: user._id })
+    })();
   }, [])
 
-  // Storing values in STORE
   const store = {
     USER: { user, setUser },
     RECEIVER: { receiver, setReceiver },
   }
-
-  // SETTING THEME
-  useEffect(() => {
-    initTheme()
-  }, [])
 
   if (user === null) return <Loading />
 

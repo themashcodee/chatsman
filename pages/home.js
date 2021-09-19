@@ -10,7 +10,6 @@ import { StoreContext } from './_app'
 
 export default function Home() {
 
-    // AUTH RELATED
     const router = useRouter()
     const { USER: { user } } = useContext(StoreContext);
     useEffect(() => {
@@ -21,19 +20,18 @@ export default function Home() {
             <Head>
                 <title>Chatsman | Home</title>
                 <meta name="description" content="A simple chatting web application" />
-                <link rel="icon" href="/favicon.png" />
+                <link rel="icon" href="/icons/favicon.png" />
             </Head>
             <Loading />
         </>
     }
-    // AUTH RELATED END
 
     return (
         <>
             <Head>
                 <title>Chatsman | Home</title>
                 <meta name="description" content="Talk your friend and family with ease" />
-                <link rel="shortcut icon" href="/favicon.png" />
+                <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
             <section className="flex h-screen w-full max-w-screen-2xl mx-auto">
                 <Chatlist />

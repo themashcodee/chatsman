@@ -10,7 +10,7 @@ export default function Signup() {
             <Head>
                 <title>Chatsman | Sign In</title>
                 <meta name="description" content="Talk your friend and family with ease" />
-                <link rel="shortcut icon" href="/favicon.png" />
+                <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
             <section className="flex h-screen w-full flex-col items-center bg-cwhite-light dark:bg-cblack-2">
                 <Header />

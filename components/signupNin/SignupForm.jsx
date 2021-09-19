@@ -37,7 +37,7 @@ const SignupForm = () => {
 
     try {
       const result = await createUser({
-        variables: { payload: { name, username, email, password } },
+        variables: { name, username, email, password },
       });
 
       if (error) {

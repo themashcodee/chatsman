@@ -10,8 +10,7 @@ import { DELETE_CONVERSATION } from "../../graphql/mutations/index";
 
 const Header = ({ name, image, username, conversationId, setReceiver }) => {
   const [modelVisible, setModelVisible] = useState(false);
-  const [deleteConversation, { data, error }] =
-    useMutation(DELETE_CONVERSATION);
+  const [deleteConversation, { error }] = useMutation(DELETE_CONVERSATION);
 
   async function deleteChat() {
     const isAgree = confirm(

@@ -1,5 +1,3 @@
 import moment from 'moment';
 
-export function getMessageTime(time) {
-    return `${moment(time).fromNow()} · ${moment(time).format('LT')}`
-}
+export const getMessageTime = time => `${moment(time).fromNow()} · ${moment(time).format('LT')}`

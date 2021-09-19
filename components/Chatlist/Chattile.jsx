@@ -22,10 +22,8 @@ const ChatTile = ({ conversationId, members }) => {
   const [receiverObj, setReceiverObj] = useState(null);
 
   // QUERIES AND SUBSCRIPTION
-  const receiverId = members.find((id) => id !== user._id);
-  const { data, error } = useQuery(GET_USER, {
-    variables: { id: receiverId },
-  });
+  const receiverId = members.find((id) => id !== user.id);
+  const { data, error } = useQuery(GET_USER, { variables: { id: receiverId } });
   const {
     data: LMData,
     error: LMError,
@@ -41,7 +39,7 @@ const ChatTile = ({ conversationId, members }) => {
   // USE EFFECTS
   useEffect(() => {
     refetch();
-    data && data.getUser.success && setReceiverObj(data.getUser.user);
+    data && setReceiverObj(data.getUser.user);
   }, [data, refetch, members]);
   useEffect(() => {
     if (LMData && LMData.getLastMessage.messages) {
@@ -59,16 +57,16 @@ const ChatTile = ({ conversationId, members }) => {
   }, [SubsData]);
 
   // ERROR HANDLING
-  if (LMError) return "There is Error";
-  if (SubsError) return "There is an Error";
-  if (error) return "There is Error";
+  if (LMError) return "There is some errors";
+  if (SubsError) return "There is some errors";
+  if (error) return "There is some errors";
   if (!receiverObj) return null;
 
   const { image, name, _id, username } = receiverObj;
 
   function openChat() {
     if (receiver && receiver.name === name) return;
-    setReceiver({ image, name, _id, conversationId, username });
+    setReceiver({ image, name, id: _id, conversationId, username });
   }
 
   return (

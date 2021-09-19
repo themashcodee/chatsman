@@ -6,7 +6,7 @@ import moment from "moment";
 const Profile = ({ user }) => {
   return (
     <article className="flex flex-col w-full p-8 items-center select-none">
-      <div className="relative w-48 h-48 sm:h-52 sm:w-52 md:w-56 md:h-56 lg:w-60 lg:h-60">
+      <div className="relative w-48 h-48 sm:h-60 sm:w-60 md:w-64 md:h-64 lg:w-72 lg:h-72">
         <div className="relative text-cblack-5 dark:text-cwhite-darker  w-full h-full rounded-2xl overflow-hidden p-5 sm:p-8 lg:p-11 bg-cwhite-light dark:bg-cblack-3">
           {user.image ? (
             <Image

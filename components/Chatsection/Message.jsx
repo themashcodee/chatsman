@@ -23,7 +23,6 @@ const Message = ({ isSender, message, time, senderId, id, conversationId }) => {
       const { message, success } = result.data.deleteMessage;
       if (!success) return alert(message);
     } catch (err) {
-      console.log(err);
       alert("There is some server error, try again later.");
     }
   }

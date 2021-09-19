@@ -21,7 +21,7 @@ const Profile = () => {
 
       const data = new FormData();
       data.append("file", e.target.files[0]);
-      data.append("id", user._id);
+      data.append("id", user.id);
 
       const response = await (
         await fetch(process.env.API_URI_IMAGE_UPLOAD, {

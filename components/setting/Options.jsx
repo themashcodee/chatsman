@@ -8,7 +8,7 @@ import { StoreContext } from "../../pages/_app";
 import {
   LOGOUT,
   DELETE_ACCOUNT,
-  CHANGE_BASIC_DETAILS,
+  CHANGE_DETAILS,
   CHANGE_PASSWORD,
   RESET_SECRET_CODE,
   RESET_PASSWORD,
@@ -28,16 +28,13 @@ const Options = () => {
   }, [setIsDark]);
 
   // MUTATIONS
-  const [changeBasicDetailsMutation, { error: changeBasicDetailsError }] =
-    useMutation(CHANGE_BASIC_DETAILS);
-  const [changePasswordMutation, { error: changePasswordError }] =
-    useMutation(CHANGE_PASSWORD);
-  const [resetSecretCodeMutation, { error: resetSecretCodeError }] =
+  const [ChangeDetails, { error: DetailsErr }] = useMutation(CHANGE_DETAILS);
+  const [ChangePassword, { error: PasswordErr }] = useMutation(CHANGE_PASSWORD);
+  const [Logout, { error: logoutErr }] = useMutation(LOGOUT);
+  const [DeleteAccount, { error: AccountErr }] = useMutation(DELETE_ACCOUNT);
+  const [ResetSecretCode, { error: SecretCodeErr }] =
     useMutation(RESET_SECRET_CODE);
-  const [logoutMutation, { error: logoutError }] = useMutation(LOGOUT);
-  const [deleteAccountMutation, { error: deleteAccountError }] =
-    useMutation(DELETE_ACCOUNT);
-  const [resetPasswordMutation, { error: resetPasswordError }] =
+  const [ResetPassword, { error: ResetPasswordErr }] =
     useMutation(RESET_PASSWORD);
 
   // OPTIONS FUNCTIONS
@@ -50,16 +47,15 @@ const Options = () => {
       !username.match(/^[a-zA-Z0-9]*$/)
     )
       return alert(
-        "Username must be 3-10 characters long and only contain alphabets and numbers!"
+        "Username must be 3-10 characters long and only contain letters and numbers."
       );
 
     try {
-      const result = await changeBasicDetailsMutation({
-        variables: { id: user._id, username },
+      const result = await ChangeDetails({
+        variables: { id: user.id, username },
       });
-      if (changeBasicDetailsError)
-        return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeBasicDetails;
+      if (DetailsErr) return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeDetails;
       if (!success) return alert(message);
       alert(message);
 
@@ -78,16 +74,15 @@ const Options = () => {
       !name.match(/^[a-zA-Z][a-zA-Z\s]*$/)
     )
       return alert(
-        "Username must be 3-20 characters long and only contain alphabets!"
+        "Username must be 3-20 characters long and only contain letters!"
       );
 
     try {
-      const result = await changeBasicDetailsMutation({
-        variables: { id: user._id, name },
+      const result = await ChangeDetails({
+        variables: { id: user.id, name },
       });
-      if (changeBasicDetailsError)
-        return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeBasicDetails;
+      if (DetailsErr) return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeDetails;
       if (!success) return alert(message);
       alert(message);
 
@@ -104,12 +99,11 @@ const Options = () => {
       return alert("Description must be 10-100 characters long");
 
     try {
-      const result = await changeBasicDetailsMutation({
-        variables: { id: user._id, description },
+      const result = await ChangeDetails({
+        variables: { id: user.id, description },
       });
-      if (changeBasicDetailsError)
-        return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeBasicDetails;
+      if (DetailsErr) return alert("There is some error, try again later.");
+      const { message, success } = result.data.changeDetails;
       if (!success) return alert(message);
       alert(message);
 
@@ -127,7 +121,7 @@ const Options = () => {
       oldPassword.length > 20 ||
       !oldPassword.match(/^.*(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "^*~`@]).*$/)
     )
-      return alert("Wrong Password");
+      return alert("Invalid Password");
 
     const newPassword = prompt("New Password");
     if (!newPassword) return;
@@ -135,15 +129,14 @@ const Options = () => {
       return alert("Password must be 8-20 characters long");
     if (!newPassword.match(/^.*(?=.*[a-zA-Z])(?=.*\d)(?=.*[!#$%&? "^*~`@]).*$/))
       return alert(
-        "Password must contain alphabets, numbers and special characters"
+        "Password must contain letters, numbers and special characters"
       );
 
     try {
-      const result = await changePasswordMutation({
-        variables: { oldPassword, newPassword, id: user._id },
+      const result = await ChangePassword({
+        variables: { oldPassword, newPassword, id: user.id },
       });
-      if (changePasswordError)
-        return alert("There is some error, try again later.");
+      if (PasswordErr) return alert("There is some error, try again later.");
       const { message, success } = result.data.changePassword;
       if (!success) return alert(message);
       alert(message);
@@ -154,13 +147,13 @@ const Options = () => {
 
   const resetSecretCode = async () => {
     try {
-      const isAgree = confirm("New Secret Code will be sent to you email.");
+      const isAgree = confirm("New Secret Code will be sent to your email.");
       if (!isAgree) return;
 
-      const result = await resetSecretCodeMutation({
+      const result = await ResetSecretCode({
         variables: { email: user.email },
       });
-      if (resetSecretCodeError)
+      if (SecretCodeErr)
         return alert("There is some server error, try again later");
 
       const { message, success } = result.data.resetSecretCode;
@@ -177,13 +170,13 @@ const Options = () => {
       const secret = prompt("Secret Code");
       if (!secret) return;
       if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
-        return alert("Wrong Secret Code");
+        return alert("Invalid Secret Code");
 
-      const result = await resetPasswordMutation({
+      const result = await ResetPassword({
         variables: { email: user.email, secret: +secret },
       });
 
-      if (resetPasswordError) {
+      if (ResetPasswordErr) {
         return alert("There is some server error, try again later.");
       }
       const { message, success } = result.data.resetPassword;
@@ -198,10 +191,10 @@ const Options = () => {
 
   const logout = async () => {
     try {
-      const result = await logoutMutation({
-        variables: { id: user._id },
+      const result = await Logout({
+        variables: { id: user.id },
       });
-      if (logoutError) return alert("There is some error, try again later.");
+      if (logoutErr) return alert("There is some error, try again later.");
       const { message, success } = result.data.logout;
       if (!success) return alert(message);
 
@@ -216,14 +209,13 @@ const Options = () => {
     const secret = prompt("Secret Code");
     if (!secret) return;
     if (secret.length > 6 || secret.length < 6 || !secret.match(/^[0-9]*$/))
-      return alert("Wrong Secret Code!");
+      return alert("Invalid Secret Code!");
 
     try {
-      const result = await deleteAccountMutation({
-        variables: { id: user._id, secret: +secret },
+      const result = await DeleteAccount({
+        variables: { id: user.id, secret: +secret },
       });
-      if (deleteAccountError)
-        return alert("There is some error, try again later.");
+      if (AccountErr) return alert("There is some error, try again later.");
       const { message, success } = result.data.deleteAccount;
       if (!success) return alert(message);
 

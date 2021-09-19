@@ -8,7 +8,6 @@ import { StoreContext } from './_app'
 
 export default function Index() {
 
-  // AUTH RELATED
   const router = useRouter()
   const { USER: { user } } = useContext(StoreContext);
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function Index() {
     <Head>
       <title>Chatsman</title>
       <meta name="description" content="Talk your friend and family with ease" />
-      <link rel="icon" href="/favicon.png" />
+      <link rel="icon" href="/icons/favicon.png" />
     </Head>
     <Loading />
   </>
@@ -29,7 +28,7 @@ export default function Index() {
       <Head>
         <title>Chatsman</title>
         <meta name="description" content="Talk your friend and family with ease" />
-        <link rel="shortcut icon" href="/favicon.png" />
+        <link rel="shortcut icon" href="/icons/favicon.png" />
       </Head>
       <h1 className="text-4xl text-red-300">Chatsman Beta</h1>
       <h1 className="text-4xl text-red-300">Site is being under construction</h1>

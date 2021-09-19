@@ -31,10 +31,7 @@ export const CONVERSATION_ADDED = gql`
     conversationAdded(id: $id) {
       conversations{
           id
-      members
-      name
-      isGroup
-      image
+          members
       }
     }
   }

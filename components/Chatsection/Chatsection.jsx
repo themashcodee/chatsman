@@ -28,8 +28,8 @@ const Chatsection = () => {
         conversationId={receiver.conversationId}
         setReceiver={setReceiver}
       />
-      <Chats conversationId={receiver.conversationId} senderId={user._id} />
-      <Footer conversationId={receiver.conversationId} senderId={user._id} />
+      <Chats conversationId={receiver.conversationId} senderId={user.id} />
+      <Footer conversationId={receiver.conversationId} senderId={user.id} />
     </section>
   );
 };

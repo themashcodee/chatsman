@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
@@ -23,9 +23,9 @@ export default function Index() {
     return (
         <div className="">
             <Head>
-                <title>User</title>
+                <title>Chatsman | {username}</title>
                 <meta name="description" content="A simple chatting web application" />
-                <link rel="shortcut icon" href="/favicon.png" />
+                <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
             {
                 data.getUser.success ? <section className="flex h-screen flex-col w-full">

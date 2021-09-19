@@ -7,13 +7,11 @@ import { useMutation } from "@apollo/client";
 
 const Footer = ({ senderId, conversationId }) => {
   const [message, setMessage] = useState("");
-  const [createMessage, { createMessageError }] = useMutation(CREATE_MESSAGE);
+  const [createMessage, { error }] = useMutation(CREATE_MESSAGE);
 
   async function sendMessage(e) {
     e.preventDefault();
     if (!message.length) return;
-    // if (message.split(" ").some((word) => word.length > 40))
-    // return alert("A word can't be longer than 40 characters");
     setMessage("");
 
     try {
@@ -21,12 +19,10 @@ const Footer = ({ senderId, conversationId }) => {
         variables: {
           conversationId,
           senderId,
-          type: "TEXT",
           content: message,
         },
       });
-      if (createMessageError)
-        return alert("There is some server error, try again later.");
+      if (error) return alert("There is some server error, try again later.");
 
       const { message: resultMessage, success } = result.data.createMessage;
       if (!success) return alert(resultMessage);

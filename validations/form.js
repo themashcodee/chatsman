@@ -7,7 +7,7 @@ export function nameValidation(value, error) {
     error(null);
 }
 export function usernameValidation(value, error) {
-    if (!(value.match(/^[a-zA-Z0-9]*$/))) return error("Username can only contain Alphabets and Numbers")
+    if (!(value.match(/^[a-zA-Z0-9]*$/))) return error("Username can only contain letters and numbers")
     if (value.length < 3) return error("Username can't be less than 3 characters");
     if (value.length > 10) return error("Username can't be more than 10 characters");
     error(null);
@@ -26,7 +26,7 @@ export function passwordValidation(value, error) {
     error(null);
 }
 export function secretValidation(value, error) {
-    if (!value.match(/^[0-9]*$/)) return error('Code should must have only number')
+    if (!value.match(/^[0-9]*$/)) return error('Code should must only have numbers')
     if (value.length < 6) return error("Code can't be less than 6 characters");
     if (value.length > 6) return error("Code can't be more than 6 characters");
     error(null);
