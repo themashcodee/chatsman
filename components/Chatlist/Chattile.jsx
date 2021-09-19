@@ -45,7 +45,7 @@ const ChatTile = ({ conversationId, members }) => {
   }, [data, refetch, members]);
   useEffect(() => {
     SubsRefetch();
-    if (LMData && LMData.getLastMessage.success) {
+    if (LMData && LMData.getLastMessage.messages) {
       const { content, type, createdAt } = LMData.getLastMessage.messages;
       setLastMessage(type === "TEXT" ? content : "Image");
       setLastMessageTime(moment(+createdAt).fromNow());
