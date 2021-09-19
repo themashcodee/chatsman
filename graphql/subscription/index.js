@@ -3,6 +3,7 @@ import { gql } from '@apollo/client'
 export const LAST_MESSAGE_ADDED = gql`
   subscription ($conversationId:ID!) {
     lastMessageAdded(conversationId: $conversationId) {
+      success
       messages{
           content
           createdAt
