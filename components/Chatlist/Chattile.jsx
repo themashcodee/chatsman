@@ -23,11 +23,13 @@ const ChatTile = ({ conversationId, members }) => {
 
   // QUERIES AND SUBSCRIPTION
   const receiverId = members.find((id) => id !== user.id);
-  const { data, error } = useQuery(GET_USER, { variables: { id: receiverId } });
+  const { data, error, refetch } = useQuery(GET_USER, {
+    variables: { id: receiverId },
+  });
   const {
     data: LMData,
     error: LMError,
-    refetch,
+    refetch: SubsRefetch,
   } = useQuery(LAST_MESSAGE, {
     variables: { conversationId },
   });
@@ -42,16 +44,13 @@ const ChatTile = ({ conversationId, members }) => {
     data && setReceiverObj(data.getUser.user);
   }, [data, refetch, members]);
   useEffect(() => {
+    SubsRefetch();
     if (LMData && LMData.getLastMessage.success) {
-      if (LMData.lastMessageAdded.messages) {
-        const { content, type, createdAt } = LMData.getLastMessage.messages;
-        setLastMessage(type === "TEXT" ? content : "Image");
-        setLastMessageTime(moment(+createdAt).fromNow());
-      }
-      setLastMessage("");
-      setLastMessageTime("");
+      const { content, type, createdAt } = LMData.getLastMessage.messages;
+      setLastMessage(type === "TEXT" ? content : "Image");
+      setLastMessageTime(moment(+createdAt).fromNow());
     }
-  }, [LMData]);
+  }, [LMData, SubsRefetch]);
   useEffect(() => {
     if (SubsData && SubsData.lastMessageAdded.success) {
       if (SubsData.lastMessageAdded.messages) {
