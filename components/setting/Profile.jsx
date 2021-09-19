@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Edit from "../icons/Edit";
 import ProfileIcon from "../icons/User";
@@ -15,6 +15,7 @@ const Profile = () => {
   async function updateProfileImage(e) {
     try {
       if (!e.target.files[0]) return alert("No Image selected");
+      alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
       data.append("file", e.target.files[0]);
