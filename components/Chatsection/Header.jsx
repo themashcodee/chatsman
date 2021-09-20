@@ -69,6 +69,7 @@ const Header = ({
       setModelVisible(false);
       if (!e.target.files[0]) return alert("No Image selected");
       setUploading(true);
+      alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
       data.append("file", e.target.files[0]);
