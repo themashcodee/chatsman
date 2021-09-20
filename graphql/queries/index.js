@@ -23,7 +23,7 @@ export const GET_CONVERSATIONS = gql`
           conversations {
               id
               members
-              background
+              wallpaper
             }
         }
     }`

@@ -17,37 +17,35 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(initTheme, [])
 
-  return <UnderConstruction />
+  const [receiver, setReceiver] = useState(null)
+  const [user, setUser] = useState(null)
 
-  // const [receiver, setReceiver] = useState(null)
-  // const [user, setUser] = useState(null)
+  useEffect(() => {
+    (async function () {
+      const user = await refreshToken()
+      if (!user) return setUser(undefined)
+      setUser({ ...user, id: user._id })
+    })();
+  }, [])
 
-  // useEffect(() => {
-  //   (async function () {
-  //     const user = await refreshToken()
-  //     if (!user) return setUser(undefined)
-  //     setUser({ ...user, id: user._id })
-  //   })();
-  // }, [])
+  const store = {
+    USER: { user, setUser },
+    RECEIVER: { receiver, setReceiver },
+  }
 
-  // const store = {
-  //   USER: { user, setUser },
-  //   RECEIVER: { receiver, setReceiver },
-  // }
+  if (user === null) return <Loading />
 
-  // if (user === null) return <Loading />
-
-  // return <ApolloProvider client={client}>
-  //   <Provider value={store}>
-  //     <>
-  //       <Head>
-  //         <meta name="robots" content="index, follow" />
-  //         <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
-  //       </Head>
-  //       <Component {...pageProps} />
-  //     </>
-  //   </Provider>
-  // </ApolloProvider>
+  return <ApolloProvider client={client}>
+    <Provider value={store}>
+      <>
+        <Head>
+          <meta name="robots" content="index, follow" />
+          <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
+        </Head>
+        <Component {...pageProps} />
+      </>
+    </Provider>
+  </ApolloProvider>
 }
 
 export default MyApp

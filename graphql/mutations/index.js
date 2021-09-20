@@ -23,6 +23,20 @@ export const CREATE_CONVERSATION = gql`
     }`
 
 
+export const DELETE_WALLPAPER = gql`
+    mutation ($id:ID!,$userId:ID!){
+      deleteWallpaper(id:$id,userId:$userId){
+        success
+        message
+      }
+    }`
+export const DELETE_DP = gql`
+    mutation ($id:ID!){
+      deleteDP(id:$id){
+        success
+        message
+      }
+    }`
 export const DELETE_MESSAGE = gql`
     mutation ($conversationId:ID!,$id:ID!,$senderId:ID!){
       deleteMessage(conversationId:$conversationId,senderId:$senderId,id:$id){

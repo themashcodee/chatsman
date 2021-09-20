@@ -9,7 +9,7 @@ import { GET_USER, LAST_MESSAGE } from "../../graphql/queries/index";
 import { LAST_MESSAGE_ADDED } from "../../graphql/subscription";
 import { StoreContext } from "../../pages/_app";
 
-const ChatTile = ({ conversationId, members }) => {
+const ChatTile = ({ conversationId, members, wallpaper }) => {
   // Fetching data from store
   const {
     RECEIVER: { receiver, setReceiver },
@@ -73,7 +73,7 @@ const ChatTile = ({ conversationId, members }) => {
 
   function openChat() {
     if (receiver && receiver.name === name) return;
-    setReceiver({ image, name, id: _id, conversationId, username });
+    setReceiver({ image, name, id: _id, conversationId, username, wallpaper });
   }
 
   return (

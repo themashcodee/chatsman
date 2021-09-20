@@ -61,7 +61,7 @@ const Profile = () => {
           htmlFor="file"
           className="
         absolute cursor-pointer bg-cwhite-medium dark:bg-cblack-5 p-2 
-        rounded-full md:h-11 md:w-11 h-8 wi-8 top-0 right-0
+        rounded-full md:h-11 md:w-11 h-8 w-8 top-0 right-0
         sm:h-10 sm:w-10
         "
         >
@@ -71,7 +71,7 @@ const Profile = () => {
           type="file"
           id="file"
           name="file"
-          accept="image/png, image/jpeg"
+          accept="image/*"
           className="w-0 h-0"
           required
           onChange={updateProfileImage}

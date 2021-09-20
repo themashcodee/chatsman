@@ -4,7 +4,15 @@ import Delete from "../icons/Delete";
 import { useMutation } from "@apollo/client";
 import { DELETE_MESSAGE } from "../../graphql/mutations/index";
 
-const Message = ({ isSender, message, time, senderId, id, conversationId }) => {
+const Message = ({
+  isSender,
+  message,
+  time,
+  senderId,
+  id,
+  conversationId,
+  isWallpaper,
+}) => {
   const [showTime, setShowTime] = useState(false);
   const [deleteMessage, { error }] = useMutation(DELETE_MESSAGE, {
     variables: { senderId, id, conversationId },
@@ -90,6 +98,7 @@ const Message = ({ isSender, message, time, senderId, id, conversationId }) => {
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
         ${isSender ? "right-10" : "left-1"} 
+        ${isWallpaper ? "text-white" : null}
         ${showTime ? "bottom-0" : "bottom-4 scale-0 transform"}`}
       >
         {time}

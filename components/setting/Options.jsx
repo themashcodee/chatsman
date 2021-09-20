@@ -8,6 +8,7 @@ import { StoreContext } from "../../pages/_app";
 import {
   LOGOUT,
   DELETE_ACCOUNT,
+  DELETE_DP,
   CHANGE_DETAILS,
   CHANGE_PASSWORD,
   RESET_SECRET_CODE,
@@ -31,6 +32,7 @@ const Options = () => {
   const [ChangeDetails, { error: DetailsErr }] = useMutation(CHANGE_DETAILS);
   const [ChangePassword, { error: PasswordErr }] = useMutation(CHANGE_PASSWORD);
   const [Logout, { error: logoutErr }] = useMutation(LOGOUT);
+  const [DeleteDP, { error: DPErr }] = useMutation(DELETE_DP);
   const [DeleteAccount, { error: AccountErr }] = useMutation(DELETE_ACCOUNT);
   const [ResetSecretCode, { error: SecretCodeErr }] =
     useMutation(RESET_SECRET_CODE);
@@ -189,6 +191,22 @@ const Options = () => {
     }
   };
 
+  const deleteDP = async () => {
+    try {
+      const result = await DeleteDP({ variables: { id: user.id } });
+
+      if (DPErr) return alert("There is some server error, try again later.");
+
+      const { message, success } = result.data.deleteDP;
+      if (!success) return alert(message);
+
+      router.reload();
+    } catch (err) {
+      console.log("SERVER ERR", err);
+      alert("There is some server error, try again later.");
+    }
+  };
+
   const logout = async () => {
     try {
       const result = await Logout({
@@ -236,36 +254,13 @@ const Options = () => {
         }}
         stateLabel={isDark ? "Enabled" : "Disabled"}
       />
-      <ImpOption
-        label="Change Username"
-        special={false}
-        funtionOnClick={changeUsername}
-      />
-      <ImpOption
-        label="Change Name"
-        special={false}
-        funtionOnClick={changeName}
-      />
-      <ImpOption
-        label="Change Bio"
-        special={false}
-        funtionOnClick={changeDescription}
-      />
-      <ImpOption
-        label="Change Password"
-        special={false}
-        funtionOnClick={changePassword}
-      />
-      <ImpOption
-        label="Reset Secret Code"
-        special={false}
-        funtionOnClick={resetSecretCode}
-      />
-      <ImpOption
-        label="Reset Password"
-        special={false}
-        funtionOnClick={resetPassword}
-      />
+      <ImpOption label="Change Username" funtionOnClick={changeUsername} />
+      <ImpOption label="Change Name" funtionOnClick={changeName} />
+      <ImpOption label="Change Bio" funtionOnClick={changeDescription} />
+      <ImpOption label="Change Password" funtionOnClick={changePassword} />
+      <ImpOption label="Reset Secret Code" funtionOnClick={resetSecretCode} />
+      <ImpOption label="Reset Password" funtionOnClick={resetPassword} />
+      <ImpOption label="Delete Profile Picture" funtionOnClick={deleteDP} />
       <ImpOption
         label="Logout"
         special={true}

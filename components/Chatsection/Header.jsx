@@ -4,21 +4,57 @@ import Image from "next/image";
 import Profile from "../icons/User";
 import Menu from "../icons/Menu";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { useMutation } from "@apollo/client";
-import { DELETE_CONVERSATION } from "../../graphql/mutations/index";
+import {
+  DELETE_CONVERSATION,
+  DELETE_WALLPAPER,
+} from "../../graphql/mutations/index";
 
-const Header = ({ name, image, username, conversationId, setReceiver }) => {
+const Header = ({
+  name,
+  image,
+  username,
+  conversationId,
+  setReceiver,
+  userId,
+}) => {
   const [modelVisible, setModelVisible] = useState(false);
-  const [deleteConversation, { error }] = useMutation(DELETE_CONVERSATION);
+  const [uploading, setUploading] = useState(false);
+  const [DeleteConversation, { error }] = useMutation(DELETE_CONVERSATION);
+  const [DeleteWallpaper, { error: WallpaperErr }] =
+    useMutation(DELETE_WALLPAPER);
+  const router = useRouter();
 
-  async function deleteChat() {
+  async function deleteWallpaper() {
+    try {
+      setModelVisible(false);
+
+      const result = await DeleteWallpaper({
+        variables: { id: conversationId, userId },
+      });
+
+      if (WallpaperErr)
+        return alert("There is some server error, try again later.");
+
+      const { success, message } = result.data.deleteWallpaper;
+      if (!success) return alert(message);
+
+      router.reload();
+    } catch (err) {
+      alert("There is some server error, try again later");
+    }
+  }
+
+  async function deleteConversation() {
+    setModelVisible(false);
     const isAgree = confirm(
       "This will delete conversation from both side permanently!"
     );
     if (!isAgree) return;
 
-    const result = await deleteConversation({ variables: { conversationId } });
+    const result = await DeleteConversation({ variables: { conversationId } });
 
     if (error) return alert("There is some server error, try again later.");
 
@@ -28,12 +64,36 @@ const Header = ({ name, image, username, conversationId, setReceiver }) => {
     setReceiver(null);
   }
 
-  async function changeBackground() {
-    alert("Feature comming soon!");
+  async function uploadBackground(e) {
+    try {
+      setModelVisible(false);
+      if (!e.target.files[0]) return alert("No Image selected");
+      setUploading(true);
+
+      const data = new FormData();
+      data.append("file", e.target.files[0]);
+      data.append("id", conversationId);
+
+      const response = await (
+        await fetch(process.env.API_URI_BACKGROUND_UPLOAD, {
+          method: "POST",
+          body: data,
+        })
+      ).json();
+
+      if (!response.success) {
+        setUploading(false);
+        return alert(response.message);
+      }
+      router.reload();
+    } catch (err) {
+      setUploading(false);
+      alert("There is some server error, try again later.");
+    }
   }
 
   return (
-    <header className="select-none px-4 flex flex-shrink-0 gap-3 justify-between items-center w-full h-14 border-b border-cwhite-light dark:border-cblack-3">
+    <header className="relative select-none px-4 flex flex-shrink-0 gap-3 justify-between items-center w-full h-14 border-b border-cwhite-light dark:border-cblack-3">
       <div className="flex items-center gap-3">
         <button
           onClick={() => {
@@ -67,34 +127,57 @@ const Header = ({ name, image, username, conversationId, setReceiver }) => {
       </div>
 
       <div
-        className="h-6 w-8 cursor-pointer relative"
-        onClick={() => {
-          setModelVisible(!modelVisible);
-        }}
+        className="h-6 w-8 cursor-pointer"
+        onClick={() => setModelVisible(!modelVisible)}
       >
-        {modelVisible && (
-          <div className="absolute w-40 rounded-lg right-0 z-50 top-8 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3">
-            <Link href={`/user/${username}`} passHref={true} replace={true}>
-              <div className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5">
-                Profile
-              </div>
-            </Link>
-            <div
-              onClick={changeBackground}
-              className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5"
-            >
-              Background
-            </div>
-            <div
-              onClick={deleteChat}
-              className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"
-            >
-              Delete Chat
-            </div>
-          </div>
-        )}
         <Menu />
       </div>
+
+      {modelVisible && (
+        <div className="absolute w-40 rounded-lg right-4 z-50 top-12 bg-cwhite-light border border-cwhite-medium dark:border-cblack-5 dark:bg-cblack-3 cursor-pointer">
+          <Link href={`/user/${username}`} passHref={true} replace={true}>
+            <div
+              onClick={() => setModelVisible(false)}
+              className="w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5"
+            >
+              Profile
+            </div>
+          </Link>
+
+          <div className="w-full h-10 border-b border-cwhite-medium dark:border-cblack-5">
+            <label
+              htmlFor="file"
+              className="w-full h-full font-medium flex justify-center items-center cursor-pointer"
+            >
+              Set Wallpaper
+            </label>
+            <input
+              type="file"
+              id="file"
+              name="file"
+              accept="image/*"
+              className="h-0 w-0"
+              required
+              onChange={uploadBackground}
+              disabled={uploading ? true : false}
+            />
+          </div>
+
+          <div
+            onClick={deleteWallpaper}
+            className="text-cred-dark w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5"
+          >
+            Delete Wallpaper
+          </div>
+
+          <div
+            onClick={deleteConversation}
+            className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"
+          >
+            Delete Chat
+          </div>
+        </div>
+      )}
     </header>
   );
 };

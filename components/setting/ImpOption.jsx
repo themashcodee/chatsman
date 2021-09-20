@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImpOption = ({ funtionOnClick, label, bg, special, color }) => {
+const ImpOption = ({ funtionOnClick, label, bg, special = false, color }) => {
   return (
     <div
       onClick={funtionOnClick}

@@ -82,6 +82,7 @@ const Chatlist = () => {
               key={conversation.id}
               conversationId={conversation.id}
               members={conversation.members}
+              wallpaper={conversation.wallpaper}
             />
           );
         })}

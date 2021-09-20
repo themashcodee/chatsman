@@ -33,6 +33,7 @@ export const CONVERSATION_ADDED = gql`
       conversations{
           id
           members
+          wallpaper
       }
     }
   }

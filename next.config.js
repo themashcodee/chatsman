@@ -19,7 +19,8 @@ module.exports = withPWA({
     API_URI_BASE: process.env.API_URI_BASE,
     API_URI_SUBSCRIPTION: process.env.API_URI_SUBSCRIPTION,
     API_URI_REFRESH_TOKEN: process.env.API_URI_REFRESH_TOKEN,
-    API_URI_IMAGE_UPLOAD: process.env.API_URI_IMAGE_UPLOAD
+    API_URI_IMAGE_UPLOAD: process.env.API_URI_IMAGE_UPLOAD,
+    API_URI_BACKGROUND_UPLOAD: process.env.API_URI_BACKGROUND_UPLOAD
   },
 
   // This is not required to make it into a PWA, but is a nice way to clean up your imports

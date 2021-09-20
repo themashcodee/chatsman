@@ -6,8 +6,9 @@ import { MESSAGE_ADDED } from "../../graphql/subscription/index";
 import { useQuery, useSubscription } from "@apollo/client";
 
 import { getMessageTime } from "../../helpers/getMessageTime";
+import Image from "next/image";
 
-const Chats = ({ senderId, conversationId }) => {
+const Chats = ({ senderId, conversationId, wallpaper }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
     variables: { conversationId },
   });
@@ -44,8 +45,19 @@ const Chats = ({ senderId, conversationId }) => {
   return (
     <section
       ref={scrollCont}
-      className="scrollable flex flex-grow flex-col gap-2 p-3 w-full"
+      className="scrollable flex flex-grow flex-col gap-2 p-3 w-full relative"
     >
+      {wallpaper && (
+        <>
+          <Image
+            src={wallpaper}
+            alt={"wallpaper"}
+            layout="fill"
+            objectFit={"cover"}
+          />
+          <div className="absolute inset-0 w-full h-full bg-black/60"></div>
+        </>
+      )}
       {chats.length === 50 && (
         <div
           onClick={fetchAllMessages}
@@ -64,16 +76,20 @@ const Chats = ({ senderId, conversationId }) => {
               conversationId={conversationId}
               isSender={senderId === message.senderId}
               message={message.content}
+              isWallpaper={!!wallpaper}
               time={getMessageTime(+message.createdAt)}
             />
           );
         })
       ) : (
-        <div className="text-cwhite-medium dark:text-cblack-5 text-center">
+        <div
+          className={`text-cwhite-medium dark:text-cblack-5 text-center z-10 ${
+            wallpaper ? "dark:text-[#999999]" : null
+          }`}
+        >
           {note}
         </div>
       )}
-      <div></div>
     </section>
   );
 };
