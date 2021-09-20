@@ -4,6 +4,7 @@ import { initTheme } from '../helpers/theme'
 import Head from 'next/head'
 
 import Loading from '../components/Loading'
+import UnderConstruction from '../components/UnderConstruction'
 import { refreshToken } from '../helpers/refreshToken';
 
 import { ApolloProvider } from '@apollo/client';
@@ -16,35 +17,37 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(initTheme, [])
 
-  const [receiver, setReceiver] = useState(null)
-  const [user, setUser] = useState(null)
+  return <UnderConstruction />
 
-  useEffect(() => {
-    (async function () {
-      const user = await refreshToken()
-      if (!user) return setUser(undefined)
-      setUser({ ...user, id: user._id })
-    })();
-  }, [])
+  // const [receiver, setReceiver] = useState(null)
+  // const [user, setUser] = useState(null)
 
-  const store = {
-    USER: { user, setUser },
-    RECEIVER: { receiver, setReceiver },
-  }
+  // useEffect(() => {
+  //   (async function () {
+  //     const user = await refreshToken()
+  //     if (!user) return setUser(undefined)
+  //     setUser({ ...user, id: user._id })
+  //   })();
+  // }, [])
 
-  if (user === null) return <Loading />
+  // const store = {
+  //   USER: { user, setUser },
+  //   RECEIVER: { receiver, setReceiver },
+  // }
 
-  return <ApolloProvider client={client}>
-    <Provider value={store}>
-      <>
-        <Head>
-          <meta name="robots" content="index, follow" />
-          <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
-        </Head>
-        <Component {...pageProps} />
-      </>
-    </Provider>
-  </ApolloProvider>
+  // if (user === null) return <Loading />
+
+  // return <ApolloProvider client={client}>
+  //   <Provider value={store}>
+  //     <>
+  //       <Head>
+  //         <meta name="robots" content="index, follow" />
+  //         <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
+  //       </Head>
+  //       <Component {...pageProps} />
+  //     </>
+  //   </Provider>
+  // </ApolloProvider>
 }
 
 export default MyApp
