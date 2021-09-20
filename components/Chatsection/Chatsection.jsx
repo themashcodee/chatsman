@@ -31,17 +31,19 @@ const Chatsection = () => {
         setReceiver={setReceiver}
       />
 
-      <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0">
-        <div className="relative w-full h-full">
-          <Image
-            src={receiver.wallpaper}
-            alt={"wallpaper"}
-            layout={"fill"}
-            objectFit="cover"
-          ></Image>
-          <div className="w-full h-full absolute inset-0 bg-black/60"></div>
-        </div>
-      </section>
+      {receiver.wallpaper && (
+        <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0">
+          <div className="relative w-full h-full">
+            <Image
+              src={receiver.wallpaper}
+              alt={"wallpaper"}
+              layout={"fill"}
+              objectFit="cover"
+            ></Image>
+            <div className="w-full h-full absolute inset-0 bg-black/60"></div>
+          </div>
+        </section>
+      )}
 
       <Chats
         conversationId={receiver.conversationId}
