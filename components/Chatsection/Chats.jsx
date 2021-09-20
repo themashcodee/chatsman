@@ -6,7 +6,6 @@ import { MESSAGE_ADDED } from "../../graphql/subscription/index";
 import { useQuery, useSubscription } from "@apollo/client";
 
 import { getMessageTime } from "../../helpers/getMessageTime";
-import Image from "next/image";
 
 const Chats = ({ senderId, conversationId, wallpaper }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
@@ -45,19 +44,8 @@ const Chats = ({ senderId, conversationId, wallpaper }) => {
   return (
     <section
       ref={scrollCont}
-      className="scrollable flex flex-grow flex-col gap-2 p-3 w-full relative"
+      className="scrollable bg-scroll flex flex-grow flex-col gap-2 p-3 w-full"
     >
-      {wallpaper && (
-        <>
-          <Image
-            src={wallpaper}
-            alt={"wallpaper"}
-            layout="fill"
-            objectFit={"cover"}
-          />
-          <div className="absolute inset-0 w-full h-full bg-black/60"></div>
-        </>
-      )}
       {chats.length === 50 && (
         <div
           onClick={fetchAllMessages}

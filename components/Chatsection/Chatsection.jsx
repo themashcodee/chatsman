@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Header from "./Header";
 import Chats from "./Chats";
 import Footer from "./Footer";
+import Image from "next/image";
 
 // STORE AND DATABASE
 import { StoreContext } from "../../pages/_app";
@@ -20,7 +21,7 @@ const Chatsection = () => {
     );
 
   return (
-    <section className="flex-grow flex flex-col h-full w-full">
+    <section className="flex-grow flex flex-col h-full w-full relative">
       <Header
         name={receiver.name}
         userId={user.id}
@@ -29,6 +30,19 @@ const Chatsection = () => {
         conversationId={receiver.conversationId}
         setReceiver={setReceiver}
       />
+
+      <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0">
+        <div className="relative w-full h-full">
+          <Image
+            src={receiver.wallpaper}
+            alt={"wallpaper"}
+            layout={"fill"}
+            objectFit="cover"
+          ></Image>
+          <div className="w-full h-full absolute inset-0 bg-black/60"></div>
+        </div>
+      </section>
+
       <Chats
         conversationId={receiver.conversationId}
         senderId={user.id}

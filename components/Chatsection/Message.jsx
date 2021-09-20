@@ -59,15 +59,15 @@ const Message = ({
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
         `}
       >
-        {message.split(" ").some((word) => word.length > 20)
+        {message.split(" ").some((word) => word.length > 15)
           ? message
               .split(" ")
               .map((word) => {
-                return word.length > 20
+                return word.length > 15
                   ? word
                       .split("")
                       .map((newword, i) =>
-                        i !== 0 && i !== newword.length - 1 && i % 19 === 0
+                        i !== 0 && i !== newword.length - 1 && i % 14 === 0
                           ? newword + "-"
                           : newword
                       )
