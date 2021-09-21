@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Delete from "../icons/Delete";
+import Download from "../icons/Download";
 import Image from "next/image";
 
 import { useMutation } from "@apollo/client";
@@ -37,6 +38,17 @@ const Message = ({
     }
   }
 
+  async function downloadImage() {
+    const element = document.createElement("a");
+    const file = new Blob([message], { type: "image/*" });
+    element.href = URL.createObjectURL(file);
+    const str = message;
+    const dotIndex = str.lastIndexOf(".");
+    const ext = str.substring(dotIndex);
+    element.download = `chatsman-chat-image.${ext}`;
+    element.click();
+  }
+
   return (
     <div
       className={`
@@ -57,7 +69,7 @@ const Message = ({
                   ? "bg-cred-light dark:bg-cred-dark"
                   : "bg-cwhite-light dark:bg-cblack-3"
               }
-                 ${showTime ? `mb-4 ${isSender && "mr-9"}` : "mb-0"} 
+                 ${showTime ? `mb-4 ${isSender ? "mr-9" : "ml-9"}` : "mb-0"} 
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
                  ${
                    type === "IMAGE"
@@ -98,6 +110,25 @@ const Message = ({
         )}
       </div>
 
+      {type === "IMAGE" && (
+        <div
+          onClick={() => {
+            setShowTime(false);
+            downloadImage();
+          }}
+          className={`absolute cursor-pointer -z-1 text-xxm ${
+            isSender ? "top-10" : "top-4"
+          } duration-200 transition-all w-7 h-7 text-cblack-5 p-1 rounded-full bg-cgreen flex justify-center items-center
+        ${
+          showTime
+            ? `${isSender ? "right-0" : "left-0"}`
+            : `${isSender ? "right-4" : "left-4"} scale-0 transform`
+        }`}
+        >
+          <Download />
+        </div>
+      )}
+
       {isSender && (
         <div
           onClick={() => {
@@ -117,7 +148,7 @@ const Message = ({
 
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
-        ${isSender ? "right-10" : "left-1"} 
+        ${isSender ? "right-10" : "left-10"} 
         ${isWallpaper ? "text-white" : null}
         ${showTime ? "bottom-0" : "bottom-4 scale-0 transform"}`}
       >

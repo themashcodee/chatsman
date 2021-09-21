@@ -62,7 +62,7 @@ const Footer = ({ senderId, conversationId }) => {
     >
       <article
         className={`
-        w-full absolute h-12 rounded-t-xl bg-green-400/50 text-white backdrop-blur-sm left-0 -top-12 transition select-none
+        w-full absolute h-12 rounded-t-xl bg-green-400 text-white backdrop-blur-sm left-0 -top-12 transition select-none
         duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
         ${file ? "scale-y-100" : "scale-y-0"}
         `}
