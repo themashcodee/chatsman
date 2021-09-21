@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import Image from "next/image";
 import Profile from "../icons/User";
+import ImageIcon from "../icons/Image";
 import moment from "moment";
 
 // DATABASE AND STORE
@@ -65,13 +66,22 @@ const ChatTile = ({
           <h2 className="font-medium text-lg">
             {name.length > 15 ? name.substr(0, 15) + "." : name}
           </h2>
-          <p className="text-xxm text-cblack-5 dark:text-cwhite-darker">
+          <p className="text-xxm text-cblack-5 dark:text-cwhite-darker flex items-center gap-1">
             {lastMessage &&
-              (lastMessageType === "TEXT"
-                ? lastMessage.length < 15
-                  ? lastMessage
-                  : lastMessage.substr(0, 15) + "..."
-                : "An Image")}
+              (lastMessageType === "TEXT" ? (
+                lastMessage.length < 15 ? (
+                  lastMessage
+                ) : (
+                  lastMessage.substr(0, 15) + "..."
+                )
+              ) : (
+                <span className="flex items-center">
+                  <span className="h-4 w-4 pr-1">
+                    <ImageIcon />
+                  </span>
+                  An Image
+                </span>
+              ))}
             {lastMessage &&
               lastMessageTime &&
               " · " + moment(+lastMessageTime).fromNow()}
