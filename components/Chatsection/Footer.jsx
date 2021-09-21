@@ -95,6 +95,7 @@ const Footer = ({ senderId, conversationId }) => {
           <input
             type="file"
             id="file"
+            accept="image/*"
             name="file"
             className="w-0 h-0 absolute inset-0"
             onClick={(e) => (e.target.value = null)}

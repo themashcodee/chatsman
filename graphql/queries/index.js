@@ -24,9 +24,12 @@ export const GET_CONVERSATIONS = gql`
               id
               members
               wallpaper
-              lastMessage
-              lastMessageType
-              updatedAt
+              lastMessageTime
+              lastMessage{
+                  content
+                  type
+                  updatedAt
+              }
             }
         }
     }`

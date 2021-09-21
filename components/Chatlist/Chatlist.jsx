@@ -83,9 +83,9 @@ const Chatlist = () => {
               conversationId={conversation.id}
               members={conversation.members}
               wallpaper={conversation.wallpaper}
-              lastMessage={conversation.lastMessage}
-              lastMessageTime={conversation.updatedAt}
-              lastMessageType={conversation.lastMessageType}
+              lastMessage={conversation.lastMessage?.content}
+              lastMessageTime={conversation.lastMessageTime}
+              lastMessageType={conversation.lastMessage?.type}
             />
           );
         })}
