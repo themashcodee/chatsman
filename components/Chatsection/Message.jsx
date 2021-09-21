@@ -45,7 +45,7 @@ const Message = ({
     const str = message;
     const dotIndex = str.lastIndexOf(".");
     const ext = str.substring(dotIndex);
-    element.download = `chatsman-chat-image.${ext}`;
+    element.download = `chatsman-chat-image${ext}`;
     element.click();
   }
 
