@@ -4,68 +4,35 @@ import Profile from "../icons/User";
 import moment from "moment";
 
 // DATABASE AND STORE
-import { useQuery, useSubscription } from "@apollo/client";
-import { GET_USER, LAST_MESSAGE } from "../../graphql/queries/index";
-import { LAST_MESSAGE_ADDED } from "../../graphql/subscription";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../../graphql/queries/index";
 import { StoreContext } from "../../pages/_app";
 
-const ChatTile = ({ conversationId, members, wallpaper }) => {
-  // Fetching data from store
+const ChatTile = ({
+  conversationId,
+  members,
+  wallpaper,
+  lastMessageTime,
+  lastMessage,
+  lastMessageType,
+}) => {
   const {
     RECEIVER: { receiver, setReceiver },
     USER: { user },
   } = useContext(StoreContext);
 
-  // States
-  const [lastMessage, setLastMessage] = useState("");
-  const [lastMessageTime, setLastMessageTime] = useState("");
   const [receiverObj, setReceiverObj] = useState(null);
 
-  // QUERIES AND SUBSCRIPTION
   const receiverId = members.find((id) => id !== user.id);
   const { data, error, refetch } = useQuery(GET_USER, {
     variables: { id: receiverId },
   });
-  const {
-    data: LMData,
-    error: LMError,
-    refetch: SubsRefetch,
-  } = useQuery(LAST_MESSAGE, {
-    variables: { conversationId },
-  });
-  const { data: SubsData, error: SubsError } = useSubscription(
-    LAST_MESSAGE_ADDED,
-    { variables: { conversationId } }
-  );
 
-  // USE EFFECTS
   useEffect(() => {
     refetch();
     data && setReceiverObj(data.getUser.user);
   }, [data, refetch, members]);
-  useEffect(() => {
-    SubsRefetch();
-    if (LMData && LMData.getLastMessage.messages) {
-      const { content, type, createdAt } = LMData.getLastMessage.messages;
-      setLastMessage(type === "TEXT" ? content : "Image");
-      setLastMessageTime(moment(+createdAt).fromNow());
-    }
-  }, [LMData, SubsRefetch]);
-  useEffect(() => {
-    if (SubsData && SubsData.lastMessageAdded.success) {
-      if (SubsData.lastMessageAdded.messages) {
-        const { content, type, createdAt } = SubsData.lastMessageAdded.messages;
-        setLastMessage(type === "TEXT" ? content : "Image");
-        return setLastMessageTime(moment(+createdAt).fromNow());
-      }
-      setLastMessage("");
-      setLastMessageTime("");
-    }
-  }, [SubsData]);
 
-  // ERROR HANDLING
-  if (LMError) return "There is some errors";
-  if (SubsError) return "There is some errors";
   if (error) return "There is some errors";
   if (!receiverObj) return null;
 
@@ -99,10 +66,15 @@ const ChatTile = ({ conversationId, members, wallpaper }) => {
             {name.length > 15 ? name.substr(0, 15) + "." : name}
           </h2>
           <p className="text-xxm text-cblack-5 dark:text-cwhite-darker">
-            {lastMessage.length < 15
-              ? lastMessage
-              : lastMessage.substr(0, 15) + "..."}
-            {lastMessageTime && " · " + lastMessageTime}
+            {lastMessage &&
+              (lastMessageType === "TEXT"
+                ? lastMessage.length < 15
+                  ? lastMessage
+                  : lastMessage.substr(0, 15) + "..."
+                : "An Image")}
+            {lastMessage &&
+              lastMessageTime &&
+              " · " + moment(+lastMessageTime).fromNow()}
           </p>
         </div>
       </div>

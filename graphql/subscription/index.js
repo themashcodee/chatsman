@@ -1,18 +1,5 @@
 import { gql } from '@apollo/client'
 
-export const LAST_MESSAGE_ADDED = gql`
-  subscription ($conversationId:ID!) {
-    lastMessageAdded(conversationId: $conversationId) {
-      success
-      messages{
-          content
-          createdAt
-          type
-      }
-    }
-  }
-`;
-
 export const MESSAGE_ADDED = gql`
   subscription ($conversationId:ID!) {
     messageAdded(conversationId: $conversationId) {
@@ -34,6 +21,9 @@ export const CONVERSATION_ADDED = gql`
           id
           members
           wallpaper
+          lastMessage
+          lastMessageType
+          updatedAt
       }
     }
   }

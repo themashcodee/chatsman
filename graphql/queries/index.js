@@ -24,6 +24,9 @@ export const GET_CONVERSATIONS = gql`
               id
               members
               wallpaper
+              lastMessage
+              lastMessageType
+              updatedAt
             }
         }
     }`
@@ -35,18 +38,6 @@ export const GET_MESSAGES = gql`
           messages {
               id
               senderId
-              type
-              content
-              createdAt
-            }
-        }
-    }`
-export const LAST_MESSAGE = gql`
-    query($conversationId:ID!) {
-        getLastMessage(conversationId:$conversationId) {
-          message
-          success
-          messages {
               type
               content
               createdAt
