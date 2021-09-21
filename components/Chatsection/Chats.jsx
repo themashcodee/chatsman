@@ -64,6 +64,7 @@ const Chats = ({ senderId, conversationId, wallpaper }) => {
               conversationId={conversationId}
               isSender={senderId === message.senderId}
               message={message.content}
+              type={message.type}
               isWallpaper={!!wallpaper}
               time={getMessageTime(+message.createdAt)}
             />

@@ -33,3 +33,13 @@ a {
 .scrollable::-webkit-scrollbar {
   display: none; /* for Chrome, Safari, and Opera */
 }
+
+.image-container div {
+  position: relative !important;
+}
+.image-container .image {
+  object-fit: contain;
+  width: 100% !important;
+  position: relative !important;
+  height: unset !important;
+}

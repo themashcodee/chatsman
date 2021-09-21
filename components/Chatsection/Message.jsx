@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Delete from "../icons/Delete";
+import Image from "next/image";
 
 import { useMutation } from "@apollo/client";
 import { DELETE_MESSAGE } from "../../graphql/mutations/index";
@@ -12,6 +13,7 @@ const Message = ({
   id,
   conversationId,
   isWallpaper,
+  type,
 }) => {
   const [showTime, setShowTime] = useState(false);
   const [deleteMessage, { error }] = useMutation(DELETE_MESSAGE, {
@@ -57,10 +59,16 @@ const Message = ({
               }
                  ${showTime ? `mb-4 ${isSender && "mr-9"}` : "mb-0"} 
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
+                 ${
+                   type === "IMAGE"
+                     ? "w-[75%] md:w-[45%] lg:w-[40%] xl:w-[30%]"
+                     : null
+                 }
         `}
       >
-        {message.split(" ").some((word) => word.length > 15)
-          ? message
+        {type === "TEXT" ? (
+          message.split(" ").some((word) => word.length > 15) ? (
+            message
               .split(" ")
               .map((word) => {
                 return word.length > 15
@@ -75,7 +83,19 @@ const Message = ({
                   : word;
               })
               .join(" ")
-          : message}
+          ) : (
+            message
+          )
+        ) : (
+          <div className="image-container relative">
+            <Image
+              src={message}
+              alt={"image"}
+              layout="fill"
+              className="image rounded"
+            ></Image>
+          </div>
+        )}
       </div>
 
       {isSender && (
