@@ -15,7 +15,7 @@ import { StoreContext } from "../../pages/_app";
 const Chatlist = () => {
   const {
     USER: { user },
-    RECEIVER: { receiver },
+    RECEIVER: { receiver, setReceiver },
   } = useContext(StoreContext);
 
   const [conversations, setConversations] = useState([]);
@@ -48,17 +48,28 @@ const Chatlist = () => {
     { variables: { id: user.id } }
   );
   useEffect(() => {
-    if (subsData) setConversations(subsData.conversationAdded.conversations);
-  }, [subsData]);
+    if (subsData) {
+      setConversations(subsData.conversationAdded.conversations);
+      setReceiver((prev) => {
+        if (prev) {
+          const newReceiver = subsData.conversationAdded.conversations.find(
+            (conv) => conv.id === prev.conversationId
+          );
+          return { ...prev, wallpaper: newReceiver.wallpaper };
+        }
+      });
+    }
+  }, [subsData, setReceiver]);
 
   // GET CONVERSATION
-  const { data, error, refetch } = useQuery(GET_CONVERSATIONS, {
+  const { data, error } = useQuery(GET_CONVERSATIONS, {
     variables: { id: user.id },
+    fetchPolicy: "cache-and-network",
   });
-  useEffect(() => {
-    refetch();
-    if (data) setConversations(data.getConversations.conversations);
-  }, [data, refetch]);
+  useEffect(
+    () => data && setConversations(data.getConversations.conversations),
+    [data]
+  );
 
   // ERROR STATE
   if (subsError) return "There is some server error";

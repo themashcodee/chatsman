@@ -7,6 +7,8 @@ import { useQuery, useSubscription } from "@apollo/client";
 
 const Chats = ({ senderId, conversationId, wallpaper }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
+    fetchPolicy: "network-only",
+    nextFetchPolicy: "cache-first",
     variables: { conversationId },
   });
   const { data: subsData, error: subsError } = useSubscription(MESSAGE_ADDED, {
@@ -20,15 +22,21 @@ const Chats = ({ senderId, conversationId, wallpaper }) => {
 
   const fetchAllMessages = () => refetch({ conversationId, isFull: true });
 
-  useEffect(
-    () => subsData && setChats(subsData.messageAdded.messages),
-    [subsData]
-  );
+  useEffect(() => {
+    if (subsData) {
+      const message = subsData.messageAdded.messages[0];
+      setChats((prev) => {
+        const isDeleted = prev.find((mess) => mess.id === message.id);
+        if (isDeleted) return prev.filter((mess) => mess.id !== message.id);
+        return [message, ...prev];
+      });
+    }
+  }, [subsData]);
+
   useEffect(() => data && setChats(data.getMessages.messages), [data]);
-  useEffect(refetch, [conversationId, refetch]);
 
   return (
-    <section className="scrollable bg-scroll flex flex-col-reverse gap-2 p-3 w-full">
+    <section className="scrollable flex flex-col-reverse gap-2 p-3 w-full">
       {chats.length
         ? chats.map((message) => {
             return (

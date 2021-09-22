@@ -40,7 +40,7 @@ const Header = ({
 
       const { success, message } = result.data.deleteWallpaper;
       if (!success) return alert(message);
-      router.reload();
+      setReceiver((prev) => ({ ...prev, wallpaper: null }));
     } catch (err) {
       alert("There is some server error, try again later");
     }
@@ -85,7 +85,6 @@ const Header = ({
         setUploading(false);
         return alert(response.message);
       }
-      router.reload();
     } catch (err) {
       setUploading(false);
       alert("There is some server error, try again later.");

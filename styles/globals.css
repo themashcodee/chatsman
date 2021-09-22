@@ -34,10 +34,14 @@ a {
   display: none; /* for Chrome, Safari, and Opera */
 }
 
+.image-container {
+  max-height: max-content;
+}
 .image-container div {
   position: relative !important;
   width: auto !important;
-  height: auto !important;
+  height: max-content !important;
+  max-height: max-content;
 }
 .image-container .image {
   width: 100% !important;
