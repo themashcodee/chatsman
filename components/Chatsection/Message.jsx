@@ -52,7 +52,7 @@ const Message = ({
       link.download = `chatsman-chat-image${ext}`;
       link.click();
     } catch (err) {
-      console.log(err);
+      alert("There is some server error, try again later.");
     }
   }
 
