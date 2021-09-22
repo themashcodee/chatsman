@@ -3,6 +3,8 @@ import Delete from "../icons/Delete";
 import Download from "../icons/Download";
 import Image from "next/image";
 
+import { saveAs } from "file-saver";
+
 import { useMutation } from "@apollo/client";
 import { DELETE_MESSAGE } from "../../graphql/mutations/index";
 
@@ -39,14 +41,19 @@ const Message = ({
   }
 
   async function downloadImage() {
-    const element = document.createElement("a");
-    const file = new Blob([message], { type: "image/*" });
-    element.href = URL.createObjectURL(file);
-    const str = message;
-    const dotIndex = str.lastIndexOf(".");
-    const ext = str.substring(dotIndex);
-    element.download = `chatsman-chat-image${ext}`;
-    element.click();
+    try {
+      const dotInd = message.lastIndexOf(".");
+      const ext = message.substring(dotInd);
+      const buffer = await (await fetch(message)).arrayBuffer();
+
+      const url = window.URL.createObjectURL(new Blob([buffer]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `chatsman-chat-image${ext}`;
+      link.click();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   return (
@@ -73,7 +80,7 @@ const Message = ({
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
                  ${
                    type === "IMAGE"
-                     ? "w-[75%] md:w-[45%] lg:w-[40%] xl:w-[30%]"
+                     ? "w-[75%] md:w-[45%] lg:w-[40%] xl:w-[30%] min-h-[80px]"
                      : null
                  }
         `}
@@ -117,7 +124,7 @@ const Message = ({
             downloadImage();
           }}
           className={`absolute cursor-pointer -z-1 text-xxm ${
-            isSender ? "top-10" : "top-4"
+            isSender ? "top-10" : "top-1"
           } duration-200 transition-all w-7 h-7 text-cblack-5 p-1 rounded-full bg-cgreen flex justify-center items-center
         ${
           showTime
