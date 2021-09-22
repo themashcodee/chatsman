@@ -49,7 +49,8 @@ const Message = ({
       const url = window.URL.createObjectURL(new Blob([buffer]));
       const link = document.createElement("a");
       link.href = url;
-      link.download = `chatsman-chat-image${ext}`;
+      const randomNumber = () => Math.floor(100000 + Math.random() * 900000);
+      link.download = `chatsman-${randomNumber}${ext}`;
       link.click();
     } catch (err) {
       alert("There is some server error, try again later.");
@@ -76,7 +77,11 @@ const Message = ({
                   ? "bg-cred-light dark:bg-cred-dark"
                   : "bg-cwhite-light dark:bg-cblack-3"
               }
-                 ${showTime ? `mb-4 ${isSender ? "mr-9" : "ml-9"}` : "mb-0"} 
+                 ${
+                   showTime
+                     ? `mb-4 ${isSender ? "mr-9" : (type = "IMAGE" && "ml-9")}`
+                     : "mb-0"
+                 } 
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
                  ${
                    type === "IMAGE"
@@ -125,7 +130,7 @@ const Message = ({
           }}
           className={`absolute cursor-pointer -z-1 text-xxm ${
             isSender ? "top-10" : "top-1"
-          } duration-200 transition-all w-7 h-7 text-cblack-5 p-1 rounded-full bg-cgreen flex justify-center items-center
+          } duration-200 transition-all w-7 h-7 text-white p-1 rounded-full bg-blue-400 flex justify-center items-center
         ${
           showTime
             ? `${isSender ? "right-0" : "left-0"}`
