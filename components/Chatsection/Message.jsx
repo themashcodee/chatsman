@@ -79,7 +79,7 @@ const Message = ({
               }
                  ${
                    showTime
-                     ? `mb-4 ${isSender ? "mr-9" : (type = "IMAGE" && "ml-9")}`
+                     ? `mb-4 ${isSender ? "mr-9" : type === "IMAGE" && "ml-9"}`
                      : "mb-0"
                  } 
                  p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
