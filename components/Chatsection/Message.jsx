@@ -50,7 +50,7 @@ const Message = ({
       const link = document.createElement("a");
       link.href = url;
       const randomNumber = () => Math.floor(100000 + Math.random() * 900000);
-      link.download = `chatsman-${randomNumber}${ext}`;
+      link.download = `chatsman-${randomNumber()}${ext}`;
       link.click();
     } catch (err) {
       alert("There is some server error, try again later.");
@@ -160,7 +160,7 @@ const Message = ({
 
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
-        ${isSender ? "right-10" : "left-10"} 
+        ${isSender ? "right-10" : type === "IMAGE" && "left-10"} 
         ${isWallpaper ? "text-white" : null}
         ${showTime ? "bottom-0" : "bottom-4 scale-0 transform"}`}
       >
