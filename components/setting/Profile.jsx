@@ -1,26 +1,25 @@
 import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Edit from "../icons/Edit";
+import Close from "../icons/Close";
+import Correct from "../icons/Correct";
 import ProfileIcon from "../icons/User";
-import { useRouter } from "next/router";
 
 import { StoreContext } from "../../pages/_app";
 
 const Profile = () => {
   const {
-    USER: { user },
+    USER: { user, setUser },
   } = useContext(StoreContext);
-  const router = useRouter();
   const [uploading, setUploading] = useState(false);
 
-  async function updateProfileImage(e) {
+  async function uploadProfileImage(file) {
     try {
-      if (!e.target.files[0]) return alert("No Image selected");
+      if (!file) return alert("No Image selected");
       setUploading(true);
-      alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
-      data.append("file", e.target.files[0]);
+      data.append("file", file);
       data.append("id", user.id);
 
       const response = await (
@@ -35,7 +34,8 @@ const Profile = () => {
         return alert(response.message);
       }
       alert(response.message);
-      router.reload();
+      setUploading(false);
+      setUser({ ...response.user, id: response.user._id });
     } catch (err) {
       setUploading(false);
       alert("There is some server error, try again later.");
@@ -74,10 +74,11 @@ const Profile = () => {
           accept="image/*"
           className="w-0 h-0"
           required
-          onChange={updateProfileImage}
+          onChange={(e) => uploadProfileImage(e.target.files[0])}
           disabled={uploading ? true : false}
         />
       </div>
+
       <h1 className="font-medium text-4xl pt-3 text-center">{user.name}</h1>
       <p className="text-cblack-5 italic dark:text-cwhite-darker">
         {user.username}

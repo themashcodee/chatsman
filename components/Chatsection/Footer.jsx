@@ -10,6 +10,7 @@ const Footer = ({ senderId, conversationId }) => {
   const [message, setMessage] = useState("");
   const [createMessage, { error }] = useMutation(CREATE_MESSAGE);
   const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   async function sendMessage(e) {
     e.preventDefault();
@@ -36,6 +37,7 @@ const Footer = ({ senderId, conversationId }) => {
 
   async function sendImage() {
     try {
+      setUploading(true);
       const data = new FormData();
       data.append("file", file);
       setFile(null);
@@ -48,9 +50,10 @@ const Footer = ({ senderId, conversationId }) => {
           body: data,
         })
       ).json();
-
       if (!response.success) alert(response.message);
+      setUploading(false);
     } catch (err) {
+      setUploading(false);
       alert("There is some server error, try again later.");
     }
   }
@@ -62,14 +65,14 @@ const Footer = ({ senderId, conversationId }) => {
     >
       <article
         className={`
-        w-full absolute h-12 rounded-t-xl bg-green-400 text-white backdrop-blur-sm left-0 -top-12 transition select-none
+        w-full absolute h-12 rounded-t-xl bg-green-400 text-white left-0 -top-12 transition select-none
         duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
         ${file ? "scale-y-100" : "scale-y-0"}
         `}
       >
         {file ? (
           <>
-            <div className="opacity-100">
+            <div>
               {file.name.length < 20
                 ? file.name
                 : file.name.substr(0, 20) + "..."}
@@ -100,6 +103,7 @@ const Footer = ({ senderId, conversationId }) => {
             className="w-0 h-0 absolute inset-0"
             onClick={(e) => (e.target.value = null)}
             onChange={(e) => setFile(e.target.files[0])}
+            disabled={uploading ? true : false}
           />
         </div>
 

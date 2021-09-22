@@ -17,7 +17,7 @@ import {
 
 const Options = () => {
   const {
-    USER: { user },
+    USER: { user, setUser },
   } = useContext(StoreContext);
   const router = useRouter();
 
@@ -57,11 +57,9 @@ const Options = () => {
         variables: { id: user.id, username },
       });
       if (DetailsErr) return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeDetails;
+      const { message, success, user: newUser } = result.data.changeDetails;
       if (!success) return alert(message);
-      alert(message);
-
-      router.reload();
+      setUser(newUser);
     } catch (err) {
       alert("There is some server error, try again later.");
     }
@@ -84,11 +82,9 @@ const Options = () => {
         variables: { id: user.id, name },
       });
       if (DetailsErr) return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeDetails;
+      const { message, success, user: newUser } = result.data.changeDetails;
       if (!success) return alert(message);
-      alert(message);
-
-      router.reload();
+      setUser(newUser);
     } catch (err) {
       alert("There is some server error, try again later.");
     }
@@ -105,11 +101,9 @@ const Options = () => {
         variables: { id: user.id, description },
       });
       if (DetailsErr) return alert("There is some error, try again later.");
-      const { message, success } = result.data.changeDetails;
+      const { message, success, user: newUser } = result.data.changeDetails;
       if (!success) return alert(message);
-      alert(message);
-
-      router.reload();
+      setUser(newUser);
     } catch (err) {
       alert("There is some server error, try again later.");
     }
@@ -194,15 +188,12 @@ const Options = () => {
   const deleteDP = async () => {
     try {
       const result = await DeleteDP({ variables: { id: user.id } });
-
       if (DPErr) return alert("There is some server error, try again later.");
-
       const { message, success } = result.data.deleteDP;
       if (!success) return alert(message);
 
-      router.reload();
+      setUser((prev) => ({ ...prev, image: "" }));
     } catch (err) {
-      console.log("SERVER ERR", err);
       alert("There is some server error, try again later.");
     }
   };
@@ -217,7 +208,8 @@ const Options = () => {
       if (!success) return alert(message);
 
       sessionStorage.clear();
-      router.reload();
+      setUser(undefined);
+      router.replace("/signin");
     } catch (err) {
       alert("There is some server error, try again later.");
     }
@@ -238,7 +230,8 @@ const Options = () => {
       if (!success) return alert(message);
 
       sessionStorage.clear();
-      router.reload();
+      setUser(undefined);
+      router.replace("/signup");
     } catch (err) {
       alert("There is some server error, try again later.");
     }

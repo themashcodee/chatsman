@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Back from "../icons/Back";
 import Image from "next/image";
 import Profile from "../icons/User";
 import Menu from "../icons/Menu";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { useMutation } from "@apollo/client";
 import {
@@ -25,7 +24,6 @@ const Header = ({
   const [DeleteConversation, { error }] = useMutation(DELETE_CONVERSATION);
   const [DeleteWallpaper, { error: WallpaperErr }] =
     useMutation(DELETE_WALLPAPER);
-  const router = useRouter();
 
   async function deleteWallpaper() {
     try {
@@ -63,15 +61,15 @@ const Header = ({
     setReceiver(null);
   }
 
-  async function uploadBackground(e) {
+  async function uploadWallpaper(file) {
     try {
       setModelVisible(false);
-      if (!e.target.files[0]) return alert("No Image selected");
+      if (!file) return alert("No Image selected");
       setUploading(true);
       alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
-      data.append("file", e.target.files[0]);
+      data.append("file", file);
       data.append("id", conversationId);
 
       const response = await (
@@ -85,6 +83,7 @@ const Header = ({
         setUploading(false);
         return alert(response.message);
       }
+      setUploading(false);
     } catch (err) {
       setUploading(false);
       alert("There is some server error, try again later.");
@@ -157,7 +156,7 @@ const Header = ({
               accept="image/*"
               className="h-0 w-0"
               required
-              onChange={uploadBackground}
+              onChange={(e) => uploadWallpaper(e.target.files[0])}
               disabled={uploading ? true : false}
             />
           </div>

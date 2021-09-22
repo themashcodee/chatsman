@@ -88,6 +88,14 @@ export const CHANGE_DETAILS = gql`
       changeDetails(id:$id,username:$username,name:$name,description:$description){
         success
         message
+        user{
+          id
+          name
+          image
+          username
+          email
+          description
+        }
       }
     }`
 
