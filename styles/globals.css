@@ -36,10 +36,11 @@ a {
 
 .image-container div {
   position: relative !important;
+  width: auto !important;
+  height: auto !important;
 }
 .image-container .image {
-  object-fit: contain;
   width: 100% !important;
   position: relative !important;
-  height: unset !important;
+  height: auto !important;
 }

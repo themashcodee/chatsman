@@ -58,7 +58,7 @@ const Footer = ({ senderId, conversationId }) => {
   return (
     <form
       onSubmit={(e) => sendMessage(e)}
-      className="h-16 p-2 w-full flex gap-2 flex-shrink-0 items-center border-t border-cwhite-light dark:border-cblack-3 relative"
+      className="h-16 p-2 w-full flex gap-2 flex-shrink-0 self-end mt-auto items-center border-t border-cwhite-light dark:border-cblack-3 relative"
     >
       <article
         className={`
