@@ -36,7 +36,7 @@ export default function BlockedUsers() {
             <section className="flex h-screen flex-col w-full">
                 <Header />
                 <div className="w-full scrollable flex items-center sm:items-start flex-wrap flex-col p-4">
-                    {user.blocked.map(id => <Card key={id} id={id} userId={user.id} setUser={setUser} />)}
+                    {user && user.blocked.map(id => <Card key={id} id={id} userId={user.id} setUser={setUser} />)}
                 </div>
             </section>
         </>
