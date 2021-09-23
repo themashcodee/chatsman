@@ -37,11 +37,11 @@ const ChatTile = ({
   if (error) return "There is some errors";
   if (!receiverObj) return null;
 
-  const { image, name, _id, username } = receiverObj;
+  const { image, name, id, username } = receiverObj;
 
   function openChat() {
     if (receiver && receiver.name === name) return;
-    setReceiver({ image, name, id: _id, conversationId, username, wallpaper });
+    setReceiver({ image, name, id, conversationId, username, wallpaper });
   }
 
   return (

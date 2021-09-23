@@ -9,6 +9,8 @@ export const MESSAGE_ADDED = gql`
           createdAt
           senderId
           type
+          replyId
+          replyContent
       }
     }
   }

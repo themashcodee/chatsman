@@ -6,7 +6,7 @@ import Close from "../icons/Close";
 import { CREATE_MESSAGE } from "../../graphql/mutations/index";
 import { useMutation } from "@apollo/client";
 
-const Footer = ({ senderId, conversationId }) => {
+const Footer = ({ senderId, conversationId, reply, setReply }) => {
   const [message, setMessage] = useState("");
   const [createMessage, { error }] = useMutation(CREATE_MESSAGE);
   const [file, setFile] = useState(null);
@@ -19,13 +19,17 @@ const Footer = ({ senderId, conversationId }) => {
       if (!message.length) return;
       setMessage("");
 
-      const result = await createMessage({
-        variables: {
-          conversationId,
-          senderId,
-          content: message,
-        },
-      });
+      let variables = reply
+        ? {
+            conversationId,
+            senderId,
+            content: message,
+            replyContent: reply.replyContent,
+            replyId: reply.replyId,
+          }
+        : { conversationId, senderId, content: message };
+      setReply(null);
+      const result = await createMessage({ variables });
       if (error) return alert("There is some server error, try again later.");
 
       const { message: resultMessage, success } = result.data.createMessage;
@@ -40,9 +44,14 @@ const Footer = ({ senderId, conversationId }) => {
       setUploading(true);
       const data = new FormData();
       data.append("file", file);
+      setReply(null);
       setFile(null);
       data.append("id", conversationId);
       data.append("senderId", senderId);
+      if (reply) {
+        data.append("replyContent", reply.replyContent);
+        data.append("replyId", reply.replyId);
+      }
 
       const response = await (
         await fetch(process.env.API_URI_CONV_IMAGE_UPLOAD, {
@@ -61,12 +70,17 @@ const Footer = ({ senderId, conversationId }) => {
   return (
     <form
       onSubmit={(e) => sendMessage(e)}
-      className="h-16 p-2 w-full flex gap-2 flex-shrink-0 self-end mt-auto items-center border-t border-cwhite-light dark:border-cblack-3 relative"
+      className={`h-16 p-2 w-full flex gap-2 flex-shrink-0 self-end mt-auto items-center border-t border-cwhite-light dark:border-cblack-3 relative
+       ${file || reply ? "mt-12" : null}
+      ${file && reply ? "mt-24" : null}
+      `}
     >
+      {/* SEND IMAGE POP UP */}
       <article
         className={`
-        w-full absolute h-12 rounded-t-xl bg-green-400 text-white left-0 -top-12 transition select-none
+        w-full absolute h-12 bg-green-400 text-white left-0 -top-12 transition select-none
         duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
+        ${reply ? null : "rounded-t-xl"}
         ${file ? "scale-y-100" : "scale-y-0"}
         `}
       >
@@ -87,6 +101,33 @@ const Footer = ({ senderId, conversationId }) => {
         ) : null}
       </article>
 
+      {/* REPLY MESSAGE POP UP */}
+      <article
+        className={`
+        w-full absolute h-12 rounded-t-xl bg-green-200 border-l-8 border-green-400 text-cblack-3 left-0 transition select-none
+        duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
+        ${file ? "-top-24" : "-top-12"}
+        ${reply ? "scale-y-100" : "scale-y-0"}
+        `}
+      >
+        {reply ? (
+          <>
+            <div>
+              {reply.replyContent.length < 25
+                ? reply.replyContent
+                : reply.replyContent.substr(0, 25) + "..."}
+            </div>
+            <div
+              className="w-6 h-6 cursor-pointer"
+              onClick={() => setReply(null)}
+            >
+              <Close />
+            </div>
+          </>
+        ) : null}
+      </article>
+
+      {/* MESSAGE INPUT */}
       <div className="flex items-center bg-cwhite-light dark:bg-cblack-3 h-full w-full px-2 rounded-lg cursor-pointer">
         <div className="w-7 h-7 p-1 bg-cwhite-medium dark:bg-cblack-4 rounded relative">
           <label
@@ -119,6 +160,8 @@ const Footer = ({ senderId, conversationId }) => {
           disabled={file ? true : false}
         />
       </div>
+
+      {/* SUBMIT BUTTON */}
       <button
         type="submit"
         className="h-9 w-9 p-2 bg-cblue flex-shrink-0 text-white rounded"

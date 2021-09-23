@@ -5,7 +5,7 @@ import { GET_MESSAGES } from "../../graphql/queries/index";
 import { MESSAGE_ADDED } from "../../graphql/subscription/index";
 import { useQuery, useSubscription } from "@apollo/client";
 
-const Chats = ({ senderId, conversationId, wallpaper }) => {
+const Chats = ({ senderId, conversationId, wallpaper, setReply }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
     fetchPolicy: "network-only",
     nextFetchPolicy: "cache-first",
@@ -36,7 +36,7 @@ const Chats = ({ senderId, conversationId, wallpaper }) => {
   useEffect(() => data && setChats(data.getMessages.messages), [data]);
 
   return (
-    <section className="scrollable flex flex-col-reverse gap-2 p-3 w-full">
+    <section className="scrollable flex flex-col-reverse gap-2 p-3 w-full mb-auto">
       {chats.length
         ? chats.map((message) => {
             return (
@@ -48,8 +48,11 @@ const Chats = ({ senderId, conversationId, wallpaper }) => {
                 isSender={senderId === message.senderId}
                 message={message.content}
                 type={message.type}
+                replyId={message.replyId}
+                replyContent={message.replyContent}
                 isWallpaper={!!wallpaper}
                 time={getMessageTime(+message.createdAt)}
+                setReply={setReply}
               />
             );
           })

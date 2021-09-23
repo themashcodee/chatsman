@@ -9,6 +9,7 @@ import { useMutation } from "@apollo/client";
 import {
   DELETE_CONVERSATION,
   DELETE_WALLPAPER,
+  BLOCK_USER,
 } from "../../graphql/mutations/index";
 
 const Header = ({
@@ -18,10 +19,14 @@ const Header = ({
   conversationId,
   setReceiver,
   userId,
+  receiverId,
+  setUser,
+  user,
 }) => {
   const [modelVisible, setModelVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [DeleteConversation, { error }] = useMutation(DELETE_CONVERSATION);
+  const [BlockUser, { error: BlockUserErr }] = useMutation(BLOCK_USER);
   const [DeleteWallpaper, { error: WallpaperErr }] =
     useMutation(DELETE_WALLPAPER);
 
@@ -45,20 +50,26 @@ const Header = ({
   }
 
   async function deleteConversation() {
-    setModelVisible(false);
-    const isAgree = confirm(
-      "This will delete conversation from both side permanently!"
-    );
-    if (!isAgree) return;
+    try {
+      setModelVisible(false);
+      const isAgree = confirm(
+        "This will delete conversation from both side permanently!"
+      );
+      if (!isAgree) return;
 
-    const result = await DeleteConversation({ variables: { conversationId } });
+      const result = await DeleteConversation({
+        variables: { conversationId },
+      });
 
-    if (error) return alert("There is some server error, try again later.");
+      if (error) return alert("There is some server error, try again later.");
 
-    const { success, message } = result.data.deleteConversation;
-    if (!success) return alert(message);
+      const { success, message } = result.data.deleteConversation;
+      if (!success) return alert(message);
 
-    setReceiver(null);
+      setReceiver(null);
+    } catch (err) {
+      alert("There is some server error, try again later.");
+    }
   }
 
   async function uploadWallpaper(file) {
@@ -86,6 +97,38 @@ const Header = ({
       setUploading(false);
     } catch (err) {
       setUploading(false);
+      alert("There is some server error, try again later.");
+    }
+  }
+
+  async function blockUser() {
+    try {
+      setModelVisible(false);
+      const isAgree = confirm(
+        "This will delete conversation from both side permanently and block the user."
+      );
+      if (!isAgree) return;
+
+      const result = await DeleteConversation({
+        variables: { conversationId },
+      });
+      if (error) return alert("There is some server error, try again later.");
+      const { success, message } = result.data.deleteConversation;
+      if (!success) return alert(message);
+      setReceiver(null);
+      const blockUserResult = await BlockUser({
+        variables: { blockedBy: userId, blockedTo: receiverId },
+      });
+      if (BlockUserErr)
+        return alert("There is some server error, try again later.");
+      const { success: blockUserSuccess, message: blockUserMessage } =
+        blockUserResult.data.blockUser;
+      if (!blockUserSuccess) return alert(blockUserMessage);
+      setUser((prev) => {
+        return { ...prev, blocked: [...user.blocked, receiverId] };
+      });
+      alert(blockUserMessage);
+    } catch (err) {
       alert("There is some server error, try again later.");
     }
   }
@@ -170,9 +213,16 @@ const Header = ({
 
           <div
             onClick={deleteConversation}
-            className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"
+            className="text-cred-dark w-full h-10 font-medium flex justify-center items-center border-b border-cwhite-medium dark:border-cblack-5"
           >
             Delete Chat
+          </div>
+
+          <div
+            onClick={blockUser}
+            className="text-cred-dark w-full h-10 font-medium flex justify-center items-center"
+          >
+            Block
           </div>
         </div>
       )}

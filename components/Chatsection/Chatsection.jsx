@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Header from "./Header";
 import Chats from "./Chats";
 import Footer from "./Footer";
@@ -9,9 +9,10 @@ import { StoreContext } from "../../pages/_app";
 
 const Chatsection = () => {
   const {
-    USER: { user },
+    USER: { user, setUser },
     RECEIVER: { receiver, setReceiver },
   } = useContext(StoreContext);
+  const [reply, setReply] = useState(null);
 
   if (!receiver)
     return (
@@ -25,12 +26,14 @@ const Chatsection = () => {
       <Header
         name={receiver.name}
         userId={user.id}
+        receiverId={receiver.id}
         image={receiver.image}
         username={receiver.username}
         conversationId={receiver.conversationId}
         setReceiver={setReceiver}
+        setUser={setUser}
+        user={user}
       />
-
       {receiver.wallpaper && (
         <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0">
           <div className="relative w-full h-full">
@@ -44,13 +47,19 @@ const Chatsection = () => {
           </div>
         </section>
       )}
-
       <Chats
         conversationId={receiver.conversationId}
         senderId={user.id}
         wallpaper={receiver.wallpaper}
+        reply={reply}
+        setReply={setReply}
       />
-      <Footer conversationId={receiver.conversationId} senderId={user.id} />
+      <Footer
+        conversationId={receiver.conversationId}
+        senderId={user.id}
+        reply={reply}
+        setReply={setReply}
+      />
     </section>
   );
 };

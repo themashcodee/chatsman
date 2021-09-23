@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Delete from "../icons/Delete";
 import Download from "../icons/Download";
+import Reply from "../icons/Reply";
 import Image from "next/image";
 
 import { saveAs } from "file-saver";
@@ -17,6 +18,9 @@ const Message = ({
   conversationId,
   isWallpaper,
   type,
+  replyContent,
+  replyId,
+  setReply,
 }) => {
   const [showTime, setShowTime] = useState(false);
   const [deleteMessage, { error }] = useMutation(DELETE_MESSAGE, {
@@ -64,7 +68,9 @@ const Message = ({
     select-none relative w-full flex
     `}
     >
+      {/* MESSAGE CONTAINER */}
       <div
+        id={id}
         onClick={() => {
           if (!showTime) {
             setShowTime(true);
@@ -82,7 +88,7 @@ const Message = ({
                      ? `mb-4 ${isSender ? "mr-9" : type === "IMAGE" && "ml-9"}`
                      : "mb-0"
                  } 
-                 p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%]
+                 p-2 rounded-lg cursor-pointer z-10 duration-200 transition-all max-w-[75%] relative
                  ${
                    type === "IMAGE"
                      ? "w-[75%] md:w-[45%] lg:w-[40%] xl:w-[30%] min-h-[80px]"
@@ -90,6 +96,45 @@ const Message = ({
                  }
         `}
       >
+        {/* REPLY BUTTON */}
+        {
+          <div
+            onClick={() => {
+              setShowTime(false);
+              setReply({
+                replyContent: type === "IMAGE" ? "An Image" : message,
+                replyId: id,
+              });
+            }}
+            className={`absolute cursor-pointer -z-1 top-[calc(50%-16px)] duration-200 transition-all w-8 h-8 p-1 rounded-full flex justify-center items-center
+            ${isWallpaper ? "text-white" : "text-[#999]"}
+        ${
+          showTime
+            ? `${isSender ? "-left-10" : "-right-10"}`
+            : `${isSender ? "left-4" : "right-4"} scale-0 transform`
+        }`}
+          >
+            <Reply />
+          </div>
+        }
+
+        {/* REPLY VIEWER */}
+        {replyContent ? (
+          <a href={`#${replyId}`} onClick={(e) => e.stopPropagation()}>
+            <div
+              className={`
+          w-full p-2 mb-2 rounded-md text-white
+          ${isSender ? "bg-cred-medium" : "bg-cwhite-medium dark:bg-cblack-5"}
+          `}
+            >
+              {replyContent.length < 20
+                ? replyContent
+                : replyContent.substr(0, 20) + "..."}
+            </div>
+          </a>
+        ) : null}
+
+        {/* CONTENT */}
         {type === "TEXT" ? (
           message.split(" ").some((word) => word.length > 15) ? (
             message
@@ -122,6 +167,7 @@ const Message = ({
         )}
       </div>
 
+      {/* DOWNLOAD BUTTON */}
       {type === "IMAGE" && (
         <div
           onClick={() => {
@@ -141,13 +187,14 @@ const Message = ({
         </div>
       )}
 
+      {/* DELETE BUTTON */}
       {isSender && (
         <div
           onClick={() => {
             setShowTime(false);
             deleteMessageFunc();
           }}
-          className={`absolute cursor-pointer -z-1 text-xxm top-1 duration-200 transition-all w-7 h-7 text-cblack-5 p-1 rounded-full bg-cyellow flex justify-center items-center
+          className={`absolute cursor-pointer -z-1 top-1 duration-200 transition-all w-7 h-7 text-cblack-5 p-1 rounded-full bg-cyellow flex justify-center items-center
         ${
           showTime
             ? `${isSender ? "right-0" : "left-0"}`
@@ -158,6 +205,7 @@ const Message = ({
         </div>
       )}
 
+      {/* TIME */}
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
         ${isSender ? "right-10" : type === "IMAGE" && "left-10"} 

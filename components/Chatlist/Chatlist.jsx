@@ -26,10 +26,14 @@ const Chatlist = () => {
     const usrn = prompt("Username");
     if (!usrn) return;
     if (usrn.length < 3 || usrn.length > 10) return alert("Invalid Username");
+    if (usrn === user.username)
+      return alert(
+        "If you want to talk to yourself then why you are using our app?"
+      );
 
     try {
       const result = await create({
-        variables: { members: [usrn, user.username] },
+        variables: { members: [usrn, user.username], creator: user.username },
       });
 
       if (convError)
@@ -55,7 +59,7 @@ const Chatlist = () => {
           const newReceiver = subsData.conversationAdded.conversations.find(
             (conv) => conv.id === prev.conversationId
           );
-          return { ...prev, wallpaper: newReceiver.wallpaper };
+          return { ...prev, wallpaper: newReceiver?.wallpaper };
         }
       });
     }

@@ -3,6 +3,7 @@ import Option from "./Option";
 import ImpOption from "./ImpOption";
 import { getCurrenTheme, toggleTheme } from "../../helpers/theme";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useMutation } from "@apollo/client";
 import { StoreContext } from "../../pages/_app";
 import {
@@ -254,6 +255,11 @@ const Options = () => {
       <ImpOption label="Reset Secret Code" funtionOnClick={resetSecretCode} />
       <ImpOption label="Reset Password" funtionOnClick={resetPassword} />
       <ImpOption label="Delete Profile Picture" funtionOnClick={deleteDP} />
+      <Link href="/blockedusers" passHref={true} replace={true}>
+        <div className="bg-cwhite-light dark:bg-cblack-3 w-full h-12 items-center flex select-none rounded-lg cursor-pointer px-3 flex-shrink-0">
+          <h2 className="font-medium">Blocked Users</h2>
+        </div>
+      </Link>
       <ImpOption
         label="Logout"
         special={true}

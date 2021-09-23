@@ -8,15 +8,15 @@ export const CREATE_USER = gql`
         }
     }`
 export const CREATE_MESSAGE = gql`
-    mutation ($senderId:ID!,$content:String!,$conversationId:ID!){
-      createMessage(senderId:$senderId,content:$content,conversationId:$conversationId){
+    mutation ($senderId:ID!,$content:String!,$conversationId:ID!,$replyContent:String,$replyId:ID){
+      createMessage(senderId:$senderId,content:$content,conversationId:$conversationId,replyContent:$replyContent,replyId:$replyId){
         success
         message
       }
     }`
 export const CREATE_CONVERSATION = gql`
-    mutation ($members:[String!]!){
-      createConversation(members:$members){
+    mutation ($members:[String!]!,$creator:String!){
+      createConversation(members:$members,creator:$creator){
         success
         message
       }
@@ -123,3 +123,17 @@ export const LOGIN_USER = gql`
       }
     }`
 
+export const BLOCK_USER = gql`
+    mutation ($blockedBy:ID!,$blockedTo:ID!){
+      blockUser(blockedBy:$blockedBy,blockedTo:$blockedTo){
+        success
+        message
+      }
+    }`
+export const UNBLOCK_USER = gql`
+    mutation ($unBlockedBy:ID!,$unBlockedTo:ID!){
+      unBlockUser(unBlockedBy:$unBlockedBy,unBlockedTo:$unBlockedTo){
+        success
+        message
+      }
+    }`

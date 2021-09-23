@@ -12,6 +12,7 @@ export const GET_USER = gql`
               username
               description
               createdAt
+              blocked
             }
         }
     }`
@@ -44,6 +45,8 @@ export const GET_MESSAGES = gql`
               type
               content
               createdAt
+              replyContent
+              replyId
             }
         }
     }`
