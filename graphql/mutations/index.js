@@ -119,6 +119,8 @@ export const LOGIN_USER = gql`
               username
               image
               description
+              blocked
+              createdAt
             }
       }
     }`
