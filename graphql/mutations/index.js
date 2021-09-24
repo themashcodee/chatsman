@@ -94,6 +94,7 @@ export const CHANGE_DETAILS = gql`
           image
           username
           email
+          blocked
           description
         }
       }

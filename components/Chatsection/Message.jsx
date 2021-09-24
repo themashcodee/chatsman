@@ -208,7 +208,7 @@ const Message = ({
       {/* TIME */}
       <div
         className={`absolute -z-1 text-xxm duration-200 transition-all
-        ${isSender ? "right-10" : type === "IMAGE" && "left-10"} 
+        ${isSender ? "right-10" : type === "IMAGE" ? "left-10" : "left-1"} 
         ${isWallpaper ? "text-white" : null}
         ${showTime ? "bottom-0" : "bottom-4 scale-0 transform"}`}
       >
