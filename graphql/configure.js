@@ -4,6 +4,7 @@ import { onError } from '@apollo/client/link/error';
 
 import { getMainDefinition } from '@apollo/client/utilities';
 import { WebSocketLink } from '@apollo/client/link/ws';
+import { SubscriptionClient, GRAPHQL_WS } from 'subscriptions-transport-ws'
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
@@ -24,15 +25,16 @@ const authLink = setContext((_, { headers }) => {
     }
 });
 
-
-const wsLink = process.browser && new WebSocketLink({
-    uri: process.env.API_URI_SUBSCRIPTION,
-    options: {
-        reconnect: true
-    },
+const wsClient = process.browser && new SubscriptionClient(process.env.API_URI_SUBSCRIPTION, {
+    reconnect: true,
     timeout: 30000,
     credentials: "include",
-});
+    connectionParams: {
+        authorization: localStorage.getItem('token'),
+    },
+}, GRAPHQL_WS)
+const wsLink = process.browser && new WebSocketLink(wsClient)
+
 const httpLink = createHttpLink({
     uri: process.env.API_URI_BASE,
     credentials: "include",

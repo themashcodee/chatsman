@@ -25,23 +25,31 @@ const ChatTile = ({
   const [receiverObj, setReceiverObj] = useState(null);
 
   const receiverId = members.find((id) => id !== user.id);
-  const { data, error, refetch } = useQuery(GET_USER, {
+  const { data, error } = useQuery(GET_USER, {
     variables: { id: receiverId },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
-    refetch();
     data && setReceiverObj(data.getUser.user);
-  }, [data, refetch, members]);
+  }, [data, members]);
 
   if (error) return "There is some errors";
   if (!receiverObj) return null;
 
-  const { image, name, id, username } = receiverObj;
+  const { image, name, id, username, email } = receiverObj;
 
   function openChat() {
     if (receiver && receiver.name === name) return;
-    setReceiver({ image, name, id, conversationId, username, wallpaper });
+    setReceiver({
+      image,
+      name,
+      id,
+      conversationId,
+      username,
+      wallpaper,
+      email,
+    });
   }
 
   return (
@@ -89,12 +97,12 @@ const ChatTile = ({
         </div>
       </div>
 
-      <div
+      {/* <div
         className={`
         w-3 h-3 rounded-full 
         ${true ? "bg-cgreen" : "bg-cred-medium"}
         `}
-      ></div>
+      ></div> */}
     </section>
   );
 };

@@ -7,8 +7,7 @@ import { useQuery, useSubscription } from "@apollo/client";
 
 const Chats = ({ senderId, conversationId, wallpaper, setReply }) => {
   const { data, error, refetch } = useQuery(GET_MESSAGES, {
-    fetchPolicy: "network-only",
-    nextFetchPolicy: "cache-first",
+    fetchPolicy: "cache-and-network",
     variables: { conversationId },
   });
   const { data: subsData, error: subsError } = useSubscription(MESSAGE_ADDED, {

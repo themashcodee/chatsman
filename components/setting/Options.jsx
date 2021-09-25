@@ -208,7 +208,7 @@ const Options = () => {
       const { message, success } = result.data.logout;
       if (!success) return alert(message);
 
-      sessionStorage.clear();
+      localStorage.clear();
       setUser(undefined);
       router.replace("/signin");
     } catch (err) {
@@ -230,7 +230,7 @@ const Options = () => {
       const { message, success } = result.data.deleteAccount;
       if (!success) return alert(message);
 
-      sessionStorage.clear();
+      localStorage.clear();
       setUser(undefined);
       router.replace("/signup");
     } catch (err) {

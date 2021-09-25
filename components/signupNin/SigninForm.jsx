@@ -54,11 +54,11 @@ const SigninForm = () => {
         return alert(message);
       }
 
-      sessionStorage.setItem("token", result.data.loginUser.token);
-      setUser(result.data.loginUser.user);
+      localStorage.setItem("token", result.data.loginUser.token);
+
       setIsSubmitting(false);
 
-      router.replace("/home");
+      router.reload();
     } catch (err) {
       setIsSubmitting(false);
       alert("There is some server error, try again later");

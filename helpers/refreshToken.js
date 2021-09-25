@@ -5,9 +5,10 @@ export async function refreshToken() {
         })).json()
         if (!data.success) return null
 
-        sessionStorage.setItem('token', data.token)
         return data.user
     } catch (err) {
         return null
     }
 }
+
+refreshToken()

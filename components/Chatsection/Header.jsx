@@ -4,13 +4,16 @@ import Image from "next/image";
 import Profile from "../icons/User";
 import Menu from "../icons/Menu";
 import Link from "next/link";
+import moment from "moment";
 
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery, useSubscription } from "@apollo/client";
 import {
   DELETE_CONVERSATION,
   DELETE_WALLPAPER,
   BLOCK_USER,
 } from "../../graphql/mutations/index";
+import { IS_ONLINE } from "../../graphql/queries/index";
+import { STATUS_CHANGED } from "../../graphql/subscription/index";
 
 const Header = ({
   name,
@@ -22,6 +25,7 @@ const Header = ({
   receiverId,
   setUser,
   user,
+  email,
 }) => {
   const [modelVisible, setModelVisible] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -30,6 +34,37 @@ const Header = ({
   const [DeleteWallpaper, { error: WallpaperErr }] =
     useMutation(DELETE_WALLPAPER);
 
+  // QUERY ONLINE CHECK
+  const { data: isOnlineData, error: isOnlineErr } = useQuery(IS_ONLINE, {
+    variables: { email },
+    fetchPolicy: "network-only",
+  });
+  const [isOnline, setIsOnline] = useState(null);
+  const [lastseen, setLastseen] = useState("");
+  useEffect(() => {
+    if (isOnlineData && isOnlineData.isOnline.success) {
+      const { online, lastseen: ls } = isOnlineData.isOnline;
+      setIsOnline(online);
+      setLastseen(ls);
+    }
+  }, [isOnlineData]);
+  if (isOnlineErr) console.log(isOnlineErr);
+
+  // SUBSCRIPTION ONLINE CHECK
+  const { data: isOnlineSubsData, error: isOnlineSubsErr } = useSubscription(
+    STATUS_CHANGED,
+    { variables: { email } }
+  );
+  useEffect(() => {
+    if (isOnlineSubsData && isOnlineSubsData.statusChanged.success) {
+      const { online, lastseen: ls } = isOnlineSubsData.statusChanged;
+      setIsOnline(online);
+      setLastseen(ls);
+    }
+  }, [isOnlineSubsData]);
+  if (isOnlineSubsErr) console.log(isOnlineSubsErr);
+
+  // FUNCTIONS
   async function deleteWallpaper() {
     try {
       setModelVisible(false);
@@ -156,15 +191,26 @@ const Header = ({
             <Profile />
           )}
         </div>
-        <div className="text-xl font-medium">
+        <div
+          className={`text-xl font-medium relative ${
+            isOnline === false ? "pb-3" : null
+          }`}
+        >
           {name.length > 11 ? name.substr(0, 11) + "." : name}
+          {isOnline === false ? (
+            <span className="text-[8px] font-normal absolute -bottom-2 z-10 left-0">
+              {"Active " + moment(+lastseen).fromNow()}
+            </span>
+          ) : null}
         </div>
 
-        <div
-          className={`w-3 h-3 rounded-full ${
-            true ? "bg-cgreen" : "bg-cred-medium"
-          }`}
-        ></div>
+        {isOnline !== null && (
+          <div
+            className={`w-3 h-3 rounded-full ${
+              isOnline ? "bg-cgreen" : "bg-cred-medium"
+            }`}
+          ></div>
+        )}
       </div>
 
       <div

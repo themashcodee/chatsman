@@ -1,5 +1,13 @@
 import { gql } from '@apollo/client'
 
+export const IS_ONLINE = gql`
+    query ($email:String!){
+        isOnline(email:$email){
+          success
+          lastseen
+          online
+        }
+    }`
 export const GET_USER = gql`
     query GetUser($id:String,$username:String){
         getUser(id:$id,username:$username){
@@ -9,6 +17,7 @@ export const GET_USER = gql`
               id
               name
               image
+              email
               username
               description
               createdAt

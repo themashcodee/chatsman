@@ -66,7 +66,7 @@ const Card = ({ id, userId, setUser }) => {
           </h3>
         </div>
       </div>
-      <div className="p-2">
+      <div className="p-4 pt-0">
         <button
           onClick={unBlockUser}
           className="bg-green-400 text-white font-medium w-full h-12 rounded-md"

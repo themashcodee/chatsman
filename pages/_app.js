@@ -4,7 +4,6 @@ import { initTheme } from '../helpers/theme'
 import Head from 'next/head'
 
 import Loading from '../components/Loading'
-import UnderConstruction from '../components/UnderConstruction'
 import { refreshToken } from '../helpers/refreshToken';
 
 import { ApolloProvider } from '@apollo/client';

@@ -1,5 +1,14 @@
 import { gql } from '@apollo/client'
 
+export const STATUS_CHANGED = gql`
+  subscription ($email:String!) {
+    statusChanged(email: $email) {
+          success
+          lastseen
+          online
+    }
+  }
+`;
 export const MESSAGE_ADDED = gql`
   subscription ($conversationId:ID!) {
     messageAdded(conversationId: $conversationId) {

@@ -17,6 +17,7 @@ const Profile = () => {
     try {
       if (!file) return alert("No Image selected");
       setUploading(true);
+      alert("Be patient! It will take few seconds.");
 
       const data = new FormData();
       data.append("file", file);

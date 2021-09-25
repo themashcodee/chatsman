@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import Head from 'next/head'
 import Header from '../components/signupNin/Header'
 import RedirectSection from '../components/signupNin/RedirectSection'
 import SigninForm from '../components/signupNin/SigninForm'
 
+import { useRouter } from 'next/router'
+import { StoreContext } from './_app'
+
 export default function Signup() {
+
+    const router = useRouter()
+    const { USER: { user } } = useContext(StoreContext);
+    useEffect(() => {
+        if (user) router.replace('/home')
+    }, [user, router])
+
     return (
         <>
             <Head>

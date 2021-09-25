@@ -25,6 +25,7 @@ const Chatsection = () => {
     <section className="flex-grow flex flex-col h-full w-full relative">
       <Header
         name={receiver.name}
+        email={receiver.email}
         userId={user.id}
         receiverId={receiver.id}
         image={receiver.image}
