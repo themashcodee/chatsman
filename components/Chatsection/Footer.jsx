@@ -78,9 +78,9 @@ const Footer = ({ senderId, conversationId, reply, setReply }) => {
       {/* SEND IMAGE POP UP */}
       <article
         className={`
-        w-full absolute h-12 bg-green-400 text-white left-0 -top-12 transition select-none
+        w-full absolute h-12 bg-cred-dark text-white left-0 -top-12 transition select-none
         duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
-        ${reply ? null : "rounded-t-xl"}
+        ${reply ? null : "rounded-t"}
         ${file ? "scale-y-100" : "scale-y-0"}
         `}
       >
@@ -104,7 +104,7 @@ const Footer = ({ senderId, conversationId, reply, setReply }) => {
       {/* REPLY MESSAGE POP UP */}
       <article
         className={`
-        w-full absolute h-12 rounded-t-xl bg-green-200 border-l-8 border-green-400 text-cblack-3 left-0 transition select-none
+        w-full absolute h-12 rounded-t bg-cred-medium border-l-8 border-cred-dark text-white left-0 transition select-none
         duration-200 z-50 font-medium px-3 flex items-center origin-bottom justify-between
         ${file ? "-top-24" : "-top-12"}
         ${reply ? "scale-y-100" : "scale-y-0"}

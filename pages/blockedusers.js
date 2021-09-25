@@ -33,7 +33,7 @@ export default function BlockedUsers() {
                 <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
-            <section className="flex h-screen flex-col w-full">
+            <section className="flex h-screen flex-col w-full select-none">
                 <Header />
                 <div className="w-full scrollable flex items-center sm:items-start flex-wrap flex-col p-4">
                     {user.blocked.length ?

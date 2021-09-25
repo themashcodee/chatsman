@@ -75,6 +75,7 @@ const Profile = () => {
           accept="image/*"
           className="w-0 h-0"
           required
+          onClick={(e) => (e.target.value = null)}
           onChange={(e) => uploadProfileImage(e.target.files[0])}
           disabled={uploading ? true : false}
         />

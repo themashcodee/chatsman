@@ -130,6 +130,7 @@ const Header = ({
         return alert(response.message);
       }
       setUploading(false);
+      alert(response.message);
     } catch (err) {
       setUploading(false);
       alert("There is some server error, try again later.");
@@ -179,6 +180,8 @@ const Header = ({
         >
           <Back />
         </button>
+
+        {/* PROFILE PICTURE */}
         <div className="relative overflow-hidden h-10 w-10 rounded-full p-2 bg-cwhite-light dark:bg-cblack-3 text-cblack-5 dark:text-cwhite-darker">
           {image ? (
             <Image
@@ -191,19 +194,32 @@ const Header = ({
             <Profile />
           )}
         </div>
+
+        {/* NAME AND LAST SEEN */}
         <div
-          className={`text-xl font-medium relative ${
-            isOnline === false ? "pb-3" : null
-          }`}
+          className={`
+            font-medium relative flex flex-col
+            `}
         >
-          {name.length > 11 ? name.substr(0, 11) + "." : name}
-          {isOnline === false ? (
-            <span className="text-[8px] font-normal absolute -bottom-2 z-10 left-0">
-              {"Active " + moment(+lastseen).fromNow()}
-            </span>
-          ) : null}
+          <div
+            className={`
+            leading-6 text-xl
+          `}
+          >
+            {name.length > 11 ? name.substr(0, 11) + "." : name}
+          </div>
+          <div
+            className={`
+          text-[8px] font-normal
+          `}
+          >
+            {isOnline === false
+              ? `Active ${moment(+lastseen).fromNow()}`
+              : null}
+          </div>
         </div>
 
+        {/* ONLINE OFFLINE SHOWER */}
         {isOnline !== null && (
           <div
             className={`w-3 h-3 rounded-full ${

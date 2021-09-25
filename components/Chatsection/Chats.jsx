@@ -15,11 +15,15 @@ const Chats = ({ senderId, conversationId, wallpaper, setReply }) => {
   });
 
   const [chats, setChats] = useState([]);
+  const [showAllMessage, setShowAllMessages] = useState(false);
 
   if (subsError) setNote("There is some server error, try again later.");
   if (error) setNote("There is some server error, try again later.");
 
-  const fetchAllMessages = () => refetch({ conversationId, isFull: true });
+  const fetchAllMessages = () => {
+    setShowAllMessages(true);
+    refetch({ conversationId, isFull: true });
+  };
 
   useEffect(() => {
     if (subsData) {
@@ -37,28 +41,47 @@ const Chats = ({ senderId, conversationId, wallpaper, setReply }) => {
   return (
     <section className="scrollable flex flex-col-reverse gap-2 p-3 w-full mb-auto">
       {chats.length
-        ? chats.map((message) => {
-            return (
-              <Message
-                key={message.id}
-                id={message.id}
-                senderId={message.senderId}
-                conversationId={conversationId}
-                isSender={senderId === message.senderId}
-                message={message.content}
-                type={message.type}
-                replyId={message.replyId}
-                replyContent={message.replyContent}
-                isWallpaper={!!wallpaper}
-                time={getMessageTime(+message.createdAt)}
-                setReply={setReply}
-              />
-            );
-          })
+        ? showAllMessage
+          ? chats.map((message) => {
+              return (
+                <Message
+                  key={message.id}
+                  id={message.id}
+                  senderId={message.senderId}
+                  conversationId={conversationId}
+                  isSender={senderId === message.senderId}
+                  message={message.content}
+                  type={message.type}
+                  replyId={message.replyId}
+                  replyContent={message.replyContent}
+                  isWallpaper={!!wallpaper}
+                  time={getMessageTime(+message.createdAt)}
+                  setReply={setReply}
+                />
+              );
+            })
+          : chats.slice(0, 49).map((message) => {
+              return (
+                <Message
+                  key={message.id}
+                  id={message.id}
+                  senderId={message.senderId}
+                  conversationId={conversationId}
+                  isSender={senderId === message.senderId}
+                  message={message.content}
+                  type={message.type}
+                  replyId={message.replyId}
+                  replyContent={message.replyContent}
+                  isWallpaper={!!wallpaper}
+                  time={getMessageTime(+message.createdAt)}
+                  setReply={setReply}
+                />
+              );
+            })
         : null}
 
       {/* LOAD MORE MESSAGES */}
-      {chats.length === 50 && (
+      {!showAllMessage && chats.length > 49 && (
         <div
           onClick={fetchAllMessages}
           className="text-center text-cwhite-darker pb-2 dark:text-cblack-5 cursor-pointer select-none"

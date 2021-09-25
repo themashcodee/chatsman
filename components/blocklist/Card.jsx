@@ -40,7 +40,7 @@ const Card = ({ id, userId, setUser }) => {
     );
 
   return (
-    <article className="flex flex-col w-full max-w-xs h-auto bg-cwhite-light dark:bg-cblack-3 rounded-lg select-none">
+    <article className="flex flex-col w-full max-w-xs h-auto bg-cwhite-light dark:bg-cblack-3 rounded-lg">
       <div className="flex p-4">
         <div className="relative text-cblack-5 dark:text-cwhite-darker  w-20 h-20 rounded-2xl overflow-hidden p-2 bg-cwhite-medium dark:bg-cblack-4">
           {blockedUser?.image ? (

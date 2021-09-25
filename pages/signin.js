@@ -5,6 +5,7 @@ import RedirectSection from '../components/signupNin/RedirectSection'
 import SigninForm from '../components/signupNin/SigninForm'
 
 import { useRouter } from 'next/router'
+import Loading from '../components/Loading'
 import { StoreContext } from './_app'
 
 export default function Signup() {
@@ -14,6 +15,14 @@ export default function Signup() {
     useEffect(() => {
         if (user) router.replace('/home')
     }, [user, router])
+    if (user) return <>
+        <Head>
+            <title>Chatsman | Sign In</title>
+            <meta name="description" content="Talk your friend and family with ease" />
+            <link rel="icon" href="/icons/favicon.png" />
+        </Head>
+        <Loading />
+    </>
 
     return (
         <>

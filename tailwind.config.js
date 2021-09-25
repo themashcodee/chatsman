@@ -27,7 +27,7 @@ module.exports = {
           "dark": "#FF5A43"
         },
         cyellow: "#FFDB5B",
-        cblue: "#967CFF",
+        cblue: "#60A5FA",
         cgreen: "#67FF9A"
       },
       zIndex: {
