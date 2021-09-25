@@ -203,10 +203,18 @@ const Header = ({
         >
           <div
             className={`
-            leading-6 text-xl
+            leading-6 text-xl flex items-center
           `}
           >
-            {name.length > 11 ? name.substr(0, 11) + "." : name}
+            <span>{name.length > 11 ? name.substr(0, 11) + "." : name}</span>
+            {/* ONLINE OFFLINE SHOWER */}
+            {isOnline !== null && (
+              <div
+                className={`w-3 h-3 ml-3 rounded-full ${
+                  isOnline ? "bg-cgreen" : "bg-cred-medium"
+                }`}
+              ></div>
+            )}
           </div>
           <div
             className={`
@@ -218,15 +226,6 @@ const Header = ({
               : null}
           </div>
         </div>
-
-        {/* ONLINE OFFLINE SHOWER */}
-        {isOnline !== null && (
-          <div
-            className={`w-3 h-3 rounded-full ${
-              isOnline ? "bg-cgreen" : "bg-cred-medium"
-            }`}
-          ></div>
-        )}
       </div>
 
       <div
