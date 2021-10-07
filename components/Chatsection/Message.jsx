@@ -23,6 +23,7 @@ const Message = ({
   setReply,
 }) => {
   const [showTime, setShowTime] = useState(false);
+  const [timeoutVar, setTimeoutVar] = useState(null);
   const [deleteMessage, { error }] = useMutation(DELETE_MESSAGE, {
     variables: { senderId, id, conversationId },
   });
@@ -60,6 +61,7 @@ const Message = ({
       alert("There is some server error, try again later.");
     }
   }
+  console.log("rerendered");
 
   return (
     <div
@@ -72,9 +74,11 @@ const Message = ({
       <div
         id={id}
         onClick={() => {
+          setShowTime(!showTime);
           if (!showTime) {
-            setShowTime(true);
-            setTimeout(() => setShowTime(false), 3000);
+            setTimeoutVar(setTimeout(() => setShowTime(false), 3000));
+          } else {
+            clearTimeout(timeoutVar);
           }
         }}
         className={`

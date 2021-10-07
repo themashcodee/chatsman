@@ -222,7 +222,9 @@ const Header = ({
           `}
           >
             {isOnline === false
-              ? `Active ${moment(+lastseen).fromNow()}`
+              ? lastseen
+                ? `Active ${moment(+lastseen).fromNow()}`
+                : "didn't opened app even once"
               : null}
           </div>
         </div>
