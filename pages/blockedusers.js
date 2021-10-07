@@ -33,9 +33,9 @@ export default function BlockedUsers() {
                 <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
-            <section className="flex h-screen flex-col w-full select-none">
+            <section className="flex h-screen flex-col w-ful select-none">
                 <Header />
-                <div className="w-full scrollable flex items-center sm:items-start flex-wrap flex-col p-4">
+                <div className="w-full scrollable flex justify-center sm:justify-start flex-wrap p-4 gap-4">
                     {user.blocked.length ?
                         user.blocked.map(id => <Card key={id} id={id} userId={user.id} setUser={setUser} />)
                         : <div className="text-cwhite-darker dark:text-cblack-5 font-medium text-2xl">No blocked user found</div>
