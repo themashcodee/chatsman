@@ -36,7 +36,7 @@ const Chatsection = () => {
         user={user}
       />
       {receiver.wallpaper && (
-        <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0">
+        <section className="absolute w-full h-[calc(100%-120px)] top-[56px] left-0 z-minus">
           <div className="relative w-full h-full">
             <Image
               src={receiver.wallpaper}

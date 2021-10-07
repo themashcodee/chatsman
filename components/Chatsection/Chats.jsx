@@ -84,7 +84,8 @@ const Chats = ({ senderId, conversationId, wallpaper, setReply }) => {
       {!showAllMessage && chats.length > 49 && (
         <div
           onClick={fetchAllMessages}
-          className="text-center text-cwhite-darker pb-2 dark:text-cblack-5 cursor-pointer select-none"
+          className={`text-center text-cwhite-darker pb-2 dark:text-cblack-5 cursor-pointer select-none
+          ${!!wallpaper ? "dark:text-cwhite-darker" : null}`}
         >
           Load older messages
         </div>
