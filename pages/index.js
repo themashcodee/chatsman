@@ -34,26 +34,25 @@ export default function Index() {
         <link rel="shortcut icon" href="/icons/favicon.png" />
       </Head>
       <section className="
-      scrollable flex h-screen w-full flex-col items-center px-5 py-8 text-white select-none
-      bg-gradient-to-r from-purple-800 via-violet-900 to-purple-800
-      ">
+      scrollable flex w-full flex-col items-center px-5 py-8 select-none">
         <h1 className="font-medium items-center text-center md:text-6xl text-5xl pb-4 flex">
           <span className="w-12 h-12 mr-2"><Logo /></span>
           Chatsman
         </h1>
         <p className="text-center font-medium text-2xl py-3">Talk to your friends and family with feature rich app Chatsman</p>
+        <p className="text-center py-2">Add to home screen for better experience in mobile phone</p>
+
         <div className="relative w-full justify-center flex-wrap py-6 gap-4 flex">
-          <div className="relative w-60 md:w-96 bg-purple-700 rounded-xl">
+          <div className="relative w-60 md:w-96">
             <Image src="/images/download1.png" alt="instruction" layout="responsive" width={720} height={543}></Image>
           </div>
-          <div className="relative w-60 md:w-96 bg-purple-700 rounded-xl">
+          <div className="relative w-60 md:w-96">
             <Image src="/images/download2.png" alt="instruction" layout="responsive" width={720} height={543}></Image>
           </div>
         </div >
-        <p className="text-center font-medium text-xl py-2">Add to home screen for better experience in mobile phone</p>
 
         <Link href="/signup" passHref={true} replace={true}><button className="
-        w-full max-w-sm h-16 flex-shrink-0 my-3 font-medium text-2xl rounded-xl bg-purple-900
+        w-full max-w-[300px] h-16 flex-shrink-0 mt-3 font-medium text-2xl rounded-xl text-white bg-blue-600
         ">
           Start Chatting
         </button>

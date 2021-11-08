@@ -10,10 +10,10 @@ module.exports = {
       colors: {
         cblack: {
           "1": "#111111",
-          "2": "#222222",
-          "3": "#333333",
-          "4": "#444444",
-          "5": "#555555",
+          "2": "#121212",
+          "3": "#212121",
+          "4": "#333333",
+          "5": "#444444",
         },
         cwhite: {
           "lightest": "#f5f5f5",
@@ -27,7 +27,7 @@ module.exports = {
           "dark": "#FF5A43"
         },
         cyellow: "#FFDB5B",
-        cblue: "#60A5FA",
+        cblue: "#3b82f6",
         cgreen: "#67FF9A"
       },
       zIndex: {
