@@ -68,7 +68,7 @@ const SigninForm = () => {
 	return (
 		<form
 			onSubmit={(e) => login(e)}
-			className="w-[90%] gap-2 max-w-sm flex flex-col items-center py-6 px-4 bg-white dark:bg-cblack-3 rounded-xl"
+			className="w-[90%] gap-2 max-w-sm flex flex-col items-center py-6 px-4 bg-white dark:bg-cblack-3 rounded-xl border border-cwhite-darker dark:border-none"
 		>
 			<Input
 				label="Email"
