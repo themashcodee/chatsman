@@ -4,7 +4,7 @@
 
 html,
 body {
-	@apply font-custom m-0 p-0 bg-cwhite-medium dark:bg-cblack-2 h-screen text-cblack-3 dark:text-white;
+	@apply font-custom m-0 p-0 bg-[#fff] dark:bg-cblack-2 h-screen text-cblack-3 dark:text-white;
 	scroll-behavior: smooth;
 	overflow-x: hidden;
 }
