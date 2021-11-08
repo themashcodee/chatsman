@@ -65,7 +65,7 @@ const SignupForm = () => {
 	return (
 		<form
 			onSubmit={(e) => register(e)}
-			className="w-[90%] mt-4 gap-2 max-w-sm flex flex-col items-center p-6 bg-white dark:bg-cblack-3 rounded-xl border border-cwhite-darker dark:border-none"
+			className="w-[90%] mt-4 gap-2 max-w-sm flex flex-col items-center p-6 bg-white dark:bg-cblack-3 rounded-xl border border-cwhite-darker dark:border-transparent"
 		>
 			<Input
 				label="Name"
