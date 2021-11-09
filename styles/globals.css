@@ -37,7 +37,7 @@ a {
 .image-container {
 	max-height: max-content;
 }
-.image-container div {
+.image-container span {
 	position: relative !important;
 	width: auto !important;
 	height: max-content !important;
