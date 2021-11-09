@@ -43,10 +43,10 @@ export default function Index() {
         <p className="text-center py-2">Add to home screen for better experience in mobile phone</p>
 
         <div className="relative w-full justify-center flex-wrap py-6 gap-4 flex">
-          <div className="relative w-60 md:w-96">
+          <div className="relative w-60 md:w-96 rounded-2xl overflow-hidden bg-cblack-3">
             <Image src="/images/download1.png" alt="instruction" layout="responsive" width={720} height={543}></Image>
           </div>
-          <div className="relative w-60 md:w-96">
+          <div className="relative w-60 md:w-96 rounded-2xl overflow-hidden bg-cblack-3">
             <Image src="/images/download2.png" alt="instruction" layout="responsive" width={720} height={543}></Image>
           </div>
         </div >

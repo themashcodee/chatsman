@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
-import Header from '../components/signupNin/Header'
 import RedirectSection from '../components/signupNin/RedirectSection'
 import SigninForm from '../components/signupNin/SigninForm'
 
@@ -66,8 +65,7 @@ export default function Signup() {
                 <meta name="description" content="Talk your friend and family with ease" />
                 <link rel="shortcut icon" href="/icons/favicon.png" />
             </Head>
-            <section className="flex w-full pb-5 flex-col items-center bg-cwhite-light dark:bg-cblack-2">
-                <Header />
+            <section className="flex w-full py-14 flex-col items-center">
                 <RedirectSection label={"Sign In"} switchTo={"Sign Up"} link={"/signup"} line={"Don't have an account? "} />
                 <button onClick={login} className="w-[90%] max-w-sm rounded h-10 border dark:border-cblack-5 border-cwhite-darker my-3">{
                     isSubmitting ? "Logging in..." : "Sign In as a Test User"}

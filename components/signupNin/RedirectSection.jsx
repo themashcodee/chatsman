@@ -63,7 +63,7 @@ const RedirectSection = ({ label, link, line, switchTo }) => {
 	};
 
 	return (
-		<article className="w-full pt-5 flex flex-col items-center gap-2 select-none">
+		<article className="w-full flex flex-col items-center gap-2 select-none">
 			<h1 className="font-medium text-center text-3xl">{label}</h1>
 			<p className="text-cblack-5 dark:text-cwhite-darker text-xs md:text-sm text-center">
 				{line}
@@ -75,19 +75,19 @@ const RedirectSection = ({ label, link, line, switchTo }) => {
 			</p>
 			{label === "Sign In" ? (
 				<div className="w-[90%] pt-1 max-w-sm flex justify-between gap-2">
-					<button className="text-center text-sm w-full bg-cyellow p-3 rounded">
-						<span
-							onClick={resetPassword}
-							className="font-medium text-cblack-3  cursor-pointer"
-						>
+					<button
+						onClick={resetPassword}
+						className="text-center text-sm w-full bg-cyellow p-3 rounded"
+					>
+						<span className="font-medium text-cblack-3  cursor-pointer">
 							Reset Password
 						</span>
 					</button>
-					<button className="bg-cyellow w-full p-3 rounded text-sm text-center">
-						<span
-							onClick={resetSecretCode}
-							className="font-medium text-cblack-3 cursor-pointer"
-						>
+					<button
+						onClick={resetSecretCode}
+						className="bg-cyellow w-full p-3 rounded text-sm text-center"
+					>
+						<span className="font-medium text-cblack-3 cursor-pointer">
 							Reset Secret Code
 						</span>
 					</button>
