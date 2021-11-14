@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useRef } from "react";
 import Header from "./Header";
 import Chats from "./Chats";
 import Footer from "./Footer";
@@ -13,6 +13,8 @@ const Chatsection = () => {
 		RECEIVER: { receiver, setReceiver },
 	} = useContext(StoreContext);
 	const [reply, setReply] = useState(null);
+
+	const messageInputRef = useRef(null);
 
 	if (!receiver)
 		return (
@@ -54,12 +56,14 @@ const Chatsection = () => {
 				wallpaper={receiver.wallpaper}
 				reply={reply}
 				setReply={setReply}
+				messageInputRef={messageInputRef}
 			/>
 			<Footer
 				conversationId={receiver.conversationId}
 				senderId={user.id}
 				reply={reply}
 				setReply={setReply}
+				ref={messageInputRef}
 			/>
 		</section>
 	);
