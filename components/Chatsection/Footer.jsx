@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, useEffect, forwardRef } from "react";
 import ImageIcon from "../icons/Image";
 import Send from "../icons/Send";
 import Close from "../icons/Close";
@@ -12,6 +12,10 @@ const Footer = forwardRef(
 		const [createMessage, { error }] = useMutation(CREATE_MESSAGE);
 		const [file, setFile] = useState(null);
 		const [uploading, setUploading] = useState(false);
+
+		useEffect(() => {
+			messageInputRef.current?.focus();
+		}, [messageInputRef]);
 
 		async function sendMessage(e) {
 			e.preventDefault();
