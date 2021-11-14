@@ -120,7 +120,10 @@ const Footer = forwardRef(
 							</div>
 							<div
 								className="w-6 h-6 cursor-pointer"
-								onClick={() => setReply(null)}
+								onClick={() => {
+									messageInputRef.current.focus();
+									setReply(null);
+								}}
 							>
 								<Close />
 							</div>
