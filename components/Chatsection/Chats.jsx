@@ -45,7 +45,7 @@ const Chats = ({
 	useEffect(() => data && setChats(data.getMessages.messages), [data]);
 
 	return (
-		<section className="scrollable flex flex-col-reverse gap-2 p-3 w-full mb-auto">
+		<section className="scrollable flex flex-col-reverse gap-2 p-3 w-full mb-auto z-[1]">
 			{chats.length
 				? showAllMessage
 					? chats.map((message) => {
