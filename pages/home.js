@@ -15,6 +15,7 @@ export default function Home() {
     useEffect(() => {
         if (!user) router.replace('/signin')
     }, [user, router])
+
     if (!user) {
         return <>
             <Head>
